@@ -1,10 +1,12 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import PlainTextResponse, Response
+from fastapi.responses import HTMLResponse, PlainTextResponse, Response
 from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
 from app.routers import emi, home, legal, overlap, sip, tax
-from app.security import RateLimitMiddleware, SecurityHeadersMiddleware
+from app.security import RateLimitMiddleware, add_security_headers
 
 ALLOWED_ORIGINS = ["http://localhost:8000"]
 
@@ -16,6 +18,62 @@ app = FastAPI(
     docs_url=None,
     redoc_url=None,
 )
+
+# ✅ DECORATOR-BASED SECURITY HEADERS (lightweight, no BaseHTTPMiddleware)
+app.middleware("http")(add_security_headers)
+
+
+# ✅ GLOBAL EXCEPTION HANDLERS — user-friendly error pages, no stack traces
+templates = Jinja2Templates(directory="app/templates")
+
+
+@app.exception_handler(404)
+async def not_found_handler(request: Request, exc):
+    return templates.TemplateResponse(
+        "error.html",
+        {
+            "request": request,
+            "title": "Page Not Found | FinCalX",
+            "description": "The page you are looking for does not exist.",
+            "status_code": 404,
+            "heading": "Page Not Found",
+            "message": "Sorry, the page you are looking for does not exist. Try one of our calculators or go back home.",
+        },
+        status_code=404,
+    )
+
+
+@app.exception_handler(500)
+async def server_error_handler(request: Request, exc):
+    return templates.TemplateResponse(
+        "error.html",
+        {
+            "request": request,
+            "title": "Server Error | FinCalX",
+            "description": "Something went wrong. Please try again later.",
+            "status_code": 500,
+            "heading": "Something Went Wrong",
+            "message": "We encountered an unexpected error. Please try again in a few moments, or contact us if the problem persists.",
+        },
+        status_code=500,
+    )
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_error_handler(request: Request, exc: RequestValidationError):
+    return templates.TemplateResponse(
+        "error.html",
+        {
+            "request": request,
+            "title": "Invalid Input | FinCalX",
+            "description": "The information you entered was not valid. Please check and try again.",
+            "status_code": 422,
+            "heading": "Invalid Input",
+            "message": "The information you entered was not valid. Please check your inputs and try again.",
+        },
+        status_code=422,
+    )
+
 
 # ✅ CLEAN SITEMAP (FIXED)
 @app.get("/sitemap.xml", include_in_schema=False)
@@ -43,7 +101,6 @@ async def robots():
 
 
 # ✅ MIDDLEWARES
-#app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(RateLimitMiddleware, max_requests=100, window_seconds=60)
 app.add_middleware(
     CORSMiddleware,
@@ -63,3 +120,4 @@ app.include_router(emi.router)
 app.include_router(tax.router)
 app.include_router(overlap.router)
 app.include_router(legal.router)
+
