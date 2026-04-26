@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
@@ -34,3 +34,15 @@ app.include_router(emi.router)
 app.include_router(tax.router)
 app.include_router(overlap.router)
 app.include_router(legal.router)
+
+@app.get("/sitemap.xml")
+def sitemap():
+    xml = """<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://getfincalx.com/</loc></url>
+  <url><loc>https://getfincalx.com/tools/sip-calculator</loc></url>
+  <url><loc>https://getfincalx.com/tools/emi-calculator</loc></url>
+  <url><loc>https://getfincalx.com/tools/tax-calculator</loc></url>
+  <url><loc>https://getfincalx.com/tools/overlap-calculator</loc></url>
+</urlset>"""
+    return Response(content=xml, media_type="application/xml")
