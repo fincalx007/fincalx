@@ -1,5 +1,6 @@
-from fastapi import FastAPI, Response
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import Response
 from fastapi.staticfiles import StaticFiles
 
 from app.routers import emi, home, legal, overlap, sip, tax
@@ -36,13 +37,15 @@ app.include_router(overlap.router)
 app.include_router(legal.router)
 
 @app.get("/sitemap.xml", include_in_schema=False)
-def sitemap():
-    xml_content = """<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://getfincalx.com/</loc></url>
-  <url><loc>https://getfincalx.com/tools/sip-calculator</loc></url>
-  <url><loc>https://getfincalx.com/tools/emi-calculator</loc></url>
-  <url><loc>https://getfincalx.com/tools/tax-calculator</loc></url>
-  <url><loc>https://getfincalx.com/tools/overlap-calculator</loc></url>
-</urlset>"""
-    return Response(content=xml_content, media_type="application/xml")
+async def sitemap():
+    return Response(
+        content='<?xml version="1.0" encoding="UTF-8"?>'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+        '<url><loc>https://getfincalx.com/</loc></url>'
+        '<url><loc>https://getfincalx.com/tools/sip-calculator</loc></url>'
+        '<url><loc>https://getfincalx.com/tools/emi-calculator</loc></url>'
+        '<url><loc>https://getfincalx.com/tools/tax-calculator</loc></url>'
+        '<url><loc>https://getfincalx.com/tools/overlap-calculator</loc></url>'
+        '</urlset>',
+        media_type="application/xml"
+    )
