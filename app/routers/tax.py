@@ -10,6 +10,19 @@ router = APIRouter(prefix="/tools", tags=["tools"])
 templates = Jinja2Templates(directory="app/templates")
 
 
+def _context(request: Request, form: dict | None = None) -> dict:
+    return {
+        "request": request,
+        "title": "Income Tax Calculator India FY 2025-26",
+        "description": "Calculate income tax instantly.",
+        "form": form or {
+            "gross_income": 1200000,
+            "regime": "new",
+            "deductions": 0,
+        },
+    }
+
+
 @router.get("/income-tax-calculator", response_class=HTMLResponse)
 async def tax_page(request: Request):
     return templates.TemplateResponse("tools/tax.html", _context(request))
@@ -18,6 +31,13 @@ async def tax_page(request: Request):
 @router.post("/income-tax-calculator", response_class=HTMLResponse)
 async def tax_calculate(request: Request):
     raw_form = dict(await request.form())
+
+    # Remove commas safely
+    for key in ("gross_income", "deductions"):
+        val = raw_form.get(key)
+        if val is not None:
+            raw_form[key] = str(val).replace(",", "")
+
     data, errors, error = validate_form_data(TaxInput, raw_form)
 
     context = _context(request, form=raw_form if errors else data.model_dump())
@@ -27,23 +47,20 @@ async def tax_calculate(request: Request):
         context["error"] = error
         return templates.TemplateResponse("tools/tax.html", context)
 
-    result = calculate_income_tax(data.gross_income, data.regime, data.deductions)
+    result = calculate_income_tax(
+        data.gross_income,
+        data.regime,
+        data.deductions,
+    )
+
     context["result"] = {
         "regime": result["regime"],
-        "taxable_income": money(float(result["taxable_income"])),
-        "base_tax": money(float(result["base_tax"])),
-        "cess": money(float(result["cess"])),
-        "total_tax": money(float(result["total_tax"])),
+        "taxable_income": money(result["taxable_income"]),
+        "base_tax": money(result["base_tax"]),
+        "cess": money(result["cess"]),
+        "total_tax": money(result["total_tax"]),
+        "surcharge": money(result["surcharge"]),
     }
+
     return templates.TemplateResponse("tools/tax.html", context)
 
-
-def _context(request: Request, form: dict | None = None) -> dict:
-    return {
-        "request": request,
-        "title": "Income Tax Calculator India FY 2025-26 (Updated 2026) | Old vs New Regime",
-        "description": "Free income tax calculator India FY 2025-26: compare old vs new regime, estimate tax liability, cess & take-home salary. Updated for latest slabs.",
-        "last_updated": "April 2026 (FY 2025-26)",
-        "last_modified_iso": "2026-04-01",
-        "form": form or {"gross_income": 1200000, "regime": "new", "deductions": 0},
-    }

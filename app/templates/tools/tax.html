@@ -1,200 +1,188 @@
 {% extends "tools/tool_base.html" %}
 
 {% block tool_title %}Income Tax Calculator India{% endblock %}
-{% block tool_intro %}Estimate basic income tax for FY 2025-26 under the old or new regime. This income tax calculator India tool is built for quick planning, not return filing.{% endblock %}
+
+{% block tool_intro %}
+Estimate income tax for FY 2025-26 under old and new regimes. Compare tax liability and choose the best option.
+{% endblock %}
 
 {% block tool_form %}
-<form method="post" class="card calculator-card" novalidate>
+
+<form method="post" class="card calculator-card" novalidate id="taxForm">
     <div class="card-body p-4">
-        <h2 class="h4 fw-bold mb-4">Enter income details</h2>
-        {% if error %}<div class="alert alert-danger" role="alert">{{ error }}</div>{% endif %}
-        <div class="mb-3">
-            <label class="form-label" for="gross_income">Annual gross income</label>
-            <input class="form-control {% if errors and errors.gross_income %}is-invalid{% endif %}" id="gross_income" name="gross_income" type="number" min="0" max="100000000" step="1000" value="{{ form.gross_income }}" required>
-            {% if errors and errors.gross_income %}<div class="invalid-feedback">{{ errors.gross_income }}</div>{% endif %}
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="regime">Tax regime</label>
-            <select class="form-select {% if errors and errors.regime %}is-invalid{% endif %}" id="regime" name="regime" required>
-                <option value="new" {% if form.regime == "new" %}selected{% endif %}>New regime</option>
-                <option value="old" {% if form.regime == "old" %}selected{% endif %}>Old regime</option>
-            </select>
-            {% if errors and errors.regime %}<div class="invalid-feedback">{{ errors.regime }}</div>{% endif %}
-        </div>
-        <div class="mb-3">
-            <label class="form-label" for="deductions">Old regime deductions</label>
-            <input class="form-control {% if errors and errors.deductions %}is-invalid{% endif %}" id="deductions" name="deductions" type="number" min="0" max="10000000" step="1000" value="{{ form.deductions }}">
-            {% if errors and errors.deductions %}<div class="invalid-feedback">{{ errors.deductions }}</div>{% endif %}
-            <div class="form-text">Used only for old regime estimates. New regime uses a simple standard deduction assumption.</div>
-        </div>
-        <button class="btn btn-gradient w-100" type="submit">Calculate Tax</button>
+
+```
+    <h2 class="h4 fw-bold mb-4">Enter income details</h2>
+
+    {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+
+    <!-- Income -->
+    <div class="mb-3">
+        <label class="form-label">Annual gross income</label>
+        <input class="form-control"
+               id="gross_income"
+               name="gross_income"
+               type="text"
+               placeholder="e.g. 10,00,000"
+               value="{{ form.gross_income }}"
+               required>
+
+        {% if errors and errors.gross_income %}
+        <div class="text-danger small">{{ errors.gross_income }}</div>
+        {% endif %}
     </div>
+
+    <!-- Regime -->
+    <div class="mb-3">
+        <label class="form-label">Tax regime</label>
+        <select class="form-select" id="regime" name="regime">
+            <option value="new" {% if form.regime == "new" %}selected{% endif %}>New regime</option>
+            <option value="old" {% if form.regime == "old" %}selected{% endif %}>Old regime</option>
+        </select>
+    </div>
+
+    <!-- Deductions -->
+    <div class="mb-3">
+        <label class="form-label">Old regime deductions</label>
+        <input class="form-control"
+               id="deductions"
+               name="deductions"
+               type="text"
+               value="{{ form.deductions }}">
+
+        {% if errors and errors.deductions %}
+        <div class="text-danger small">{{ errors.deductions }}</div>
+        {% endif %}
+
+        <div class="form-text text-secondary">Applicable only for old regime</div>
+    </div>
+
+    <button class="btn btn-gradient w-100">Calculate Tax</button>
+
+</div>
+```
+
 </form>
+
+<!-- JS: Regime toggle + input formatting -->
+
+<script>
+const regime = document.getElementById("regime");
+const deductions = document.getElementById("deductions");
+const income = document.getElementById("gross_income");
+
+// Toggle deductions
+function toggle() {
+    if (regime.value === "new") {
+        deductions.disabled = true;
+        deductions.value = 0;
+    } else {
+        deductions.disabled = false;
+    }
+}
+regime.addEventListener("change", toggle);
+toggle();
+
+// Allow only numbers
+income.addEventListener("input", () => {
+    income.value = income.value.replace(/[^0-9]/g, "");
+});
+
+// Format Indian style
+income.addEventListener("blur", () => {
+    if (income.value) {
+        income.value = Number(income.value).toLocaleString("en-IN");
+    }
+});
+
+// Remove commas before submit
+document.getElementById("taxForm").addEventListener("submit", () => {
+    income.value = income.value.replace(/,/g, "");
+});
+</script>
+
 {% endblock %}
 
 {% block tool_result %}
 {% if result %}
-<div class="card result-card"><div class="card-body p-4">
-    <h2 class="h5 fw-bold mb-3">Tax Estimate</h2>
+
+<div class="card result-card">
+    <div class="card-body p-4">
+
+```
+    <p class="text-success small">✔ Updated for FY 2025-26</p>
+
+    <h3 class="mb-3">Tax Estimate</h3>
+
     <div class="result-row"><span>Regime</span><strong>{{ result.regime }}</strong></div>
     <div class="result-row"><span>Taxable Income</span><strong>{{ result.taxable_income }}</strong></div>
     <div class="result-row"><span>Base Tax</span><strong>{{ result.base_tax }}</strong></div>
-    <div class="result-row"><span>Health and Education Cess</span><strong>{{ result.cess }}</strong></div>
-    <div class="result-highlight"><span>Total Tax</span><strong>{{ result.total_tax }}</strong></div>
-</div></div>
-{% else %}
-<div class="result-empty"><h2 class="h5">Your tax estimate appears here</h2><p class="text-secondary mb-0">Consult a qualified tax professional for filing decisions.</p></div>
+
+    {% if result.surcharge and result.surcharge != "₹0" %}
+    <div class="result-row"><span>Surcharge</span><strong>{{ result.surcharge }}</strong></div>
+    {% endif %}
+
+    <div class="result-row"><span>Cess (4%)</span><strong>{{ result.cess }}</strong></div>
+
+    <div class="result-highlight">
+        <span>Total Tax</span>
+        <strong>{{ result.total_tax }}</strong>
+    </div>
+
+</div>
+```
+
+</div>
+
+<p class="small mt-3 text-secondary">
+Tip: Compare both regimes to choose the one with lower tax.
+</p>
+
 {% endif %}
 {% endblock %}
 
-{% block tool_extra %}
-<p class="text-muted small">Last updated: April 2026 (FY 2025-26)</p>
-{% endblock %}
-
-{% block seo_content %}
-<section class="section-pad bg-soft">
-    <div class="container">
-        <article>
-            <h2 class="h3 fw-bold mb-3">What is Income Tax Calculator India</h2>
-            <p class="text-secondary">An <strong>income tax calculator India</strong> is a free online tool that helps resident individuals estimate their tax liability for a given financial year. Instead of manually applying slab rates, cess, and deductions, you simply enter your gross income, choose your tax regime, and the calculator delivers an instant estimate of taxable income, base tax, health and education cess, and total tax payable.</p>
-            <p class="text-secondary">For FY 2025-26, Indian taxpayers can choose between the old regime with exemptions and deductions, or the new regime with lower slab rates but fewer deductions. Our <strong>income tax calculator India</strong> supports both options, making it easy to perform a <strong>tax calculator old vs new regime</strong> comparison and pick the structure that saves you more money.</p>
-        </article>
-
-        <article class="mt-5">
-            <h2 class="h3 fw-bold mb-3">How it works</h2>
-            <p class="text-secondary">Using our <strong>income tax calculator India</strong> is straightforward. You need to provide:</p>
-            <ul class="text-secondary">
-                <li><strong>Annual gross income</strong> — your total yearly earnings before any deductions or exemptions.</li>
-                <li><strong>Tax regime</strong> — select "New regime" for lower rates with limited deductions, or "Old regime" if you claim deductions under Sections 80C, 80D, HRA, LTA, and others.</li>
-                <li><strong>Old regime deductions</strong> — enter the total deductions you expect to claim. This field is used only when the old regime is selected.</li>
-            </ul>
-            <p class="text-secondary">Once you submit, the calculator applies the current FY 2025-26 slab structure, subtracts eligible deductions, computes base tax, adds 4% health and education cess, and presents a clear breakdown. You can switch regimes and recalculate instantly to complete your <strong>tax calculator old vs new regime</strong> analysis.</p>
-            <p class="text-secondary">The most common question among Indian taxpayers is whether to stick with the old regime or move to the new one. Under the <strong>new regime</strong>, slab rates are lower, but you cannot claim most deductions like Section 80C (₹1.5 lakh), 80D (health insurance), HRA exemption, or home loan interest under Section 24. Under the <strong>old regime</strong>, you pay higher slab rates but can reduce taxable income significantly if you have substantial deductions. A <strong>tax calculator old vs new regime</strong> comparison is the fastest way to settle this. Our calculator lets you test both scenarios in seconds.</p>
-        </article>
-
-        <article class="mt-5">
-            <h2 class="h3 fw-bold mb-3">Benefits</h2>
-            <p class="text-secondary">A dedicated <strong>income tax calculator India</strong> offers several practical advantages:</p>
-            <ul class="text-secondary">
-                <li><strong>Instant comparison</strong> — Switch between old and new regimes with one click to see which is cheaper.</li>
-                <li><strong>Salary negotiation</strong> — Know your post-tax income before accepting a job offer or raise.</li>
-                <li><strong>Investment planning</strong> — Identify how much you need to invest in 80C or 80D to optimise tax.</li>
-                <li><strong>Budget accuracy</strong> — Plan monthly cash flows based on actual tax liability, not rough estimates.</li>
-                <li><strong>Year-end readiness</strong> — Prepare for tax-saving deadlines in March with clear numbers.</li>
-                <li><strong>Privacy first</strong> — No login, no data storage, no sharing with third parties.</li>
-            </ul>
-        </article>
-
-        <article class="mt-5">
-            <h2 class="h3 fw-bold mb-3">Example calculation</h2>
-            <p class="text-secondary">Meet Ananya, a software engineer in Pune with an annual gross income of ₹12,00,000. She pays ₹1,50,000 under Section 80C (PPF + ELSS), ₹25,000 under Section 80D for health insurance, and claims HRA exemption of ₹1,20,000. Using our <strong>income tax calculator India</strong>:</p>
-            <ul class="text-secondary">
-                <li><strong>Old regime:</strong> Taxable income drops to ₹9,05,000 after deductions. Base tax is approximately ₹1,01,000 plus cess, totalling around ₹1,05,040.</li>
-                <li><strong>New regime:</strong> Taxable income is ₹11,75,000 after standard deduction. Base tax is approximately ₹1,42,500 plus cess, totalling around ₹1,48,200.</li>
-            </ul>
-            <p class="text-secondary">In Ananya's case, the old regime saves her over ₹43,000. However, if she had no major deductions, the new regime could be cheaper. This is why running a <strong>tax calculator old vs new regime</strong> check every year is essential, especially before tax-saving investment deadlines.</p>
-        </article>
-
-        <article class="mt-5">
-            <h2 class="h3 fw-bold mb-3">Why use this tool</h2>
-            <p class="text-secondary">This <strong>income tax calculator India</strong> is built for speed, accuracy, and privacy. There is no registration, no ads inside the calculator, and no data storage. You get instant projections that help you compare regimes, plan investments, and budget your post-tax income.</p>
-            <p class="text-secondary">Build a complete financial plan with these free calculators:</p>
-            <ul class="text-secondary">
-                <li><a href="/tools/sip-calculator">Try our SIP Calculator India</a> — Start monthly mutual fund investments and estimate your future wealth.</li>
-                <li><a href="/tools/emi-calculator">Check EMI Calculator India</a> — Plan home, car, and personal loan EMIs before approaching lenders.</li>
-                <li><a href="/tools/portfolio-overlap-checker">Portfolio Overlap Checker</a> — Review mutual fund holdings and reduce stock duplication.</li>
-                <li><a href="/">FinCalX Home</a> — Discover all fast, private financial calculators in one place.</li>
-            </ul>
-        </article>
-    </div>
-</section>
-{% endblock %}
-
-{% block tool_disclaimer %}
-<div class="row mt-4">
-    <div class="col-lg-7">
-        <div class="alert alert-warning rounded-4" role="note">
-            <i class="bi bi-exclamation-triangle-fill me-2" aria-hidden="true"></i>
-            <strong>Disclaimer:</strong> This tool provides estimates only and should not be considered professional tax advice. Tax laws are subject to change. Please consult a qualified tax professional.
-        </div>
-    </div>
-</div>
-{% endblock %}
-
 {% block explanation %}
-The income tax calculator gives a simplified estimate for Indian taxpayers by applying the selected tax regime to annual gross income and eligible deduction input. It is designed for quick planning and old versus new regime comparison, especially before salary discussions, investment planning, or tax-saving reviews. The result shows taxable income, base tax, cess, and total tax under simplified assumptions. It is not a substitute for income tax return preparation because real cases may include exemptions, rebates, surcharge, marginal relief, capital gains, rental income, business income, and other special rules. Always verify with official tax resources or a qualified tax professional.
+Income tax is calculated based on your taxable income after applying deductions and standard deduction.
+
+• Old Regime: Allows deductions like 80C, HRA, etc.
+• New Regime: Lower tax rates but limited deductions
+• Surcharge: Extra tax for high income
+• Marginal Relief: Prevents sudden tax jumps
 {% endblock %}
 
 {% block formula %}
-<p class="formula mb-2">Tax = Slab tax on taxable income + cess</p>
-<p class="text-secondary mb-0">Taxable income is derived from gross income after the simplified assumptions used by the selected regime.</p>
+
+<p><strong>Taxable Income:</strong></p>
+<p class="text-secondary small">
+Taxable Income = Gross Income - Deductions - Standard Deduction
+</p>
+
+<p class="mt-3"><strong>Total Tax:</strong></p>
+<p class="text-secondary small">
+Total Tax = (Base Tax + Surcharge ± Marginal Relief) + 4% Cess
+</p>
+
 {% endblock %}
 
 {% block faq %}
-<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#taxFaq1">Which financial year does this income tax calculator cover?</button></h3><div id="taxFaq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion"><div class="accordion-body">This income tax calculator India tool uses a simplified FY 2025-26 slab model for resident individual estimates. It reflects the latest rates and standard deduction assumptions applicable for the assessment year 2026-27.</div></div></div>
-<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#taxFaq2">Is this calculator suitable for filing income tax returns?</button></h3><div id="taxFaq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">No. This tool is designed for quick planning and tax calculator old vs new regime comparison only. It omits complex cases such as surcharge, marginal relief, special income, capital gains, house property income, and many exemptions. Always consult a Chartered Accountant or use the official Income Tax Department e-filing portal for return filing.</div></div></div>
-<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#taxFaq3">How do I compare old and new tax regimes?</button></h3><div id="taxFaq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Select "Old regime" and enter your expected deductions, then note the total tax. Next, select "New regime" and calculate again. The income tax calculator India tool shows both results instantly, helping you decide which structure yields lower tax for your specific income and deduction profile.</div></div></div>
-<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#taxFaq4">Are deductions included in the calculation?</button></h3><div id="taxFaq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">The old regime deduction field is included for a simplified estimate. It does not validate every section or exemption individually. The new regime applies a standard deduction automatically and ignores most other deductions, consistent with current tax laws.</div></div></div>
-<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#taxFaq5">Is my income data stored on this website?</button></h3><div id="taxFaq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">No. This website does not require login and does not store calculator inputs in a database. Your gross income, regime selection, and deductions are processed only for the current estimate and are never shared with third parties.</div></div></div>
-<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#taxFaq6">Who should use the new tax regime?</button></h3><div id="taxFaq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">The new regime tends to benefit taxpayers who do not have significant deductions from home loans, insurance, provident fund, or NPS. Salaried individuals with minimal tax-saving investments often find the new regime simpler and cheaper. Run a tax calculator old vs new regime comparison to confirm for your situation.</div></div></div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#faq1">
+            Which tax regime is better?
+        </button>
+    </h2>
+    <div id="faq1" class="accordion-collapse collapse show">
+        <div class="accordion-body">
+            If you claim many deductions, old regime may be better. Otherwise new regime is simpler.
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
-{% block faq_schema %}
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Which financial year does this income tax calculator cover?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "This income tax calculator India tool uses a simplified FY 2025-26 slab model for resident individual estimates. It reflects the latest rates and standard deduction assumptions applicable for the assessment year 2026-27."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is this calculator suitable for filing income tax returns?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. This tool is designed for quick planning and tax calculator old vs new regime comparison only. It omits complex cases such as surcharge, marginal relief, special income, capital gains, house property income, and many exemptions. Always consult a Chartered Accountant or use the official Income Tax Department e-filing portal for return filing."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How do I compare old and new tax regimes?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Select 'Old regime' and enter your expected deductions, then note the total tax. Next, select 'New regime' and calculate again. The income tax calculator India tool shows both results instantly, helping you decide which structure yields lower tax for your specific income and deduction profile."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Are deductions included in the calculation?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The old regime deduction field is included for a simplified estimate. It does not validate every section or exemption individually. The new regime applies a standard deduction automatically and ignores most other deductions, consistent with current tax laws."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is my income data stored on this website?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. This website does not require login and does not store calculator inputs in a database. Your gross income, regime selection, and deductions are processed only for the current estimate and are never shared with third parties."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Who should use the new tax regime?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The new regime tends to benefit taxpayers who do not have significant deductions from home loans, insurance, provident fund, or NPS. Salaried individuals with minimal tax-saving investments often find the new regime simpler and cheaper. Run a tax calculator old vs new regime comparison to confirm for your situation."
-      }
-    }
-  ]
-}
-</script>
+{% block disclaimer %}
+This calculator provides estimates only. Tax laws may change and actual tax liability may vary. Consult a professional for filing.
 {% endblock %}
-

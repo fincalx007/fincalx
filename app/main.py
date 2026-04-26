@@ -4,9 +4,19 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, PlainTextResponse, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+import logging
+import sys
 
 from app.routers import emi, home, legal, overlap, sip, tax
 from app.security import RateLimitMiddleware, add_security_headers
+
+# ✅ PRODUCTION LOGGING
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)],
+)
+logger = logging.getLogger("fincalx")
 
 ALLOWED_ORIGINS = ["http://localhost:8000"]
 
@@ -29,6 +39,7 @@ templates = Jinja2Templates(directory="app/templates")
 
 @app.exception_handler(404)
 async def not_found_handler(request: Request, exc):
+    logger.warning(f"404: {request.url.path} | client: {request.client.host if request.client else 'unknown'}")
     return templates.TemplateResponse(
         "error.html",
         {
@@ -45,6 +56,7 @@ async def not_found_handler(request: Request, exc):
 
 @app.exception_handler(500)
 async def server_error_handler(request: Request, exc):
+    logger.error(f"500: {request.url.path} | client: {request.client.host if request.client else 'unknown'} | error: {exc}")
     return templates.TemplateResponse(
         "error.html",
         {
@@ -61,6 +73,7 @@ async def server_error_handler(request: Request, exc):
 
 @app.exception_handler(RequestValidationError)
 async def validation_error_handler(request: Request, exc: RequestValidationError):
+    logger.warning(f"422: {request.url.path} | client: {request.client.host if request.client else 'unknown'}")
     return templates.TemplateResponse(
         "error.html",
         {
@@ -72,6 +85,24 @@ async def validation_error_handler(request: Request, exc: RequestValidationError
             "message": "The information you entered was not valid. Please check your inputs and try again.",
         },
         status_code=422,
+    )
+
+
+@app.exception_handler(Exception)
+async def general_exception_handler(request: Request, exc: Exception):
+    """Catch-all handler for any unhandled exceptions."""
+    logger.error(f"Unhandled exception: {request.url.path} | client: {request.client.host if request.client else 'unknown'} | error: {exc}")
+    return templates.TemplateResponse(
+        "error.html",
+        {
+            "request": request,
+            "title": "Server Error | FinCalX",
+            "description": "Something went wrong. Please try again later.",
+            "status_code": 500,
+            "heading": "Something Went Wrong",
+            "message": "We encountered an unexpected error. Please try again in a few moments, or contact us if the problem persists.",
+        },
+        status_code=500,
     )
 
 
@@ -94,14 +125,12 @@ async def sitemap():
 @app.get("/robots.txt", include_in_schema=False)
 async def robots():
     return PlainTextResponse(
-        content="User-agent: *\n"
-                "Allow: /\n"
-                "Sitemap: https://getfincalx.com/sitemap.xml"
+        content="User-agent: *\nAllow: /\nSitemap: https://getfincalx.com/sitemap.xml"
     )
 
 
-# ✅ MIDDLEWARES
-app.add_middleware(RateLimitMiddleware, max_requests=100, window_seconds=60)
+# ✅ MIDDLEWARES — Rate limit: ~60 requests per minute per IP
+app.add_middleware(RateLimitMiddleware, max_requests=60, window_seconds=60)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ALLOWED_ORIGINS,

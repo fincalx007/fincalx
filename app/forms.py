@@ -98,6 +98,18 @@ class TaxInput(BaseModel):
     regime: Literal["new", "old"]
     deductions: Annotated[float, Field(ge=0, le=10000000)] = 0
 
+    @field_validator("gross_income", "deductions", mode="before")
+    @classmethod
+    def reject_negative(cls, value):
+        if value is not None and value != "":
+            try:
+                num = float(value)
+            except (TypeError, ValueError):
+                return value
+            if num < 0:
+                raise ValueError("Cannot be negative")
+        return value
+
     @classmethod
     def as_form(
         cls,

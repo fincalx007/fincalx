@@ -31,13 +31,8 @@
     </div>
 </section>
 
-<section class="ad-section" aria-label="Sponsored advertisement">
-    <div class="container">
-        <div class="ad-slot">
-            <span>Advertisement</span>
-        </div>
-    </div>
-</section>
+{# ✅ AD 1: AFTER CALCULATOR RESULT — highest CTR position #}
+{% include "partials/ad_unit.html" %}
 
 {% block seo_content %}{% endblock %}
 
@@ -59,6 +54,9 @@
         </div>
     </div>
 </section>
+
+{# ✅ AD 3: PRE-FAQ — captures deep-scroll users #}
+{% include "partials/ad_unit.html" %}
 
 <section class="section-pad bg-soft">
     <div class="container">

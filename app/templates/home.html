@@ -67,6 +67,9 @@
     </div>
 </section>
 
+{# ✅ AD 1: AFTER HERO — highest visibility on homepage #}
+{% include "partials/ad_unit.html" %}
+
 <section class="section-pad" aria-labelledby="toolsHeading">
     <div class="container">
         <div class="section-heading d-flex flex-column flex-md-row justify-content-between gap-2 mb-4">
@@ -106,13 +109,8 @@
     </div>
 </section>
 
-<section class="ad-section" aria-label="Sponsored advertisement">
-    <div class="container">
-        <div class="ad-slot">
-            <span>Advertisement</span>
-        </div>
-    </div>
-</section>
+{# ✅ AD 2: MID-CONTENT — after tools grid, before about section #}
+{% include "partials/ad_unit.html" %}
 
 <section class="section-pad bg-soft" aria-labelledby="aboutHeading">
     <div class="container">
@@ -138,6 +136,9 @@
         </div>
     </div>
 </section>
+
+{# ✅ AD 3: PRE-FAQ — captures deep-scroll users #}
+{% include "partials/ad_unit.html" %}
 
 <section class="section-pad" aria-labelledby="homeFaqHeading">
     <div class="container">
