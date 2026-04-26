@@ -1,0 +1,60 @@
+{% extends "tools/tool_base.html" %}
+
+{% block tool_title %}EMI Calculator India{% endblock %}
+{% block tool_intro %}Calculate monthly loan EMI, total interest, and total payment for a fixed-rate loan. This free EMI calculator helps compare loan affordability quickly and privately.{% endblock %}
+
+{% block tool_form %}
+<form method="post" class="card calculator-card" novalidate>
+    <div class="card-body p-4">
+        <h2 class="h4 fw-bold mb-4">Enter loan details</h2>
+        {% if error %}<div class="alert alert-danger" role="alert">{{ error }}</div>{% endif %}
+        <div class="mb-3">
+            <label class="form-label" for="loan_amount">Loan amount</label>
+            <input class="form-control {% if errors and errors.loan_amount %}is-invalid{% endif %}" id="loan_amount" name="loan_amount" type="number" min="1000" max="100000000" step="1000" value="{{ form.loan_amount }}" required>
+            {% if errors and errors.loan_amount %}<div class="invalid-feedback">{{ errors.loan_amount }}</div>{% endif %}
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="annual_rate">Annual interest rate (%)</label>
+            <input class="form-control {% if errors and errors.annual_rate %}is-invalid{% endif %}" id="annual_rate" name="annual_rate" type="number" min="0" max="50" step="0.1" value="{{ form.annual_rate }}" required>
+            {% if errors and errors.annual_rate %}<div class="invalid-feedback">{{ errors.annual_rate }}</div>{% endif %}
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="years">Tenure (years)</label>
+            <input class="form-control {% if errors and errors.years %}is-invalid{% endif %}" id="years" name="years" type="number" min="1" max="40" step="1" value="{{ form.years }}" required>
+            {% if errors and errors.years %}<div class="invalid-feedback">{{ errors.years }}</div>{% endif %}
+        </div>
+        <button class="btn btn-gradient w-100" type="submit">Calculate EMI</button>
+    </div>
+</form>
+{% endblock %}
+
+{% block tool_result %}
+{% if result %}
+<div class="card result-card"><div class="card-body p-4">
+    <h2 class="h5 fw-bold mb-3">EMI Estimate</h2>
+    <div class="result-highlight"><span>Monthly EMI</span><strong>{{ result.emi }}</strong></div>
+    <div class="result-row"><span>Total Interest</span><strong>{{ result.total_interest }}</strong></div>
+    <div class="result-row"><span>Total Payment</span><strong>{{ result.total_payment }}</strong></div>
+</div></div>
+{% else %}
+<div class="result-empty"><h2 class="h5">Your EMI estimate appears here</h2><p class="text-secondary mb-0">Use lender documents for final loan terms.</p></div>
+{% endif %}
+{% endblock %}
+
+{% block explanation %}
+The EMI calculator helps estimate the fixed monthly payment for a loan based on the principal amount, annual interest rate, and tenure. It also shows the total interest and total repayment over the loan period. Users in India can use it to compare home loans, car loans, personal loans, and other fixed-rate borrowing scenarios before speaking with a lender. The calculator is useful for monthly budgeting because it converts a large loan into an expected instalment amount. Actual payments can differ because of processing fees, insurance, prepayment rules, floating interest rates, lender-specific rounding, or changes in repayment schedule.
+{% endblock %}
+
+{% block formula %}
+<p class="formula mb-2">EMI = P x r x (1 + r)<sup>n</sup> / ((1 + r)<sup>n</sup> - 1)</p>
+<p class="text-secondary mb-0">P is loan principal, r is monthly interest rate, and n is total monthly instalments.</p>
+{% endblock %}
+
+{% block faq %}
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#emiFaq1">What does EMI mean?</button></h3><div id="emiFaq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion"><div class="accordion-body">EMI means equated monthly instalment, the fixed monthly payment for a loan under the entered assumptions.</div></div></div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#emiFaq2">Can rates change?</button></h3><div id="emiFaq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Yes. Floating-rate loans and fees can change actual payments, so this is only an estimate.</div></div></div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#emiFaq3">How is EMI calculated?</button></h3><div id="emiFaq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">EMI is calculated using principal, monthly interest rate, and total number of monthly instalments.</div></div></div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#emiFaq4">Does this include processing fees?</button></h3><div id="emiFaq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">No. The calculator estimates EMI from loan amount, rate, and tenure only. Check lender documents for fees and charges.</div></div></div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#emiFaq5">Can I compare different tenures?</button></h3><div id="emiFaq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Yes. Try different tenure values to see how EMI and total interest change.</div></div></div>
+{% endblock %}
+

@@ -1,0 +1,16 @@
+{% if error %}
+<div class="alert alert-danger" role="alert">{{ error }}</div>
+{% endif %}
+{% if result %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h2 class="h5 mb-3">Result</h2>
+        {% block result_rows %}{% endblock %}
+    </div>
+</div>
+{% else %}
+<div class="result-empty">
+    <h2 class="h5">Your estimate appears here</h2>
+    <p class="text-secondary mb-0">Calculations are stateless and run only from the values you submit.</p>
+</div>
+{% endif %}

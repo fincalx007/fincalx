@@ -1,0 +1,66 @@
+{% extends "tools/tool_base.html" %}
+
+{% block tool_title %}Income Tax Calculator India (FY 2025-26){% endblock %}
+{% block tool_intro %}Estimate basic income tax for FY 2025-26 under the old or new regime. This income tax calculator India tool is built for quick planning, not return filing.{% endblock %}
+
+{% block tool_form %}
+<form method="post" class="card calculator-card" novalidate>
+    <div class="card-body p-4">
+        <h2 class="h4 fw-bold mb-4">Enter income details</h2>
+        {% if error %}<div class="alert alert-danger" role="alert">{{ error }}</div>{% endif %}
+        <div class="mb-3">
+            <label class="form-label" for="gross_income">Annual gross income</label>
+            <input class="form-control {% if errors and errors.gross_income %}is-invalid{% endif %}" id="gross_income" name="gross_income" type="number" min="0" max="100000000" step="1000" value="{{ form.gross_income }}" required>
+            {% if errors and errors.gross_income %}<div class="invalid-feedback">{{ errors.gross_income }}</div>{% endif %}
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="regime">Tax regime</label>
+            <select class="form-select {% if errors and errors.regime %}is-invalid{% endif %}" id="regime" name="regime" required>
+                <option value="new" {% if form.regime == "new" %}selected{% endif %}>New regime</option>
+                <option value="old" {% if form.regime == "old" %}selected{% endif %}>Old regime</option>
+            </select>
+            {% if errors and errors.regime %}<div class="invalid-feedback">{{ errors.regime }}</div>{% endif %}
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="deductions">Old regime deductions</label>
+            <input class="form-control {% if errors and errors.deductions %}is-invalid{% endif %}" id="deductions" name="deductions" type="number" min="0" max="10000000" step="1000" value="{{ form.deductions }}">
+            {% if errors and errors.deductions %}<div class="invalid-feedback">{{ errors.deductions }}</div>{% endif %}
+            <div class="form-text">Used only for old regime estimates. New regime uses a simple standard deduction assumption.</div>
+        </div>
+        <button class="btn btn-gradient w-100" type="submit">Calculate Tax</button>
+    </div>
+</form>
+{% endblock %}
+
+{% block tool_result %}
+{% if result %}
+<div class="card result-card"><div class="card-body p-4">
+    <h2 class="h5 fw-bold mb-3">Tax Estimate</h2>
+    <div class="result-row"><span>Regime</span><strong>{{ result.regime }}</strong></div>
+    <div class="result-row"><span>Taxable Income</span><strong>{{ result.taxable_income }}</strong></div>
+    <div class="result-row"><span>Base Tax</span><strong>{{ result.base_tax }}</strong></div>
+    <div class="result-row"><span>Health and Education Cess</span><strong>{{ result.cess }}</strong></div>
+    <div class="result-highlight"><span>Total Tax</span><strong>{{ result.total_tax }}</strong></div>
+</div></div>
+{% else %}
+<div class="result-empty"><h2 class="h5">Your tax estimate appears here</h2><p class="text-secondary mb-0">Consult a qualified tax professional for filing decisions.</p></div>
+{% endif %}
+{% endblock %}
+
+{% block explanation %}
+The income tax calculator gives a simplified estimate for Indian taxpayers by applying the selected tax regime to annual gross income and eligible deduction input. It is designed for quick planning and old versus new regime comparison, especially before salary discussions, investment planning, or tax-saving reviews. The result shows taxable income, base tax, cess, and total tax under simplified assumptions. It is not a substitute for income tax return preparation because real cases may include exemptions, rebates, surcharge, marginal relief, capital gains, rental income, business income, and other special rules. Always verify with official tax resources or a qualified tax professional.
+{% endblock %}
+
+{% block formula %}
+<p class="formula mb-2">Tax = Slab tax on taxable income + cess</p>
+<p class="text-secondary mb-0">Taxable income is derived from gross income after the simplified assumptions used by the selected regime.</p>
+{% endblock %}
+
+{% block faq %}
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#taxFaq1">Which financial year is used?</button></h3><div id="taxFaq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion"><div class="accordion-body">This calculator uses a simplified FY 2025-26 slab model for resident individual estimates.</div></div></div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#taxFaq2">Is this suitable for filing returns?</button></h3><div id="taxFaq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">No. It omits complex cases such as surcharge, marginal relief, special income, and many exemptions.</div></div></div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#taxFaq3">Does it compare old and new regime?</button></h3><div id="taxFaq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">You can select either regime and calculate estimates separately to compare results.</div></div></div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#taxFaq4">Are deductions included?</button></h3><div id="taxFaq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">The old regime deduction field is included for a simplified estimate. It does not validate every section or exemption.</div></div></div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#taxFaq5">Is my income data stored?</button></h3><div id="taxFaq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">No. This website does not require login and does not store calculator inputs in a database.</div></div></div>
+{% endblock %}
+

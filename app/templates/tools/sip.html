@@ -1,0 +1,60 @@
+{% extends "tools/tool_base.html" %}
+
+{% block tool_title %}SIP Calculator India (2026){% endblock %}
+{% block tool_intro %}Estimate maturity value, total invested amount, and projected returns for a monthly SIP. This free SIP calculator India tool is fast, private, and designed for goal planning.{% endblock %}
+
+{% block tool_form %}
+<form method="post" class="card calculator-card" novalidate>
+    <div class="card-body p-4">
+        <h2 class="h4 fw-bold mb-4">Enter SIP details</h2>
+        {% if error %}<div class="alert alert-danger" role="alert">{{ error }}</div>{% endif %}
+        <div class="mb-3">
+            <label class="form-label" for="monthly_investment">Monthly investment</label>
+            <input class="form-control {% if errors and errors.monthly_investment %}is-invalid{% endif %}" id="monthly_investment" name="monthly_investment" type="number" min="100" max="10000000" step="100" value="{{ form.monthly_investment }}" required>
+            {% if errors and errors.monthly_investment %}<div class="invalid-feedback">{{ errors.monthly_investment }}</div>{% endif %}
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="annual_rate">Expected annual return rate (%)</label>
+            <input class="form-control {% if errors and errors.annual_rate %}is-invalid{% endif %}" id="annual_rate" name="annual_rate" type="number" min="0" max="40" step="0.1" value="{{ form.annual_rate }}" required>
+            {% if errors and errors.annual_rate %}<div class="invalid-feedback">{{ errors.annual_rate }}</div>{% endif %}
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="years">Investment duration (years)</label>
+            <input class="form-control {% if errors and errors.years %}is-invalid{% endif %}" id="years" name="years" type="number" min="1" max="60" step="1" value="{{ form.years }}" required>
+            {% if errors and errors.years %}<div class="invalid-feedback">{{ errors.years }}</div>{% endif %}
+        </div>
+        <button class="btn btn-gradient w-100" type="submit">Calculate SIP</button>
+    </div>
+</form>
+{% endblock %}
+
+{% block tool_result %}
+{% if result %}
+<div class="card result-card"><div class="card-body p-4">
+    <h2 class="h5 fw-bold mb-3">SIP Estimate</h2>
+    <div class="result-highlight"><span>Maturity Amount</span><strong>{{ result.maturity_amount }}</strong></div>
+    <div class="result-row"><span>Total Investment</span><strong>{{ result.total_invested }}</strong></div>
+    <div class="result-row"><span>Returns</span><strong>{{ result.returns }}</strong></div>
+</div></div>
+{% else %}
+<div class="result-empty"><h2 class="h5">Your SIP estimate appears here</h2><p class="text-secondary mb-0">No data is stored after calculation.</p></div>
+{% endif %}
+{% endblock %}
+
+{% block explanation %}
+The SIP calculator estimates how a fixed monthly investment may grow over time. Enter the monthly amount, expected annual return, and duration to see the projected maturity value, total investment, and estimated returns. Indian investors can use it for goals such as retirement planning, education funding, home down payment planning, or comparing different monthly contribution amounts. The calculator applies a standard future value formula and assumes that every SIP contribution is made regularly. It is helpful for quickly understanding compounding, but it does not predict market returns. Mutual fund performance can change due to market volatility, expense ratios, tax rules, and fund-specific risks.
+{% endblock %}
+
+{% block formula %}
+<p class="formula mb-2">FV = P x [((1 + r)<sup>n</sup> - 1) / r] x (1 + r)</p>
+<p class="text-secondary mb-0">P is monthly investment, r is monthly return rate, and n is total months.</p>
+{% endblock %}
+
+{% block faq %}
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#sipFaq1">What is a SIP calculator?</button></h3><div id="sipFaq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion"><div class="accordion-body">A SIP calculator estimates future value from a fixed monthly investment, assumed annual return, and duration.</div></div></div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sipFaq2">Does this guarantee returns?</button></h3><div id="sipFaq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">No. The result is only a mathematical estimate based on the rate you enter.</div></div></div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sipFaq3">What rate should I use?</button></h3><div id="sipFaq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Use a conservative expected annual return based on your asset class and risk profile. Historical returns are not guaranteed.</div></div></div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sipFaq4">Can I use this for mutual funds?</button></h3><div id="sipFaq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Yes, it can estimate mutual fund SIP values, but it does not include expense ratio, exit load, tax, or changing returns.</div></div></div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sipFaq5">Do you store SIP inputs?</button></h3><div id="sipFaq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">No. The calculator does not require login and does not store your SIP amount, rate, or duration in a database.</div></div></div>
+{% endblock %}
+

@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block head_extra %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "FinCalX",
+    "url": "{{ request.url_for('home') }}",
+    "description": "{{ description }}",
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "{{ request.url_for('home') }}?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+    }
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-7">
+                <span class="eyebrow">Made for Indian money decisions</span>
+                <h1 class="display-4 fw-bold mt-3 mb-3">Smart Finance Calculators for India (2026)</h1>
+                <p class="lead text-secondary mb-4">Free SIP, EMI, and income tax calculators. Fast, accurate, and privacy-friendly.</p>
+                <div class="d-flex flex-column flex-sm-row gap-3 align-items-sm-center">
+                    <a class="btn btn-gradient btn-lg px-4" href="#toolsHeading">
+                        Start Calculating
+                        <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i>
+                    </a>
+                    <label for="toolSearch" class="visually-hidden">Search tools</label>
+                    <input id="toolSearch" class="form-control form-control-lg search-box" type="search" placeholder="Search SIP, EMI, tax..." autocomplete="off">
+                </div>
+                <div class="trust-signals d-flex flex-column flex-sm-row gap-2 gap-sm-4 mt-4" aria-label="Trust signals">
+                    <span><i class="bi bi-check-circle-fill" aria-hidden="true"></i> No login required</span>
+                    <span><i class="bi bi-check-circle-fill" aria-hidden="true"></i> 100% free</span>
+                    <span><i class="bi bi-check-circle-fill" aria-hidden="true"></i> No data stored</span>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="hero-panel">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <div>
+                            <p class="small text-secondary mb-1">Planning snapshot</p>
+                            <h2 class="h5 fw-bold mb-0">Private by design</h2>
+                        </div>
+                        <span class="hero-panel-icon" aria-hidden="true"><i class="bi bi-shield-lock"></i></span>
+                    </div>
+                    <div class="metric-card">
+                        <span>SIP growth estimate</span>
+                        <strong>₹24.8L</strong>
+                    </div>
+                    <div class="metric-card">
+                        <span>Monthly EMI clarity</span>
+                        <strong>₹31,622</strong>
+                    </div>
+                    <div class="metric-card">
+                        <span>Tax regime comparison</span>
+                        <strong>Instant</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-pad" aria-labelledby="toolsHeading">
+    <div class="container">
+        <div class="section-heading d-flex flex-column flex-md-row justify-content-between gap-2 mb-4">
+            <div>
+                <span class="eyebrow">Calculators</span>
+                <h2 id="toolsHeading" class="h2 fw-bold mb-2">Financial tools that get to the point</h2>
+                <p class="text-secondary mb-0">Choose a calculator and get a clean estimate in seconds.</p>
+            </div>
+        </div>
+        <div id="toolGrid" class="row g-4">
+            {% for tool in tools %}
+            <article class="col-md-6 col-xl-3 tool-card" data-search="{{ tool.title }} {{ tool.description }} {{ tool.keywords }}">
+                <div class="card h-100 tool-card-inner">
+                    <div class="card-body d-flex flex-column p-4">
+                        <div class="tool-icon" aria-hidden="true">
+                            {% if "SIP" in tool.title %}
+                            <i class="bi bi-bar-chart-line-fill"></i>
+                            {% elif "EMI" in tool.title %}
+                            <i class="bi bi-calculator-fill"></i>
+                            {% elif "Tax" in tool.title %}
+                            <i class="bi bi-receipt-cutoff"></i>
+                            {% else %}
+                            <i class="bi bi-pie-chart-fill"></i>
+                            {% endif %}
+                        </div>
+                        <h3 class="h5 card-title fw-bold">{{ tool.title }}</h3>
+                        <p class="card-text text-secondary">{{ tool.description }}</p>
+                        <a class="btn btn-gradient mt-auto" href="{{ tool.href }}">
+                            Calculate Now
+                            <i class="bi bi-arrow-right-short ms-1" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="ad-section" aria-label="Sponsored advertisement">
+    <div class="container">
+        <div class="ad-slot">
+            <span>Advertisement</span>
+        </div>
+    </div>
+</section>
+
+<section class="section-pad bg-soft" aria-labelledby="aboutHeading">
+    <div class="container">
+        <div class="row g-4 align-items-start">
+            <article class="col-lg-7">
+                <span class="eyebrow">About</span>
+                <h2 id="aboutHeading" class="h2 fw-bold mb-3">About This Website</h2>
+                <p class="text-secondary mb-0">
+                    FinCalX helps Indian users run quick estimates for SIP investments, loan EMI payments, basic income tax, and portfolio overlap. It is useful for salaried professionals, students, founders, and families who want a fast first look before making a money decision. The calculators are privacy-first: no signup, no account, and no database storage of the numbers you enter. You can start with the <a href="/tools/sip-calculator">SIP calculator India</a>, compare loan costs with the <a href="/tools/emi-calculator">EMI calculator</a>, estimate taxes with the <a href="/tools/income-tax-calculator">income tax calculator India</a>, or check diversification with the <a href="/tools/portfolio-overlap-checker">portfolio overlap tool</a>.
+                </p>
+            </article>
+            <article class="col-lg-5">
+                <div class="info-card">
+                    <h2 class="h4 fw-bold mb-3">Why Choose Us</h2>
+                    <ul class="feature-list text-secondary mb-0">
+                        <li><i class="bi bi-lightning-charge-fill" aria-hidden="true"></i> Instant calculations</li>
+                        <li><i class="bi bi-person-x-fill" aria-hidden="true"></i> No signup required</li>
+                        <li><i class="bi bi-phone-fill" aria-hidden="true"></i> Mobile-friendly</li>
+                        <li><i class="bi bi-lock-fill" aria-hidden="true"></i> Privacy-focused</li>
+                    </ul>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="section-pad" aria-labelledby="homeFaqHeading">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <span class="eyebrow">FAQ</span>
+                <h2 id="homeFaqHeading" class="h2 fw-bold mb-4">Frequently Asked Questions</h2>
+                <div class="accordion polished-accordion" id="homeFaqAccordion">
+                    <article class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#homeFaqOne" aria-expanded="true" aria-controls="homeFaqOne">What is SIP?</button>
+                        </h3>
+                        <div id="homeFaqOne" class="accordion-collapse collapse show" data-bs-parent="#homeFaqAccordion">
+                            <div class="accordion-body">SIP stands for systematic investment plan. It is a way to invest a fixed amount regularly, usually every month, into mutual funds or similar investment products.</div>
+                        </div>
+                    </article>
+                    <article class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#homeFaqTwo" aria-expanded="false" aria-controls="homeFaqTwo">How EMI is calculated?</button>
+                        </h3>
+                        <div id="homeFaqTwo" class="accordion-collapse collapse" data-bs-parent="#homeFaqAccordion">
+                            <div class="accordion-body">EMI is calculated from the loan amount, monthly interest rate, and total number of monthly payments using the standard reducing-balance loan formula.</div>
+                        </div>
+                    </article>
+                    <article class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#homeFaqThree" aria-expanded="false" aria-controls="homeFaqThree">Is this calculator accurate?</button>
+                        </h3>
+                        <div id="homeFaqThree" class="accordion-collapse collapse" data-bs-parent="#homeFaqAccordion">
+                            <div class="accordion-body">The calculators are accurate for the formulas and assumptions shown. Real results may vary because of fees, taxes, lender rules, market movement, or law changes.</div>
+                        </div>
+                    </article>
+                    <article class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#homeFaqFour" aria-expanded="false" aria-controls="homeFaqFour">Do you store my data?</button>
+                        </h3>
+                        <div id="homeFaqFour" class="accordion-collapse collapse" data-bs-parent="#homeFaqAccordion">
+                            <div class="accordion-body">No. The tools are stateless, require no login, and do not save calculator inputs in a database.</div>
+                        </div>
+                    </article>
+                    <article class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#homeFaqFive" aria-expanded="false" aria-controls="homeFaqFive">Is this financial advice?</button>
+                        </h3>
+                        <div id="homeFaqFive" class="accordion-collapse collapse" data-bs-parent="#homeFaqAccordion">
+                            <div class="accordion-body">No. This website provides educational estimates only and does not offer financial, investment, or tax advice.</div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

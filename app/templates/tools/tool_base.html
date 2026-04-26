@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="tool-header">
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-8">
+                <span class="eyebrow">Calculator</span>
+                <h1 class="display-6 fw-bold mt-3 mb-3">{% block tool_title %}{% endblock %}</h1>
+                <p class="lead text-secondary mb-0">{% block tool_intro %}{% endblock %}</p>
+            </div>
+            <div class="col-lg-4">
+                <div class="trust-card">
+                    <div><i class="bi bi-check-circle-fill" aria-hidden="true"></i> No login required</div>
+                    <div><i class="bi bi-shield-lock-fill" aria-hidden="true"></i> No data stored</div>
+                    <div><i class="bi bi-phone-fill" aria-hidden="true"></i> Mobile friendly</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4 align-items-start">
+            <div class="col-lg-7">{% block tool_form %}{% endblock %}</div>
+            <aside class="col-lg-5 tool-result-wrap">{% block tool_result %}{% endblock %}</aside>
+        </div>
+    </div>
+</section>
+
+<section class="ad-section" aria-label="Sponsored advertisement">
+    <div class="container">
+        <div class="ad-slot">
+            <span>Advertisement</span>
+        </div>
+    </div>
+</section>
+
+<section class="section-pad pt-0">
+    <div class="container">
+        <div class="row g-4">
+            <article class="col-lg-7">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">Explanation</h2>
+                    <p class="text-secondary mb-0">{% block explanation %}{% endblock %}</p>
+                </div>
+            </article>
+            <article class="col-lg-5">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">Formula</h2>
+                    {% block formula %}{% endblock %}
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="section-pad bg-soft">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <span class="eyebrow">FAQ</span>
+                <h2 class="h3 fw-bold mb-4">Common Questions</h2>
+                <div class="accordion polished-accordion" id="faqAccordion">
+                    {% block faq %}{% endblock %}
+                </div>
+            </div>
+            <aside class="col-lg-4">
+                <div class="disclaimer-card">
+                    <i class="bi bi-info-circle-fill" aria-hidden="true"></i>
+                    <h2 class="h5 fw-bold mt-3">Disclaimer</h2>
+                    <p class="text-secondary mb-0">{% block disclaimer %}This calculator is for educational purposes only and does not constitute financial, investment, legal, or tax advice. Please consult a qualified professional before making decisions.{% endblock %}</p>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<section class="section-pad pb-0">
+    <div class="container">
+        <div class="related-tools">
+            <div>
+                <span class="eyebrow">Explore More</span>
+                <h2 class="h4 fw-bold mb-0">Related FinCalX Tools</h2>
+            </div>
+            <div class="related-links">
+                <a href="/tools/sip-calculator">SIP Calculator</a>
+                <a href="/tools/emi-calculator">EMI Calculator</a>
+                <a href="/tools/income-tax-calculator">Income Tax Calculator</a>
+                <a href="/tools/portfolio-overlap-checker">Portfolio Overlap Tool</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
