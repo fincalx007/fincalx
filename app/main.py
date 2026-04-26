@@ -43,7 +43,7 @@ async def robots():
 
 
 # ✅ MIDDLEWARES
-app.add_middleware(SecurityHeadersMiddleware)
+#app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(RateLimitMiddleware, max_requests=100, window_seconds=60)
 app.add_middleware(
     CORSMiddleware,
