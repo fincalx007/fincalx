@@ -17,6 +17,20 @@ app = FastAPI(
     redoc_url=None,
 )
 
+@app.get("/sitemap.xml", include_in_schema=False)
+async def sitemap():
+    return Response(
+        content='<?xml version="1.0" encoding="UTF-8"?>'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+        '<url><loc>https://getfincalx.com/</loc></url>'
+        '<url><loc>https://getfincalx.com/tools/sip-calculator</loc></url>'
+        '<url><loc>https://getfincalx.com/tools/emi-calculator</loc></url>'
+        '<url><loc>https://getfincalx.com/tools/tax-calculator</loc></url>'
+        '<url><loc>https://getfincalx.com/tools/overlap-calculator</loc></url>'
+        '</urlset>',
+        media_type="application/xml"
+    )
+
 app.add_middleware(SecurityHeadersMiddleware)
 app.add_middleware(RateLimitMiddleware, max_requests=100, window_seconds=60)
 app.add_middleware(
@@ -36,16 +50,3 @@ app.include_router(tax.router)
 app.include_router(overlap.router)
 app.include_router(legal.router)
 
-@app.get("/sitemap.xml", include_in_schema=False)
-async def sitemap():
-    return Response(
-        content='<?xml version="1.0" encoding="UTF-8"?>'
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
-        '<url><loc>https://getfincalx.com/</loc></url>'
-        '<url><loc>https://getfincalx.com/tools/sip-calculator</loc></url>'
-        '<url><loc>https://getfincalx.com/tools/emi-calculator</loc></url>'
-        '<url><loc>https://getfincalx.com/tools/tax-calculator</loc></url>'
-        '<url><loc>https://getfincalx.com/tools/overlap-calculator</loc></url>'
-        '</urlset>',
-        media_type="application/xml"
-    )
