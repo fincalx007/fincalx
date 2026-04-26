@@ -25,8 +25,8 @@ async def sitemap():
         '<url><loc>https://getfincalx.com/</loc></url>'
         '<url><loc>https://getfincalx.com/tools/sip-calculator</loc></url>'
         '<url><loc>https://getfincalx.com/tools/emi-calculator</loc></url>'
-        '<url><loc>https://getfincalx.com/tools/tax-calculator</loc></url>'
-        '<url><loc>https://getfincalx.com/tools/overlap-calculator</loc></url>'
+        '<url><loc>https://getfincalx.com/tools/income-tax-calculator</loc></url>'
+        '<url><loc>https://getfincalx.com/tools/portfolio-overlap-checker</loc></url>'
         '</urlset>',
         media_type="application/xml"
     )
