@@ -8,8 +8,16 @@ from starlette.middleware.base import BaseHTTPMiddleware
 
 
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):
+    """Add security headers to every response.
+
+    IMPORTANT: This middleware only modifies response HEADERS.
+    It does NOT read, write, or modify response.body in any way.
+    """
+
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
-        response = await call_next(request)
+        response: Response = await call_next(request)
+
+        # Only modify headers — never touch response.body
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["X-Frame-Options"] = "DENY"
         response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
@@ -29,6 +37,14 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
 
 
 class RateLimitMiddleware(BaseHTTPMiddleware):
+    """Simple in-memory rate limiter.
+
+    IMPORTANT: This middleware only inspects the request and either:
+      - returns a new PlainTextResponse (429), or
+      - passes the request through with call_next(request).
+    It does NOT read, write, or modify response.body.
+    """
+
     def __init__(self, app, max_requests: int = 80, window_seconds: int = 60):
         super().__init__(app)
         self.max_requests = max_requests
@@ -40,11 +56,18 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         now = time.monotonic()
         timestamps = self.requests[client_host]
 
+        # Evict stale entries
         while timestamps and now - timestamps[0] > self.window_seconds:
             timestamps.popleft()
 
         if len(timestamps) >= self.max_requests:
-            return PlainTextResponse("Too many requests. Please try again later.", status_code=429)
+            return PlainTextResponse(
+                "Too many requests. Please try again later.",
+                status_code=429,
+            )
 
         timestamps.append(now)
+
+        # Pass through without modifying the response body
         return await call_next(request)
+
