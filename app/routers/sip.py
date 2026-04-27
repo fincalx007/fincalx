@@ -29,6 +29,7 @@ async def sip_calculate(request: Request):
 
     result = calculate_sip(data.monthly_investment, data.annual_rate, data.years)
     context["result"] = {key: money(value) for key, value in result.items()}
+    context["result_raw"] = result
     return templates.TemplateResponse("tools/sip.html", context)
 
 

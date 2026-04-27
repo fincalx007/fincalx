@@ -486,6 +486,33 @@ html[data-theme="dark"] .brand-logo-dark {
     font-size: 1.45rem;
 }
 
+.result-hero {
+    background: var(--gradient);
+    border-radius: 14px;
+    box-shadow: 0 12px 24px rgba(108, 76, 241, 0.24);
+    color: #ffffff;
+    margin-bottom: 1rem;
+    padding: 1.25rem;
+    text-align: center;
+}
+
+.result-hero span {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    opacity: 0.9;
+    text-transform: uppercase;
+}
+
+.result-hero strong {
+    color: #ffffff;
+    display: block;
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
 .formula {
     background: var(--surface-soft);
     border: 1px solid var(--line);

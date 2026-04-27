@@ -10,12 +10,12 @@
         {% if error %}<div class="alert alert-danger" role="alert">{{ error }}</div>{% endif %}
         <div class="mb-3">
             <label class="form-label" for="first_portfolio">Portfolio 1</label>
-            <textarea class="form-control {% if errors and errors.first_portfolio %}is-invalid{% endif %}" id="first_portfolio" name="first_portfolio" rows="6" maxlength="5000" required>{{ form.first_portfolio }}</textarea>
+            <textarea class="form-control {% if errors and errors.first_portfolio %}is-invalid{% endif %}" id="first_portfolio" name="first_portfolio" rows="6" minlength="1" maxlength="5000" required>{{ form.first_portfolio }}</textarea>
             {% if errors and errors.first_portfolio %}<div class="invalid-feedback">{{ errors.first_portfolio }}</div>{% endif %}
         </div>
         <div class="mb-3">
             <label class="form-label" for="second_portfolio">Portfolio 2</label>
-            <textarea class="form-control {% if errors and errors.second_portfolio %}is-invalid{% endif %}" id="second_portfolio" name="second_portfolio" rows="6" maxlength="5000" required>{{ form.second_portfolio }}</textarea>
+            <textarea class="form-control {% if errors and errors.second_portfolio %}is-invalid{% endif %}" id="second_portfolio" name="second_portfolio" rows="6" minlength="1" maxlength="5000" required>{{ form.second_portfolio }}</textarea>
             {% if errors and errors.second_portfolio %}<div class="invalid-feedback">{{ errors.second_portfolio }}</div>{% endif %}
         </div>
         <button class="btn btn-gradient w-100" type="submit">Check Overlap</button>

@@ -1,0 +1,49 @@
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const ctx = document.getElementById('resultChart');
+
+    if (!ctx) return;
+
+    const invested = parseFloat(ctx.dataset.invested || 0);
+    const returns = parseFloat(ctx.dataset.returns || 0);
+
+    console.log("Chart loaded");
+    console.log("Invested:", invested, "Returns:", returns);
+
+    if (invested === 0 && returns === 0) return;
+
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Investment', 'Returns'],
+            datasets: [{
+                data: [invested, returns],
+                backgroundColor: ['#6C4CF1', '#A78BFA'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: '#1F2937',
+                        font: {
+                            size: 14
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let value = context.raw || 0;
+                            return "₹ " + value.toLocaleString();
+                        }
+                    }
+                }
+            }
+        }
+    });
+});
+</script>

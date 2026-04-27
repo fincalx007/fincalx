@@ -1,197 +1,140 @@
 {% extends "tools/tool_base.html" %}
 
 {% block tool_title %}SIP Calculator India{% endblock %}
-{% block tool_intro %}Estimate maturity value, total invested amount, and projected returns for a monthly SIP. This free SIP calculator India tool is fast, private, and designed for goal planning.{% endblock %}
+
+{% block tool_intro %}
+Estimate maturity value, total invested amount, and projected returns for a monthly SIP.
+{% endblock %}
+
 
 {% block tool_form %}
 <form method="post" class="card calculator-card" novalidate>
     <div class="card-body p-4">
         <h2 class="h4 fw-bold mb-4">Enter SIP details</h2>
-        {% if error %}<div class="alert alert-danger" role="alert">{{ error }}</div>{% endif %}
+
+        {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+
         <div class="mb-3">
-            <label class="form-label" for="monthly_investment">Monthly investment</label>
-            <input class="form-control {% if errors and errors.monthly_investment %}is-invalid{% endif %}" id="monthly_investment" name="monthly_investment" type="number" min="100" max="10000000" step="100" value="{{ form.monthly_investment }}" required>
-            {% if errors and errors.monthly_investment %}<div class="invalid-feedback">{{ errors.monthly_investment }}</div>{% endif %}
+            <label class="form-label">Monthly investment</label>
+            <input class="form-control" name="monthly_investment" type="number"
+                   min="100" max="10000000" step="100"
+                   value="{{ form.monthly_investment }}" required>
         </div>
+
         <div class="mb-3">
-            <label class="form-label" for="annual_rate">Expected annual return rate (%)</label>
-            <input class="form-control {% if errors and errors.annual_rate %}is-invalid{% endif %}" id="annual_rate" name="annual_rate" type="number" min="0" max="40" step="0.1" value="{{ form.annual_rate }}" required>
-            {% if errors and errors.annual_rate %}<div class="invalid-feedback">{{ errors.annual_rate }}</div>{% endif %}
+            <label class="form-label">Expected annual return (%)</label>
+            <input class="form-control" name="annual_rate" type="number"
+                   min="0" max="40" step="0.1"
+                   value="{{ form.annual_rate }}" required>
         </div>
+
         <div class="mb-3">
-            <label class="form-label" for="years">Investment duration (years)</label>
-            <input class="form-control {% if errors and errors.years %}is-invalid{% endif %}" id="years" name="years" type="number" min="1" max="60" step="1" value="{{ form.years }}" required>
-            {% if errors and errors.years %}<div class="invalid-feedback">{{ errors.years }}</div>{% endif %}
+            <label class="form-label">Years</label>
+            <input class="form-control" name="years" type="number"
+                   min="1" max="60"
+                   value="{{ form.years }}" required>
         </div>
-        <button class="btn btn-gradient w-100" type="submit">Calculate SIP</button>
+
+        <button class="btn btn-gradient w-100" type="submit">
+            Calculate SIP
+        </button>
     </div>
 </form>
 {% endblock %}
 
+
 {% block tool_result %}
 {% if result %}
-<div class="card result-card"><div class="card-body p-4">
-    <h2 class="h5 fw-bold mb-3">SIP Estimate</h2>
-    <div class="result-highlight"><span>Maturity Amount</span><strong>{{ result.maturity_amount }}</strong></div>
-    <div class="result-row"><span>Total Investment</span><strong>{{ result.total_invested }}</strong></div>
-    <div class="result-row"><span>Returns</span><strong>{{ result.returns }}</strong></div>
-</div></div>
+<div class="card result-card">
+    <div class="card-body p-4">
+        <h2 class="h5 fw-bold mb-3">SIP Estimate</h2>
+
+        <div style="background: linear-gradient(135deg, #6c4cf1, #8b5cf6);
+                    border-radius: 14px; padding: 1.5rem; text-align: center;">
+
+            <div class="result-row">
+                <span>Maturity</span>
+                <strong>{{ result.maturity_amount }}</strong>
+            </div>
+
+            <div class="result-row">
+                <span>Total Investment</span>
+                <strong>{{ result.total_invested }}</strong>
+            </div>
+
+            <div class="result-row">
+                <span>Returns</span>
+                <strong>{{ result.returns }}</strong>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- ✅ Disclaimer below result -->
+<div class="alert alert-warning mt-3 small">
+<strong>Disclaimer:</strong>
+This calculator provides approximate results for informational purposes only. 
+It does not constitute financial, investment, tax, or legal advice. 
+Please consult a qualified professional before making financial decisions.
+</div>
+
 {% else %}
-<div class="result-empty"><h2 class="h5">Your SIP estimate appears here</h2><p class="text-secondary mb-0">No data is stored after calculation.</p></div>
+<div class="result-empty">
+    <h2>Your SIP result will appear here</h2>
+</div>
 {% endif %}
 {% endblock %}
 
-{% block seo_content %}
-<section class="section-pad bg-soft">
-    <div class="container">
-        <article>
-            <h2 class="h3 fw-bold mb-3">What is SIP Calculator India</h2>
-            <p class="text-secondary">A <strong>SIP calculator India</strong> is a free online tool that helps investors estimate the future value of their Systematic Investment Plan. SIPs allow you to invest a fixed amount every month into mutual funds, building wealth gradually through disciplined investing and the power of compounding. Our <strong>SIP calculator India</strong> tool takes your monthly contribution, expected annual return, and investment duration to project your maturity amount, total invested capital, and estimated returns.</p>
-            <p class="text-secondary">Whether you are planning for retirement, your child's education, a home down payment, or simply building an emergency corpus, using a reliable SIP calculator gives you clarity before committing real money. Unlike complex spreadsheets, this calculator delivers instant results without storing any personal data.</p>
-        </article>
 
-        {# ✅ AD 2: MID-CONTENT — after first SEO article, natural reading break #}
-        {% include "partials/ad_unit.html" %}
-
-        <article class="mt-5">
-            <h2 class="h3 fw-bold mb-3">How it works</h2>
-            <p class="text-secondary">Our <strong>SIP calculator India</strong> uses the standard future-value formula for recurring monthly investments. You only need to enter three inputs:</p>
-            <ul class="text-secondary">
-                <li><strong>Monthly investment</strong> — the fixed amount you plan to invest every month (minimum ₹100).</li>
-                <li><strong>Expected annual return rate</strong> — your assumed yearly growth percentage based on the mutual fund category and market outlook.</li>
-                <li><strong>Investment duration</strong> — the number of years you intend to stay invested.</li>
-            </ul>
-            <p class="text-secondary">Once you click "Calculate SIP," the tool instantly computes your maturity value, total amount invested, and the wealth gained through compounding. You can adjust inputs repeatedly to compare different scenarios and find a plan that fits your budget and goals.</p>
-            <p class="text-secondary">The mathematics behind a <strong>SIP calculator India</strong> is straightforward. The formula used is:</p>
-            <p class="formula mb-2">FV = P × [((1 + r)<sup>n</sup> − 1) / r] × (1 + r)</p>
-            <p class="text-secondary">Where <strong>FV</strong> is future value, <strong>P</strong> is monthly investment, <strong>r</strong> is monthly rate of return (annual rate ÷ 12), and <strong>n</strong> is total number of months (years × 12). The extra <strong>(1 + r)</strong> factor assumes the SIP is invested at the beginning of each month, which is standard practice for most mutual fund SIPs in India.</p>
-        </article>
-
-        <article class="mt-5">
-            <h2 class="h3 fw-bold mb-3">Benefits</h2>
-            <p class="text-secondary">Using a dedicated <strong>SIP calculator India</strong> offers several advantages for both beginners and experienced investors:</p>
-            <ul class="text-secondary">
-                <li><strong>Goal-based planning</strong> — Know exactly how much you need to invest monthly to reach a target corpus.</li>
-                <li><strong>Scenario comparison</strong> — Compare different return rates, tenures, and monthly amounts side by side.</li>
-                <li><strong>Budget alignment</strong> — Adjust the monthly investment figure until it fits your cash flow comfortably.</li>
-                <li><strong>Time saving</strong> — No need for complex Excel formulas or manual calculations.</li>
-                <li><strong>Privacy first</strong> — Our calculator does not store your inputs or require login.</li>
-                <li><strong>Realistic expectations</strong> — Understand that returns are estimates, not guarantees, helping you avoid over-optimism.</li>
-            </ul>
-        </article>
-
-        <article class="mt-5">
-            <h2 class="h3 fw-bold mb-3">Example calculation</h2>
-            <p class="text-secondary">Let us look at a practical example for an Indian investor. Suppose Priya starts a monthly SIP of ₹10,000 in an equity mutual fund, expects an average annual return of 12%, and plans to stay invested for 15 years.</p>
-            <p class="text-secondary">Using our <strong>SIP calculator India</strong>, the results would be approximately:</p>
-            <ul class="text-secondary">
-                <li><strong>Total Investment:</strong> ₹18,00,000 (₹10,000 × 12 months × 15 years)</li>
-                <li><strong>Estimated Returns:</strong> ₹32,97,000</li>
-                <li><strong>Maturity Amount:</strong> ₹50,97,000</li>
-            </ul>
-            <p class="text-secondary">This example shows how disciplined monthly investment planning can more than double the invested capital over the long term. Even a modest increase in monthly contribution or duration can significantly boost the final corpus due to compounding.</p>
-        </article>
-
-        <article class="mt-5">
-            <h2 class="h3 fw-bold mb-3">Why use this tool</h2>
-            <p class="text-secondary">This <strong>SIP calculator India</strong> is built for speed, accuracy, and privacy. There is no registration, no ads inside the calculator, and no data storage. You get instant projections that help you decide whether to start a new SIP, increase an existing one, or rebalance your portfolio.</p>
-            <p class="text-secondary">Explore more free calculators to manage your finances holistically:</p>
-            <ul class="text-secondary">
-                <li><a href="/tools/emi-calculator">Try our EMI Calculator</a> — Plan your home, car, and personal loan EMIs before approaching lenders.</li>
-                <li><a href="/tools/income-tax-calculator">Check Income Tax Calculator India</a> — Compare old vs new tax regime and estimate your tax liability.</li>
-                <li><a href="/tools/portfolio-overlap-checker">Portfolio Overlap Checker</a> — Check mutual fund overlap and avoid over-concentration in similar stocks.</li>
-                <li><a href="/">FinCalX Home</a> — Discover all fast, private financial calculators in one place.</li>
-            </ul>
-        </article>
-    </div>
-</section>
+{% block explanation %}
+A Systematic Investment Plan (SIP) allows you to invest a fixed amount every month in mutual funds. 
+Over time, your investment benefits from compounding and rupee cost averaging, helping reduce risk 
+and grow wealth steadily.
 {% endblock %}
 
-{% block tool_disclaimer %}
-<div class="row mt-4">
-    <div class="col-lg-7">
-        <div class="alert alert-warning rounded-4" role="note">
-            <i class="bi bi-exclamation-triangle-fill me-2" aria-hidden="true"></i>
-            <strong>Disclaimer:</strong> Returns are not guaranteed and are subject to market risks. Past performance does not guarantee future results.
+
+{% block formula %}
+<p class="text-secondary mb-0">
+Future Value (FV) of SIP is calculated using:
+<br><br>
+FV = P × [((1 + r)<sup>n</sup> − 1) / r] × (1 + r)
+<br><br>
+Where:
+<br>
+P = Monthly investment<br>
+r = Monthly interest rate (annual rate / 12 / 100)<br>
+n = Total number of months
+</p>
+{% endblock %}
+
+
+{% block faq %}
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+            What is SIP?
+        </button>
+    </h2>
+    <div id="faq1" class="accordion-collapse collapse show">
+        <div class="accordion-body">
+            SIP (Systematic Investment Plan) allows you to invest small amounts regularly in mutual funds.
+        </div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+            Is SIP safe?
+        </button>
+    </h2>
+    <div id="faq2" class="accordion-collapse collapse">
+        <div class="accordion-body">
+            SIPs are subject to market risk, but they reduce volatility through disciplined investing.
         </div>
     </div>
 </div>
 {% endblock %}
-
-{% block explanation %}
-The SIP calculator estimates how a fixed monthly investment may grow over time. Enter the monthly amount, expected annual return, and duration to see the projected maturity value, total investment, and estimated returns. Indian investors can use it for goals such as retirement planning, education funding, home down payment planning, or comparing different monthly contribution amounts. The calculator applies a standard future value formula and assumes that every SIP contribution is made regularly. It is helpful for quickly understanding compounding, but it does not predict market returns. Mutual fund performance can change due to market volatility, expense ratios, tax rules, and fund-specific risks.
-{% endblock %}
-
-{% block formula %}
-<p class="formula mb-2">FV = P x [((1 + r)<sup>n</sup> - 1) / r] x (1 + r)</p>
-<p class="text-secondary mb-0">P is monthly investment, r is monthly return rate, and n is total months.</p>
-{% endblock %}
-
-{% block faq %}
-<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#sipFaq1">What is a SIP calculator and how does it work?</button></h3><div id="sipFaq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion"><div class="accordion-body">A SIP calculator is an online tool that estimates the future value of a Systematic Investment Plan. You enter your monthly investment, expected annual return, and duration. The calculator applies a compounding formula to project your maturity amount, total invested capital, and estimated returns.</div></div></div>
-<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sipFaq2">Does a SIP calculator guarantee returns?</button></h3><div id="sipFaq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">No. A SIP calculator only provides a mathematical estimate based on the expected annual return you enter. Actual mutual fund returns depend on market conditions, fund management, expense ratios, and economic factors. Always treat the output as a planning guide, not a promise.</div></div></div>
-<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sipFaq3">What expected return rate should I use in a SIP calculator?</button></h3><div id="sipFaq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Use a conservative estimate based on your fund category. For equity mutual funds in India, many planners use 10% to 12% as a long-term assumption. Debt funds may range from 6% to 8%. Historical returns are not indicative of future performance, so it is wise to run multiple scenarios.</div></div></div>
-<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sipFaq4">Can I use this SIP calculator for mutual fund planning?</button></h3><div id="sipFaq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Yes. This SIP calculator India tool is designed for mutual fund SIP planning. However, it does not include expense ratios, exit loads, taxes on capital gains, or changing market returns. Use it for initial goal setting, then consult a financial advisor for detailed fund selection.</div></div></div>
-<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sipFaq5">Is my SIP data stored on this website?</button></h3><div id="sipFaq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">No. The calculator does not require login and does not store your SIP amount, expected return, or duration in any database. Your inputs are processed only for the current calculation session and are never shared with third parties.</div></div></div>
-<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sipFaq6">How is SIP different from a lump sum investment?</button></h3><div id="sipFaq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">SIP involves investing a fixed amount regularly, usually monthly, which reduces the impact of market timing and volatility through rupee cost averaging. A lump sum invests the entire amount at once. SIPs are generally preferred by salaried investors in India because they align with monthly cash flows and build financial discipline.</div></div></div>
-{% endblock %}
-
-{% block faq_schema %}
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "What is a SIP calculator and how does it work?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "A SIP calculator is an online tool that estimates the future value of a Systematic Investment Plan. You enter your monthly investment, expected annual return, and duration. The calculator applies a compounding formula to project your maturity amount, total invested capital, and estimated returns."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Does a SIP calculator guarantee returns?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. A SIP calculator only provides a mathematical estimate based on the expected annual return you enter. Actual mutual fund returns depend on market conditions, fund management, expense ratios, and economic factors. Always treat the output as a planning guide, not a promise."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What expected return rate should I use in a SIP calculator?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Use a conservative estimate based on your fund category. For equity mutual funds in India, many planners use 10% to 12% as a long-term assumption. Debt funds may range from 6% to 8%. Historical returns are not indicative of future performance, so it is wise to run multiple scenarios."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can I use this SIP calculator for mutual fund planning?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. This SIP calculator India tool is designed for mutual fund SIP planning. However, it does not include expense ratios, exit loads, taxes on capital gains, or changing market returns. Use it for initial goal setting, then consult a financial advisor for detailed fund selection."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is my SIP data stored on this website?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. The calculator does not require login and does not store your SIP amount, expected return, or duration in any database. Your inputs are processed only for the current calculation session and are never shared with third parties."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "How is SIP different from a lump sum investment?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "SIP involves investing a fixed amount regularly, usually monthly, which reduces the impact of market timing and volatility through rupee cost averaging. A lump sum invests the entire amount at once. SIPs are generally preferred by salaried investors in India because they align with monthly cash flows and build financial discipline."
-      }
-    }
-  ]
-}
-</script>
-{% endblock %}
-

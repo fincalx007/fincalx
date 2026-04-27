@@ -1,7 +1,14 @@
+<<<<<<< HEAD
 # Production-Grade Enhancement — COMPLETE
 
 ## Objective
 Transform FinCalX into a 10/10 production-grade fintech web app.
+=======
+# Calculator Result UI Improvement Plan
+
+## Objective
+Improve the calculator result UI in the FastAPI + Bootstrap project with a purple gradient hero card, icon-enhanced breakdown rows, and mobile-friendly layout.
+>>>>>>> 74f72c9 (version-2)
 
 ## In Progress: Surcharge & Marginal Relief
 - [ ] Update `app/services/tax_service.py` with surcharge + marginal relief helpers
@@ -9,7 +16,21 @@ Transform FinCalX into a 10/10 production-grade fintech web app.
 - [ ] Update `app/templates/tools/tax.html` with new UI rows and updated SEO copy
 - [ ] Test edge cases (thresholds, high income, backward compatibility)
 
+<<<<<<< HEAD
 ## Completed Items
+=======
+- [x] Plan approved by user
+- [ ] Update tax.html result UI
+- [ ] Update sip.html result UI
+- [ ] Update emi.html result UI
+- [ ] Update overlap.html result UI
+- [ ] Final review & test
+- [x] app/templates/tools/tax.html — Added Tax-specific disclaimer
+- [x] app/templates/tools/overlap.html — Added Overlap-specific disclaimer
+- [x] app/templates/home.html — Added "Fast & private calculations" trust signal
+- [x] app/templates/base.html — Strengthened footer general disclaimer
+- [x] Final review & test — All tests passed
+>>>>>>> 74f72c9 (version-2)
 
 ### 1. Production Server Setup
 - [x] `render.yaml` — Updated to use `gunicorn -k uvicorn.workers.UvicornWorker` with 2 workers

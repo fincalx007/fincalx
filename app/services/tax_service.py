@@ -32,33 +32,27 @@ def _slab_tax(taxable_income: float, slabs: list[tuple[float, float]]) -> float:
 
     return tax
 
-
 def calculate_income_tax(
     gross_income: float,
     regime: str,
     deductions: float = 0,
     standard_deduction: float = 75000,
-) -> dict:
+) -> dict[str, float | str]:
     if regime == "old":
-        taxable_income = max(gross_income - deductions - standard_deduction, 0)
+        taxable_income = max(gross_income - deductions - 50000, 0)
         base_tax = _slab_tax(taxable_income, OLD_SLABS)
-
-        if taxable_income <= 500000:
-            rebate = min(base_tax, 12500)
-            base_tax -= rebate
+        rebate_limit = 500000
     else:
         taxable_income = max(gross_income - standard_deduction, 0)
         base_tax = _slab_tax(taxable_income, NEW_SLABS_FY_2025_26)
+        rebate_limit = 1200000
 
-        if taxable_income <= 1200000:
-            rebate = min(base_tax, 60000)
-            base_tax -= rebate
+    # Simple resident-individual rebate handling for calculator use.
+    if taxable_income <= rebate_limit:
+        base_tax = 0.0
 
-    base_tax = max(base_tax, 0)
-    tax_before_cess = round(base_tax, 2)
-    cess = round(tax_before_cess * CESS_RATE, 2)
-    total_tax = round(tax_before_cess + cess, 2)
-
+    cess = base_tax * CESS_RATE
+    total_tax = base_tax + cess
     return {
         "regime": "Old Regime" if regime == "old" else "New Regime",
         "taxable_income": round(taxable_income, 2),
@@ -68,4 +62,3 @@ def calculate_income_tax(
         "total_tax": total_tax,
         "surcharge": 0,
     }
-
