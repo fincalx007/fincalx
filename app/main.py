@@ -10,7 +10,10 @@ import sys
 from app.routers import emi, home, legal, overlap, sip, tax
 from app.security import RateLimitMiddleware, add_security_headers
 
-# ✅ PRODUCTION LOGGING
+# ============================
+# ✅ LOGGING
+# ============================
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
@@ -19,6 +22,10 @@ logging.basicConfig(
 logger = logging.getLogger("fincalx")
 
 ALLOWED_ORIGINS = ["http://localhost:8000"]
+
+# ============================
+# ✅ MAIN APP (ONLY ONE!)
+# ============================
 
 app = FastAPI(
     title="FinCalX",
@@ -29,11 +36,45 @@ app = FastAPI(
     redoc_url=None,
 )
 
+# ============================
 # ✅ SECURITY HEADERS
+# ============================
+
 app.middleware("http")(add_security_headers)
 
+# ============================
 # ✅ TEMPLATES
+# ============================
+
 templates = Jinja2Templates(directory="app/templates")
+
+# ============================
+# ✅ SITEMAP (FIXED)
+# ============================
+
+@app.get("/sitemap.xml", include_in_schema=False)
+async def sitemap():
+    xml_content = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        '  <url><loc>https://getfincalx.com/</loc></url>\n'
+        '  <url><loc>https://getfincalx.com/tools/sip-calculator</loc></url>\n'
+        '  <url><loc>https://getfincalx.com/tools/emi-calculator</loc></url>\n'
+        '  <url><loc>https://getfincalx.com/tools/income-tax-calculator</loc></url>\n'
+        '  <url><loc>https://getfincalx.com/tools/portfolio-overlap-checker</loc></url>\n'
+        '</urlset>'
+    )
+    return Response(content=xml_content, media_type="application/xml")
+
+# ============================
+# ✅ ROBOTS.TXT
+# ============================
+
+@app.get("/robots.txt", include_in_schema=False)
+async def robots():
+    return PlainTextResponse(
+        content="User-agent: *\nAllow: /\nSitemap: https://getfincalx.com/sitemap.xml"
+    )
 
 # ============================
 # ✅ ERROR HANDLERS
@@ -104,33 +145,6 @@ async def general_exception_handler(request: Request, exc: Exception):
             "message": "Please try again later.",
         },
         status_code=500,
-    )
-
-# ============================
-# ✅ DYNAMIC SITEMAP
-# ============================
-
-@app.get("/sitemap.xml", include_in_schema=False)
-async def sitemap():
-    xml_content = """<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <url><loc>https://getfincalx.com/</loc></url>
-    <url><loc>https://getfincalx.com/tools/sip-calculator</loc></url>
-    <url><loc>https://getfincalx.com/tools/emi-calculator</loc></url>
-    <url><loc>https://getfincalx.com/tools/income-tax-calculator</loc></url>
-    <url><loc>https://getfincalx.com/tools/portfolio-overlap-checker</loc></url>
-</urlset>
-"""
-    return Response(content=xml_content, media_type="application/xml")
-
-# ============================
-# ✅ ROBOTS.TXT
-# ============================
-
-@app.get("/robots.txt", include_in_schema=False)
-async def robots():
-    return PlainTextResponse(
-        content="User-agent: *\nAllow: /\nSitemap: https://getfincalx.com/sitemap.xml"
     )
 
 # ============================
