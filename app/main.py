@@ -7,7 +7,7 @@ from fastapi.templating import Jinja2Templates
 import logging
 import sys
 
-from app.routers import emi, home, legal, overlap, sip, tax
+from app.routers import emi, home, legal, overlap, sip
 from app.security import RateLimitMiddleware, add_security_headers
 
 # ============================
@@ -52,6 +52,8 @@ templates = Jinja2Templates(directory="app/templates")
 # ✅ SITEMAP (FIXED)
 # ============================
 
+from fastapi.responses import Response
+
 @app.get("/sitemap.xml", include_in_schema=False)
 async def sitemap():
     xml_content = (
@@ -60,12 +62,16 @@ async def sitemap():
         '  <url><loc>https://getfincalx.com/</loc></url>\n'
         '  <url><loc>https://getfincalx.com/tools/sip-calculator</loc></url>\n'
         '  <url><loc>https://getfincalx.com/tools/emi-calculator</loc></url>\n'
-        '  <url><loc>https://getfincalx.com/tools/income-tax-calculator</loc></url>\n'
         '  <url><loc>https://getfincalx.com/tools/portfolio-overlap-checker</loc></url>\n'
         '</urlset>'
     )
-    return Response(content=xml_content, media_type="application/xml")
 
+    response = Response(content=xml_content, media_type="application/xml")
+
+    # 🚨 CRITICAL FIX: remove headers that break XML
+    response.headers.pop("content-security-policy", None)
+
+    return response
 # ============================
 # ✅ ROBOTS.TXT
 # ============================
@@ -174,6 +180,6 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 app.include_router(home.router)
 app.include_router(sip.router)
 app.include_router(emi.router)
-app.include_router(tax.router)
+# app.include_router(tax.router)  # Disabled
 app.include_router(overlap.router)
 app.include_router(legal.router)

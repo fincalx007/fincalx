@@ -24,14 +24,14 @@
             <div class="col-lg-7">
                 <span class="eyebrow">Made for Indian money decisions</span>
                 <h1 class="display-4 fw-bold mt-3 mb-3">Smart Finance Calculators for India (2026)</h1>
-                <p class="lead text-secondary mb-4">Free SIP, EMI, and income tax calculators. Fast, accurate, and privacy-friendly.</p>
+                <p class="lead text-secondary mb-4">Free SIP and EMI calculators. Fast, accurate, and privacy-friendly.</p>
                 <div class="d-flex flex-column flex-sm-row gap-3 align-items-sm-center">
                     <a class="btn btn-gradient btn-lg px-4" href="#toolsHeading">
                         Start Calculating
                         <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i>
                     </a>
                     <label for="toolSearch" class="visually-hidden">Search tools</label>
-                    <input id="toolSearch" class="form-control form-control-lg search-box" type="search" placeholder="Search SIP, EMI, tax..." autocomplete="off">
+                    <input id="toolSearch" class="form-control form-control-lg search-box" type="search" placeholder="Search SIP, EMI..." autocomplete="off">
                 </div>
                 <div class="trust-signals d-flex flex-column flex-sm-row gap-2 gap-sm-4 mt-4" aria-label="Trust signals">
                     <span><i class="bi bi-check-circle-fill" aria-hidden="true"></i> No login required</span>
@@ -81,7 +81,8 @@
         </div>
         <div id="toolGrid" class="row g-4">
             {% for tool in tools %}
-            <article class="col-md-6 col-xl-3 tool-card" data-search="{{ tool.title }} {{ tool.description }} {{ tool.keywords }}">
+            {% if "Tax" not in tool.title %}
+            <article class="col-md-6 col-xl-4 tool-card" data-search="{{ tool.title }} {{ tool.description }} {{ tool.keywords }}">
                 <div class="card h-100 tool-card-inner">
                     <div class="card-body d-flex flex-column p-4">
                         <div class="tool-icon" aria-hidden="true">
@@ -104,6 +105,7 @@
                     </div>
                 </div>
             </article>
+            {% endif %}
             {% endfor %}
         </div>
     </div>
@@ -119,7 +121,7 @@
                 <span class="eyebrow">About</span>
                 <h2 id="aboutHeading" class="h2 fw-bold mb-3">About This Website</h2>
                 <p class="text-secondary mb-0">
-                    FinCalX helps Indian users run quick estimates for SIP investments, loan EMI payments, basic income tax, and portfolio overlap. It is useful for salaried professionals, students, founders, and families who want a fast first look before making a money decision. The calculators are privacy-first: no signup, no account, and no database storage of the numbers you enter. You can start with the <a href="/tools/sip-calculator">SIP calculator India</a>, compare loan costs with the <a href="/tools/emi-calculator">EMI calculator</a>, estimate taxes with the <a href="/tools/income-tax-calculator">income tax calculator India</a>, or check diversification with the <a href="/tools/portfolio-overlap-checker">portfolio overlap tool</a>.
+                    FinCalX helps Indian users run quick estimates for SIP investments, loan EMI payments, and portfolio overlap. It is useful for salaried professionals, students, founders, and families who want a fast first look before making a money decision. The calculators are privacy-first: no signup, no account, and no database storage of the numbers you enter. You can start with the <a href="/tools/sip-calculator">SIP calculator India</a>, compare loan costs with the <a href="/tools/emi-calculator">EMI calculator</a>, or check diversification with the <a href="/tools/portfolio-overlap-checker">portfolio overlap tool</a>.
                 </p>
             </article>
             <article class="col-lg-5">
