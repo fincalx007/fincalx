@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, PlainTextResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, PlainTextResponse, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import logging
@@ -107,12 +107,21 @@ async def general_exception_handler(request: Request, exc: Exception):
     )
 
 # ============================
-# ✅ STATIC SITEMAP (FIXED)
+# ✅ DYNAMIC SITEMAP
 # ============================
 
 @app.get("/sitemap.xml", include_in_schema=False)
-async def sitemap_redirect():
-    return RedirectResponse(url="/static/sitemap.xml")
+async def sitemap():
+    xml_content = """<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url><loc>https://getfincalx.com/</loc></url>
+    <url><loc>https://getfincalx.com/tools/sip-calculator</loc></url>
+    <url><loc>https://getfincalx.com/tools/emi-calculator</loc></url>
+    <url><loc>https://getfincalx.com/tools/income-tax-calculator</loc></url>
+    <url><loc>https://getfincalx.com/tools/portfolio-overlap-checker</loc></url>
+</urlset>
+"""
+    return Response(content=xml_content, media_type="application/xml")
 
 # ============================
 # ✅ ROBOTS.TXT
