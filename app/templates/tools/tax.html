@@ -7,99 +7,73 @@ Estimate income tax for FY 2025-26 under old and new regimes. Compare tax liabil
 {% endblock %}
 
 {% block tool_form %}
-
 <form method="post" class="card calculator-card" novalidate id="taxForm">
     <div class="card-body p-4">
-<<<<<<< HEAD
-
-```
-    <h2 class="h4 fw-bold mb-4">Enter income details</h2>
-
-    {% if error %}
-    <div class="alert alert-danger">{{ error }}</div>
-    {% endif %}
-
-    <!-- Income -->
-    <div class="mb-3">
-        <label class="form-label">Annual gross income</label>
-        <input class="form-control"
-               id="gross_income"
-               name="gross_income"
-               type="text"
-               placeholder="e.g. 10,00,000"
-               value="{{ form.gross_income }}"
-               required>
-
-        {% if errors and errors.gross_income %}
-        <div class="text-danger small">{{ errors.gross_income }}</div>
-        {% endif %}
-=======
         <h2 class="h4 fw-bold mb-4">Enter income details</h2>
-        {% if error %}<div class="alert alert-danger" role="alert">{{ error }}</div>{% endif %}
+
+        {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% endif %}
+
+        <!-- Income -->
         <div class="mb-3">
             <label class="form-label" for="gross_income">Annual gross income</label>
-            <input class="form-control {% if errors and errors.gross_income %}is-invalid{% endif %}" id="gross_income" name="gross_income" type="number" min="0" max="100000000" step="1000" value="{{ form.gross_income }}" required>
-            {% if errors and errors.gross_income %}<div class="invalid-feedback">{{ errors.gross_income }}</div>{% endif %}
+            <input class="form-control {% if errors and errors.gross_income %}is-invalid{% endif %}"
+                   id="gross_income"
+                   name="gross_income"
+                   type="number"
+                   min="0"
+                   max="100000000"
+                   step="1000"
+                   value="{{ form.gross_income }}"
+                   required>
+            {% if errors and errors.gross_income %}
+            <div class="invalid-feedback">{{ errors.gross_income }}</div>
+            {% endif %}
         </div>
+
+        <!-- Regime -->
         <div class="mb-3">
             <label class="form-label" for="regime">Tax regime</label>
-            <select class="form-select {% if errors and errors.regime %}is-invalid{% endif %}" id="regime" name="regime" required>
+            <select class="form-select {% if errors and errors.regime %}is-invalid{% endif %}"
+                    id="regime"
+                    name="regime"
+                    required>
                 <option value="new" {% if form.regime == "new" %}selected{% endif %}>New regime</option>
                 <option value="old" {% if form.regime == "old" %}selected{% endif %}>Old regime</option>
             </select>
-            {% if errors and errors.regime %}<div class="invalid-feedback">{{ errors.regime }}</div>{% endif %}
+            {% if errors and errors.regime %}
+            <div class="invalid-feedback">{{ errors.regime }}</div>
+            {% endif %}
         </div>
+
+        <!-- Deductions -->
         <div class="mb-3">
             <label class="form-label" for="deductions">Old regime deductions</label>
-            <input class="form-control {% if errors and errors.deductions %}is-invalid{% endif %}" id="deductions" name="deductions" type="number" min="0" max="10000000" step="1000" value="{{ form.deductions }}" required>
-            {% if errors and errors.deductions %}<div class="invalid-feedback">{{ errors.deductions }}</div>{% endif %}
+            <input class="form-control {% if errors and errors.deductions %}is-invalid{% endif %}"
+                   id="deductions"
+                   name="deductions"
+                   type="number"
+                   min="0"
+                   max="10000000"
+                   step="1000"
+                   value="{{ form.deductions }}"
+                   required>
+            {% if errors and errors.deductions %}
+            <div class="invalid-feedback">{{ errors.deductions }}</div>
+            {% endif %}
             <div class="form-text">Used only for old regime estimates. New regime uses a simple standard deduction assumption.</div>
         </div>
+
         <button class="btn btn-gradient w-100" type="submit">Calculate Tax</button>
->>>>>>> 74f72c9 (version-2)
     </div>
-
-    <!-- Regime -->
-    <div class="mb-3">
-        <label class="form-label">Tax regime</label>
-        <select class="form-select" id="regime" name="regime">
-            <option value="new" {% if form.regime == "new" %}selected{% endif %}>New regime</option>
-            <option value="old" {% if form.regime == "old" %}selected{% endif %}>Old regime</option>
-        </select>
-    </div>
-
-    <!-- Deductions -->
-    <div class="mb-3">
-        <label class="form-label">Old regime deductions</label>
-        <input class="form-control"
-               id="deductions"
-               name="deductions"
-               type="text"
-               value="{{ form.deductions }}">
-
-        {% if errors and errors.deductions %}
-        <div class="text-danger small">{{ errors.deductions }}</div>
-        {% endif %}
-
-        <div class="form-text text-secondary">Applicable only for old regime</div>
-    </div>
-
-    <button class="btn btn-gradient w-100">Calculate Tax</button>
-
-</div>
-```
-
 </form>
-
-<!-- JS: Regime toggle + input formatting -->
 
 <script>
 const regime = document.getElementById("regime");
 const deductions = document.getElementById("deductions");
-const income = document.getElementById("gross_income");
 
-// Toggle deductions
-function toggle() {
+function toggleDeductions() {
     if (regime.value === "new") {
         deductions.disabled = true;
         deductions.value = 0;
@@ -107,72 +81,52 @@ function toggle() {
         deductions.disabled = false;
     }
 }
-regime.addEventListener("change", toggle);
-toggle();
-
-// Allow only numbers
-income.addEventListener("input", () => {
-    income.value = income.value.replace(/[^0-9]/g, "");
-});
-
-// Format Indian style
-income.addEventListener("blur", () => {
-    if (income.value) {
-        income.value = Number(income.value).toLocaleString("en-IN");
-    }
-});
-
-// Remove commas before submit
-document.getElementById("taxForm").addEventListener("submit", () => {
-    income.value = income.value.replace(/,/g, "");
-});
+regime.addEventListener("change", toggleDeductions);
+toggleDeductions();
 </script>
-
 {% endblock %}
 
 {% block tool_result %}
 {% if result %}
-
 <div class="card result-card">
     <div class="card-body p-4">
+        <p class="text-success small">✔ Updated for FY 2025-26</p>
+        <h3 class="mb-3">Tax Estimate</h3>
 
-```
-    <p class="text-success small">✔ Updated for FY 2025-26</p>
+        <div class="result-row"><span>Regime</span><strong>{{ result.regime }}</strong></div>
+        <div class="result-row"><span>Taxable Income</span><strong>{{ result.taxable_income }}</strong></div>
+        <div class="result-row"><span>Base Tax</span><strong>{{ result.base_tax }}</strong></div>
 
-    <h3 class="mb-3">Tax Estimate</h3>
+        {% if result.surcharge and result.surcharge != "₹0" %}
+        <div class="result-row"><span>Surcharge</span><strong>{{ result.surcharge }}</strong></div>
+        {% endif %}
 
-    <div class="result-row"><span>Regime</span><strong>{{ result.regime }}</strong></div>
-    <div class="result-row"><span>Taxable Income</span><strong>{{ result.taxable_income }}</strong></div>
-    <div class="result-row"><span>Base Tax</span><strong>{{ result.base_tax }}</strong></div>
-<<<<<<< HEAD
+        <div class="result-row"><span>Cess (4%)</span><strong>{{ result.cess }}</strong></div>
 
-    {% if result.surcharge and result.surcharge != "₹0" %}
-    <div class="result-row"><span>Surcharge</span><strong>{{ result.surcharge }}</strong></div>
-    {% endif %}
-
-    <div class="result-row"><span>Cess (4%)</span><strong>{{ result.cess }}</strong></div>
-
-    <div class="result-highlight">
-        <span>Total Tax</span>
-        <strong>{{ result.total_tax }}</strong>
+        <div style="background:linear-gradient(135deg,#6c4cf1,#8b5cf6);border-radius:14px;padding:1.5rem;margin-top:1rem;text-align:center;box-shadow:0 10px 28px rgba(108,76,241,0.24)">
+            <div style="color:rgba(255,255,255,0.9);font-size:.875rem;font-weight:600;margin-bottom:.5rem">Total Tax</div>
+            <div style="color:#fff;font-size:2rem;font-weight:800;line-height:1.2">{{ result.total_tax }}</div>
+        </div>
     </div>
-
-</div>
-```
-
 </div>
 
 <p class="small mt-3 text-secondary">
-Tip: Compare both regimes to choose the one with lower tax.
+    Tip: Compare both regimes to choose the one with lower tax.
 </p>
 
-=======
-    <div class="result-row"><span>Health and Education Cess</span><strong>{{ result.cess }}</strong></div>
-<div style="background:linear-gradient(135deg,#6c4cf1,#8b5cf6);border-radius:14px;padding:1.5rem;margin-top:1rem;text-align:center;box-shadow:0 10px 28px rgba(108,76,241,0.24)"><div style="color:rgba(255,255,255,0.9);font-size:.875rem;font-weight:600;margin-bottom:.5rem">Total Tax</div><div style="color:#fff;font-size:2rem;font-weight:800;line-height:1.2">{{ result.total_tax }}</div></div>
 {% else %}
-<div class="result-empty"><h2 class="h5">Your tax estimate appears here</h2><p class="text-secondary mb-0">Consult a qualified tax professional for filing decisions.</p></div>
->>>>>>> 74f72c9 (version-2)
+<div class="result-empty">
+    <h2 class="h5">Your tax estimate appears here</h2>
+    <p class="text-secondary mb-0">Consult a qualified tax professional for filing decisions.</p>
+</div>
 {% endif %}
+{% endblock %}
+
+{% block tool_disclaimer %}
+<!-- ALWAYS VISIBLE DISCLAIMER -->
+<div class="mt-4 alert alert-warning">
+    <strong>Disclaimer:</strong> This calculator provides estimates based on current tax rules and is for informational purposes only. It does not constitute financial, tax, or legal advice. Please consult a qualified professional or refer to official government sources before making decisions.
+</div>
 {% endblock %}
 
 {% block explanation %}
@@ -185,7 +139,6 @@ Income tax is calculated based on your taxable income after applying deductions 
 {% endblock %}
 
 {% block formula %}
-
 <p><strong>Taxable Income:</strong></p>
 <p class="text-secondary small">
 Taxable Income = Gross Income - Deductions - Standard Deduction
@@ -195,11 +148,9 @@ Taxable Income = Gross Income - Deductions - Standard Deduction
 <p class="text-secondary small">
 Total Tax = (Base Tax + Surcharge ± Marginal Relief) + 4% Cess
 </p>
-
 {% endblock %}
 
 {% block faq %}
-
 <div class="accordion-item">
     <h2 class="accordion-header">
         <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#faq1">
@@ -212,9 +163,9 @@ Total Tax = (Base Tax + Surcharge ± Marginal Relief) + 4% Cess
         </div>
     </div>
 </div>
-
 {% endblock %}
 
 {% block disclaimer %}
 This calculator provides estimates only. Tax laws may change and actual tax liability may vary. Consult a professional for filing.
 {% endblock %}
+
