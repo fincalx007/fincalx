@@ -166,6 +166,14 @@ app.add_middleware(
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 # ============================
+# ✅ ADS.TXT for AdSense
+# ============================
+
+@app.get("/ads.txt", include_in_schema=False)
+async def ads_txt():
+    return PlainTextResponse("google.com, ca-pub-7541563552796195, DIRECT, f08c47fec0942fa0")
+
+# ============================
 # ✅ ROUTERS
 # ============================
 
@@ -176,3 +184,4 @@ app.include_router(salary.router)
 # app.include_router(tax.router)  # Disabled
 app.include_router(overlap.router)
 app.include_router(legal.router)
+
