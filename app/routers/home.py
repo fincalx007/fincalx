@@ -24,11 +24,11 @@ async def home(request: Request):
             "icon": "EMI",
         },
         {
-            "title": "Income Tax Calculator",
-            "description": "Compare basic India tax estimates under old and new regimes.",
-            "href": "/tools/income-tax-calculator",
-            "keywords": "income tax calculator india",
-            "icon": "TAX",
+            "title": "Salary Calculator",
+            "description": "Calculate monthly and annual in-hand salary from CTC with PF and tax breakdown.",
+            "href": "/tools/salary-calculator",
+            "keywords": "salary calculator india in hand salary calculator ctc to in hand salary",
+            "icon": "SALARY",
         },
         {
             "title": "Portfolio Overlap Checker",

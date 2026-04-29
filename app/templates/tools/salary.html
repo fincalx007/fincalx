@@ -1,0 +1,227 @@
+{% extends "tools/tool_base.html" %}
+
+{% block tool_title %}Salary Calculator India 2026 – In-hand Salary from CTC{% endblock %}
+{% block tool_intro %}Calculate your in-hand salary from CTC instantly with this free salary calculator India. Enter your annual CTC and standard percentages to get a detailed monthly and annual take-home breakdown after PF, tax deductions, and other components. 
+
+Perfect for job seekers comparing offers, employees reviewing payslips, or anyone curious about the real take-home from published CTC figures. This tool uses simplified but realistic Indian salary structure assumptions: basic salary (typically 40-50%), HRA (up to 50% of basic), employer/employee PF (12%), and effective tax rate.
+
+Unlike complex tax software, our calculator provides instant results without registration. Understand why your bank balance is lower than expected CTC, plan your savings better, and make informed career decisions. All calculations are private - no data stored. (128 words){% endblock %}
+
+{% block head_extra %}
+<meta name="description" content="Calculate your in-hand salary from CTC instantly. Free salary calculator India with PF, tax, and monthly breakdown.">
+<meta name="keywords" content="salary calculator india, in hand salary calculator, ctc to in hand salary">
+{% endblock %}
+
+{% block tool_form %}
+<form method="post" class="card calculator-card" novalidate>
+    <div class="card-body p-4">
+        <h2 class="h4 fw-bold mb-4">Enter salary details</h2>
+        {% if error %}<div class="alert alert-danger" role="alert">{{ error }}</div>{% endif %}
+
+        <div class="mb-3">
+            <label class="form-label" for="ctc">CTC (Annual) ₹</label>
+            <input class="form-control {% if errors and errors.ctc %}is-invalid{% endif %}" id="ctc" name="ctc" type="number" min="1000" max="100000000" step="1000" value="{{ form.ctc }}" required>
+            {% if errors and errors.ctc %}<div class="invalid-feedback">{{ errors.ctc }}</div>{% endif %}
+        </div>
+
+        <div class="row g-3">
+            <div class="col-sm-6 mb-3">
+                <label class="form-label" for="basic_pct">Basic Salary %</label>
+                <input class="form-control {% if errors and errors.basic_pct %}is-invalid{% endif %}" id="basic_pct" name="basic_pct" type="number" min="0" max="100" step="0.1" value="{{ form.basic_pct }}" required>
+                {% if errors and errors.basic_pct %}<div class="invalid-feedback">{{ errors.basic_pct }}</div>{% endif %}
+            </div>
+            <div class="col-sm-6 mb-3">
+                <label class="form-label" for="hra_pct">HRA %</label>
+                <input class="form-control {% if errors and errors.hra_pct %}is-invalid{% endif %}" id="hra_pct" name="hra_pct" type="number" min="0" max="100" step="0.1" value="{{ form.hra_pct }}" required>
+                {% if errors and errors.hra_pct %}<div class="invalid-feedback">{{ errors.hra_pct }}</div>{% endif %}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="other_allowances">Other Allowances ₹</label>
+            <input class="form-control {% if errors and errors.other_allowances %}is-invalid{% endif %}" id="other_allowances" name="other_allowances" type="number" min="0" max="10000000" step="1000" value="{{ form.other_allowances }}" required>
+            {% if errors and errors.other_allowances %}<div class="invalid-feedback">{{ errors.other_allowances }}</div>{% endif %}
+        </div>
+
+        <div class="row g-3">
+            <div class="col-sm-6 mb-3">
+                <label class="form-label" for="pf_pct">PF %</label>
+                <input class="form-control {% if errors and errors.pf_pct %}is-invalid{% endif %}" id="pf_pct" name="pf_pct" type="number" min="0" max="100" step="0.1" value="{{ form.pf_pct }}" required>
+                {% if errors and errors.pf_pct %}<div class="invalid-feedback">{{ errors.pf_pct }}</div>{% endif %}
+            </div>
+            <div class="col-sm-6 mb-3">
+                <label class="form-label" for="tax_pct">Tax %</label>
+                <input class="form-control {% if errors and errors.tax_pct %}is-invalid{% endif %}" id="tax_pct" name="tax_pct" type="number" min="0" max="100" step="0.1" value="{{ form.tax_pct }}" required>
+                {% if errors and errors.tax_pct %}<div class="invalid-feedback">{{ errors.tax_pct }}</div>{% endif %}
+            </div>
+        </div>
+
+        <button class="btn btn-gradient w-100" type="submit">Calculate Salary</button>
+    </div>
+</form>
+{% endblock %}
+
+{% block tool_result %}
+<div class="result-section">
+{% if result %}
+<div class="card result-card"><div class="card-body p-4">
+    <h2 class="h5 fw-bold mb-3">Salary Estimate</h2>
+    <div class="result-highlight"><span>Monthly In-hand</span><strong>{{ result.monthly }}</strong></div>
+    <div class="result-row"><span>Annual In-hand</span><strong>{{ result.in_hand }}</strong></div>
+    <div class="result-row"><span>Total Deductions</span><strong>{{ result.total_deductions }}</strong></div>
+    <div class="result-row"><span>PF Amount</span><strong>{{ result.pf }}</strong></div>
+    <div class="result-row"><span>Tax Amount</span><strong>{{ result.tax }}</strong></div>
+    <div class="result-row"><span>Basic Salary</span><strong>{{ result.basic }}</strong></div>
+    <div class="result-row"><span>HRA</span><strong>{{ result.hra }}</strong></div>
+</div></div>
+{% else %}
+<div class="result-empty"><h2 class="h5">Your salary estimate appears here</h2><p class="text-secondary mb-0">Enter your CTC and standard percentages to see monthly and annual in-hand salary.</p></div>
+{% endif %}
+
+<!-- ALWAYS VISIBLE DISCLAIMER BELOW RESULT SECTION -->
+<div class="alert alert-warning mt-3">
+    <strong>Note:</strong> This salary calculator provides approximate results based on simplified assumptions. Actual salary may vary depending on company structure and deductions. This tool is for informational purposes only.
+</div>
+</div>
+{% endblock %}
+
+{% block seo_content %}
+<section class="section-pad bg-soft">
+    <div class="container">
+        <article>
+            <h2 class="h3 fw-bold mb-3">How Salary is Calculated in India</h2>
+            <p>In India, salary structure follows standard components defined by companies to optimize tax benefits. CTC (Cost to Company) is the total annual expense including gross salary + employer contributions. Key components:</p>
+            <ul>
+                <li><strong>Basic Salary</strong> (40-50%): Forms base for PF, gratuity</li>
+                <li><strong>HRA</strong> (40-50% of basic): Rent allowance, tax-exempt up to limits</li>
+                <li><strong>Other Allowances</strong>: Special/ conveyance allowances</li>
+                <li><strong>Employer PF</strong>: 12% contribution (part of CTC)</li>
+            </ul>
+            <p>Deductions from gross: Employee PF (12%), Income Tax (TDS), Professional Tax. Our calculator models this structure for accurate take-home estimates.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Salary Calculation Formula</h2>
+            <p class="formula mb-2">In-hand Salary = CTC – (PF + Tax)</p>
+            <p>Where PF = Basic × PF% and Tax = CTC × Tax% (effective rate)</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Example Calculation</h2>
+            <p>CTC ₹12,00,000, Basic 45%, HRA 50%, PF 12%, Tax 15%:</p>
+            <ul>
+                <li>Basic: ₹5,40,000</li>
+                <li>PF: ₹64,800</li>
+                <li>Tax: ₹1,80,000</li>
+                <li>Total Deductions: ₹2,44,800</li>
+                <li>Annual In-hand: ₹9,55,200</li>
+                <li><strong>Monthly In-hand: ₹79,600</strong></li>
+            </ul>
+        </article>
+
+        {% include "partials/ad_unit.html" %}
+    </div>
+</section>
+{% endblock %}
+
+{% block explanation %}
+The salary calculator converts CTC to in-hand using standard Indian structure. Enter CTC and percentages to see breakdown. Helps compare offers and plan finances.
+{% endblock %}
+
+{% block formula %}
+<p class="formula mb-2">In-hand = CTC - (PF + Tax)</p>
+<p>PF = Basic × 12% | Tax = effective rate on CTC</p>
+{% endblock %}
+
+{% block faq %}
+<div class="accordion-item">
+    <h3 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+            What is CTC?
+        </button>
+    </h3>
+    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Cost to Company - total annual cost to employer including salary + benefits + contributions.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h3 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+            How is in-hand salary calculated?
+        </button>
+    </h3>
+    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Gross salary minus deductions (PF, tax, professional tax). Formula: In-hand = CTC – (PF + Tax).</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h3 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+            Why is in-hand salary lower than CTC?
+        </button>
+    </h3>
+    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">CTC includes employer contributions (PF) and future benefits you don't receive monthly. Deductions reduce take-home.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h3 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+            Is PF mandatory?
+        </button>
+    </h3>
+    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Yes for salary < ₹15,000/month. Above that optional but most companies mandate 12% contribution.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h3 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+            How to increase take-home salary?
+        </button>
+    </h3>
+    <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Tax-saving investments (80C), HRA claims, restructure allowances via FBP. Negotiate higher basic if joining new.</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block faq_schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is CTC?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Cost to Company - total annual cost to employer including salary + benefits + contributions."}
+    },
+    {
+      "@type": "Question",
+      "name": "How is in-hand salary calculated?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Gross salary minus deductions (PF, tax, professional tax). Formula: In-hand = CTC – (PF + Tax)."}
+    },
+    {
+      "@type": "Question",
+      "name": "Why is in-hand salary lower than CTC?",
+      "acceptedAnswer": {"@type": "Answer", "text": "CTC includes employer contributions (PF) and future benefits you don't receive monthly. Deductions reduce take-home."}
+    },
+    {
+      "@type": "Question",
+      "name": "Is PF mandatory?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Yes for salary < ₹15,000/month. Above that optional but most companies mandate 12% contribution."}
+    },
+    {
+      "@type": "Question",
+      "name": "How to increase take-home salary?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Tax-saving investments (80C), HRA claims, restructure allowances via FBP. Negotiate higher basic if joining new."}
+    }
+  ]
+}
+</script>
+{% endblock %}

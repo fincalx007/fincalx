@@ -120,6 +120,37 @@ class TaxInput(BaseModel):
         return _validate_form(cls, gross_income=gross_income, regime=regime, deductions=deductions)
 
 
+class SalaryInput(BaseModel):
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
+    ctc: Annotated[float, Field(ge=1000, le=100000000)]
+    basic_pct: Annotated[float, Field(ge=0, le=100)]
+    hra_pct: Annotated[float, Field(ge=0, le=100)]
+    other_allowances: Annotated[float, Field(ge=0, le=10000000)] = 0
+    pf_pct: Annotated[float, Field(ge=0, le=100)]
+    tax_pct: Annotated[float, Field(ge=0, le=100)]
+
+    @classmethod
+    def as_form(
+        cls,
+        ctc: float = Form(...),
+        basic_pct: float = Form(...),
+        hra_pct: float = Form(...),
+        other_allowances: float = Form(0),
+        pf_pct: float = Form(...),
+        tax_pct: float = Form(...),
+    ) -> "SalaryInput":
+        return _validate_form(
+            cls,
+            ctc=ctc,
+            basic_pct=basic_pct,
+            hra_pct=hra_pct,
+            other_allowances=other_allowances,
+            pf_pct=pf_pct,
+            tax_pct=tax_pct,
+        )
+
+
 class OverlapInput(BaseModel):
     model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
 
