@@ -8,7 +8,7 @@ Estimate maturity value, total invested amount, and projected returns for a mont
 
 
 {% block tool_form %}
-<form method="post" class="card calculator-card" novalidate>
+<form id="sipForm" class="card calculator-card" data-api="/tools/sip-calculator/api" data-result="sip" novalidate>
     <div class="card-body p-4">
         <h2 class="h4 fw-bold mb-4">Enter SIP details</h2>
 
@@ -37,8 +37,8 @@ Estimate maturity value, total invested amount, and projected returns for a mont
                    value="{{ form.years }}" required>
         </div>
 
-        <button class="btn btn-gradient w-100" type="submit">
-            Calculate SIP
+        <button type="button" id="calcBtn" class="btn btn-gradient w-100" data-submit="sip">
+            Calculate
         </button>
     </div>
 </form>
@@ -46,38 +46,37 @@ Estimate maturity value, total invested amount, and projected returns for a mont
 
 
 {% block tool_result %}
-{% if result %}
-<div class="card result-card">
+<div id="result-section">
+<div id="resultBox" class="card result-card" {% if not result %}style="display: none;"{% endif %}>
     <div class="card-body p-4">
         <h2 class="h5 fw-bold mb-3">SIP Estimate</h2>
 
-        <div style="background: linear-gradient(135deg, #6c4cf1, #8b5cf6);
+        <div style="background: #111827;
+                    border: 1px solid rgba(255,255,255,.12);
                     border-radius: 14px; padding: 1.5rem; text-align: center;">
 
             <div class="result-row">
-                <span>Maturity</span>
-                <strong>{{ result.maturity_amount }}</strong>
-            </div>
-
-            <div class="result-row">
-                <span>Total Investment</span>
-                <strong>{{ result.total_invested }}</strong>
+                <span>Total Invested</span>
+                <strong id="investedAmount">{{ result.total_invested if result else "0" }}</strong>
             </div>
 
             <div class="result-row">
                 <span>Returns</span>
-                <strong>{{ result.returns }}</strong>
+                <strong id="returns">{{ result.returns if result else "0" }}</strong>
+            </div>
+
+            <div class="result-row">
+                <span>Maturity Amount</span>
+                <strong id="totalValue" class="fs-4">{{ result.maturity_amount if result else "0" }}</strong>
             </div>
 
         </div>
     </div>
 </div>
 
-{% else %}
-<div class="result-empty">
+<div id="sipResultEmpty" class="result-empty{% if result %} d-none{% endif %}">
     <h2>Your SIP result will appear here</h2>
 </div>
-{% endif %}
 
 <!-- ALWAYS VISIBLE DISCLAIMER -->
 <div class="alert alert-warning mt-3 small">
@@ -137,4 +136,8 @@ n = Total number of months
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/ajax-engine.js"></script>
 {% endblock %}

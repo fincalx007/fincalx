@@ -7,7 +7,7 @@ Estimate income tax for FY 2025-26 under old and new regimes. Compare tax liabil
 {% endblock %}
 
 {% block tool_form %}
-<form method="post" class="card calculator-card" novalidate id="taxForm">
+<form class="card calculator-card" novalidate id="taxForm">
     <div class="card-body p-4">
         <h2 class="h4 fw-bold mb-4">Enter income details</h2>
 
@@ -65,61 +65,46 @@ Estimate income tax for FY 2025-26 under old and new regimes. Compare tax liabil
             <div class="form-text">Used only for old regime estimates. New regime uses a simple standard deduction assumption.</div>
         </div>
 
-        <button class="btn btn-gradient w-100" type="submit">Calculate Tax</button>
+        <button class="btn btn-gradient w-100" type="button" id="taxBtn">Calculate Tax</button>
     </div>
 </form>
-
-<script>
-const regime = document.getElementById("regime");
-const deductions = document.getElementById("deductions");
-
-function toggleDeductions() {
-    if (regime.value === "new") {
-        deductions.disabled = true;
-        deductions.value = 0;
-    } else {
-        deductions.disabled = false;
-    }
-}
-regime.addEventListener("change", toggleDeductions);
-toggleDeductions();
-</script>
 {% endblock %}
 
 {% block tool_result %}
-{% if result %}
-<div class="card result-card">
+<div id="result-section">
+<div id="taxResultBox" class="card result-card" {% if not result %}style="display: none;"{% endif %}>
     <div class="card-body p-4">
         <p class="text-success small">✔ Updated for FY 2025-26</p>
         <h3 class="mb-3">Tax Estimate</h3>
 
-        <div class="result-row"><span>Regime</span><strong>{{ result.regime }}</strong></div>
-        <div class="result-row"><span>Taxable Income</span><strong>{{ result.taxable_income }}</strong></div>
-        <div class="result-row"><span>Base Tax</span><strong>{{ result.base_tax }}</strong></div>
+        <div class="result-row"><span>Regime</span><strong id="taxRegime">{{ result.regime if result else "" }}</strong></div>
+        <div class="result-row"><span>Taxable Income</span><strong id="taxableIncome">{{ result.taxable_income if result else "0" }}</strong></div>
+        <div class="result-row"><span>Base Tax</span><strong id="baseTax">{{ result.base_tax if result else "0" }}</strong></div>
 
-        {% if result.surcharge and result.surcharge != "₹0" %}
-        <div class="result-row"><span>Surcharge</span><strong>{{ result.surcharge }}</strong></div>
-        {% endif %}
+        <div id="surchargeRow" class="result-row" {% if not result or not result.surcharge %}style="display: none;"{% endif %}><span>Surcharge</span><strong id="surcharge">{{ result.surcharge if result else "0" }}</strong></div>
 
-        <div class="result-row"><span>Cess (4%)</span><strong>{{ result.cess }}</strong></div>
+        <div class="result-row"><span>Cess (4%)</span><strong id="cess">{{ result.cess if result else "0" }}</strong></div>
 
         <div style="background:linear-gradient(135deg,#6c4cf1,#8b5cf6);border-radius:14px;padding:1.5rem;margin-top:1rem;text-align:center;box-shadow:0 10px 28px rgba(108,76,241,0.24)">
             <div style="color:rgba(255,255,255,0.9);font-size:.875rem;font-weight:600;margin-bottom:.5rem">Total Tax</div>
-            <div style="color:#fff;font-size:2rem;font-weight:800;line-height:1.2">{{ result.total_tax }}</div>
+            <div id="totalTax" style="color:#fff;font-size:2rem;font-weight:800;line-height:1.2">{{ result.total_tax if result else "0" }}</div>
         </div>
     </div>
 </div>
 
-<p class="small mt-3 text-secondary">
+<p id="taxTip" class="small mt-3 text-secondary" {% if not result %}style="display: none;"{% endif %}>
     Tip: Compare both regimes to choose the one with lower tax.
 </p>
 
-{% else %}
-<div class="result-empty">
+<div id="taxResultEmpty" class="result-empty" {% if result %}style="display: none;"{% endif %}>
     <h2 class="h5">Your tax estimate appears here</h2>
     <p class="text-secondary mb-0">Consult a qualified tax professional for filing decisions.</p>
 </div>
-{% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/tax.js"></script>
 {% endblock %}
 
 {% block tool_disclaimer %}

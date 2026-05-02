@@ -4,7 +4,7 @@
 {% block tool_intro %}Compare two plain stock-name lists and see how many names appear in both. This portfolio overlap checker helps review diversification without storing your lists.{% endblock %}
 
 {% block tool_form %}
-<form method="post" class="card calculator-card" novalidate>
+<form id="overlapForm" class="card calculator-card" data-api="/tools/portfolio-overlap-checker/api" data-result="overlap" novalidate>
     <div class="card-body p-4">
         <h2 class="h4 fw-bold mb-4">Enter portfolio names</h2>
         {% if error %}<div class="alert alert-danger" role="alert">{{ error }}</div>{% endif %}
@@ -18,28 +18,28 @@
             <textarea class="form-control {% if errors and errors.second_portfolio %}is-invalid{% endif %}" id="second_portfolio" name="second_portfolio" rows="6" minlength="1" maxlength="5000" required>{{ form.second_portfolio }}</textarea>
             {% if errors and errors.second_portfolio %}<div class="invalid-feedback">{{ errors.second_portfolio }}</div>{% endif %}
         </div>
-        <button class="btn btn-gradient w-100" type="submit">Check Overlap</button>
+        <button class="btn btn-gradient w-100" type="button" id="overlapBtn" data-submit="overlap">Check Overlap</button>
     </div>
 </form>
 {% endblock %}
 
 {% block tool_result %}
-{% if result %}
-<div class="card result-card"><div class="card-body p-4">
+<div id="result-section">
+<div id="overlapResultBox" class="card result-card" {% if not result %}style="display: none;"{% endif %}><div class="card-body p-4">
     <h2 class="h5 fw-bold mb-3">Overlap Result</h2>
-    <div class="result-row"><span>Portfolio 1 Names</span><strong>{{ result.first_count }}</strong></div>
-    <div class="result-row"><span>Portfolio 2 Names</span><strong>{{ result.second_count }}</strong></div>
-    <div class="result-highlight"><span>Overlap</span><strong>{{ result.overlap_percentage }}</strong></div>
+    <div class="result-row"><span>Portfolio 1 Names</span><strong id="overlapFirstCount">{{ result.first_count if result else "0" }}</strong></div>
+    <div class="result-row"><span>Portfolio 2 Names</span><strong id="overlapSecondCount">{{ result.second_count if result else "0" }}</strong></div>
+    <div class="result-highlight"><span>Overlap</span><strong id="overlapPercentage">{{ result.overlap_percentage if result else "0%" }}</strong></div>
     <h3 class="h6 mt-4">Common names</h3>
-    {% if result.common %}
-    <ul class="mb-0">{% for item in result.common %}<li>{{ item|title }}</li>{% endfor %}</ul>
-    {% else %}
-    <p class="text-secondary mb-0">No common names found.</p>
-    {% endif %}
+    <ul id="overlapCommonList" class="mb-0" {% if not result or not result.common %}style="display: none;"{% endif %}>{% if result and result.common %}{% for item in result.common %}<li>{{ item|title }}</li>{% endfor %}{% endif %}</ul>
+    <p id="overlapNoCommon" class="text-secondary mb-0" {% if result and result.common %}style="display: none;"{% endif %}>No common names found.</p>
 </div></div>
-{% else %}
-<div class="result-empty"><h2 class="h5">Your overlap result appears here</h2><p class="text-secondary mb-0">Names are processed only for this request.</p></div>
-{% endif %}
+<div id="overlapResultEmpty" class="result-empty" {% if result %}style="display: none;"{% endif %}><h2 class="h5">Your overlap result appears here</h2><p class="text-secondary mb-0">Names are processed only for this request.</p></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/ajax-engine.js"></script>
 {% endblock %}
 
 {% block seo_content %}

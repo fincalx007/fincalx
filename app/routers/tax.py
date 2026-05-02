@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 
 from app.forms import TaxInput, validate_form_data
@@ -72,3 +72,48 @@ async def tax_calculate(request: Request):
     }
 
     return templates.TemplateResponse("tools/tax.html", context)
+
+
+@router.post("/income-tax-calculator/api")
+async def tax_calculate_api(request: Request):
+    try:
+        try:
+            raw_data = await request.json()
+        except Exception:
+            return JSONResponse({"error": "Invalid JSON request."}, status_code=400)
+
+        if not isinstance(raw_data, dict):
+            return JSONResponse({"error": "Invalid input data."}, status_code=400)
+
+        cleaned = {
+            "gross_income": _safe_float(raw_data.get("gross_income")),
+            "regime": raw_data.get("regime"),
+            "deductions": _safe_float(raw_data.get("deductions")),
+        }
+
+        data, errors, error = validate_form_data(TaxInput, cleaned)
+        if errors or not data:
+            return JSONResponse({"error": error or "Please check your inputs and try again."}, status_code=400)
+
+        result = calculate_income_tax(data.gross_income, data.regime, data.deductions)
+        return JSONResponse(
+            {
+                "regime": result.get("regime"),
+                "taxable_income": result.get("taxable_income", 0),
+                "base_tax": result.get("base_tax", 0),
+                "cess": result.get("cess", 0),
+                "total_tax": result.get("total_tax", 0),
+                "surcharge": result.get("surcharge", 0),
+            }
+        )
+    except Exception:
+        return JSONResponse({"error": "Calculation failed. Please try again."}, status_code=200)
+
+
+def _safe_float(value):
+    if value is None or value == "":
+        return None
+    try:
+        return float(str(value).replace(",", ""))
+    except (TypeError, ValueError):
+        return None

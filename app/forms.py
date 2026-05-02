@@ -169,6 +169,10 @@ class OverlapInput(BaseModel):
     @classmethod
     def reject_markup(cls, value: str) -> str:
         value = value.strip()
-        if "<" in value or ">" in value:
-            raise ValueError("Please enter stock names only, without markup.")
+        # Block potential XSS/injection patterns
+        dangerous = ["<", ">", "script", "javascript:", "onerror", "onload"]
+        lower = value.lower()
+        for pattern in dangerous:
+            if pattern in lower:
+                raise ValueError("Please enter stock names only.")
         return value

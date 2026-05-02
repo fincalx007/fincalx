@@ -3,9 +3,7 @@
 {% block tool_title %}Salary Calculator India 2026 – In-hand Salary from CTC{% endblock %}
 {% block tool_intro %}Calculate your in-hand salary from CTC instantly with this free salary calculator India. Enter your annual CTC and standard percentages to get a detailed monthly and annual take-home breakdown after PF, tax deductions, and other components. 
 
-Perfect for job seekers comparing offers, employees reviewing payslips, or anyone curious about the real take-home from published CTC figures. This tool uses simplified but realistic Indian salary structure assumptions: basic salary (typically 40-50%), HRA (up to 50% of basic), employer/employee PF (12%), and effective tax rate.
-
-Unlike complex tax software, our calculator provides instant results without registration. Understand why your bank balance is lower than expected CTC, plan your savings better, and make informed career decisions. All calculations are private - no data stored. (128 words){% endblock %}
+{% endblock %}
 
 {% block head_extra %}
 <meta name="description" content="Calculate your in-hand salary from CTC instantly. Free salary calculator India with PF, tax, and monthly breakdown.">
@@ -13,7 +11,7 @@ Unlike complex tax software, our calculator provides instant results without reg
 {% endblock %}
 
 {% block tool_form %}
-<form method="post" class="card calculator-card" novalidate>
+<form id="salaryForm" class="card calculator-card" data-api="/tools/salary-calculator/api" data-result="salary" novalidate>
     <div class="card-body p-4">
         <h2 class="h4 fw-bold mb-4">Enter salary details</h2>
         {% if error %}<div class="alert alert-danger" role="alert">{{ error }}</div>{% endif %}
@@ -56,33 +54,34 @@ Unlike complex tax software, our calculator provides instant results without reg
             </div>
         </div>
 
-        <button class="btn btn-gradient w-100" type="submit">Calculate Salary</button>
+        <button class="btn btn-gradient w-100" type="button" id="salaryBtn" data-submit="salary">Calculate Salary</button>
     </div>
 </form>
 {% endblock %}
 
 {% block tool_result %}
-<div class="result-section">
-{% if result %}
-<div class="card result-card"><div class="card-body p-4">
+<div id="result-section" class="result-section">
+<div id="salaryResultBox" class="card result-card" {% if not result %}style="display: none;"{% endif %}><div class="card-body p-4">
     <h2 class="h5 fw-bold mb-3">Salary Estimate</h2>
-    <div class="result-highlight"><span>Monthly In-hand</span><strong>{{ result.monthly }}</strong></div>
-    <div class="result-row"><span>Annual In-hand</span><strong>{{ result.in_hand }}</strong></div>
-    <div class="result-row"><span>Total Deductions</span><strong>{{ result.total_deductions }}</strong></div>
-    <div class="result-row"><span>PF Amount</span><strong>{{ result.pf }}</strong></div>
-    <div class="result-row"><span>Tax Amount</span><strong>{{ result.tax }}</strong></div>
-    <div class="result-row"><span>Basic Salary</span><strong>{{ result.basic }}</strong></div>
-    <div class="result-row"><span>HRA</span><strong>{{ result.hra }}</strong></div>
+    <div class="result-highlight"><span>Monthly In-hand</span><strong id="salaryMonthly">{{ result.monthly if result else "0" }}</strong></div>
+    <div class="result-row"><span>Annual In-hand</span><strong id="salaryInHand">{{ result.in_hand if result else "0" }}</strong></div>
+    <div class="result-row"><span>Total Deductions</span><strong id="salaryTotalDeductions">{{ result.total_deductions if result else "0" }}</strong></div>
+    <div class="result-row"><span>PF Amount</span><strong id="salaryPf">{{ result.pf if result else "0" }}</strong></div>
+    <div class="result-row"><span>Tax Amount</span><strong id="salaryTax">{{ result.tax if result else "0" }}</strong></div>
+    <div class="result-row"><span>Basic Salary</span><strong id="salaryBasic">{{ result.basic if result else "0" }}</strong></div>
+    <div class="result-row"><span>HRA</span><strong id="salaryHra">{{ result.hra if result else "0" }}</strong></div>
 </div></div>
-{% else %}
-<div class="result-empty"><h2 class="h5">Your salary estimate appears here</h2><p class="text-secondary mb-0">Enter your CTC and standard percentages to see monthly and annual in-hand salary.</p></div>
-{% endif %}
+<div id="salaryResultEmpty" class="result-empty" {% if result %}style="display: none;"{% endif %}><h2 class="h5">Your salary estimate appears here</h2><p class="text-secondary mb-0">Enter your CTC and standard percentages to see monthly and annual in-hand salary.</p></div>
 
 <!-- ALWAYS VISIBLE DISCLAIMER BELOW RESULT SECTION -->
 <div class="alert alert-warning mt-3">
     <strong>Note:</strong> This salary calculator provides approximate results based on simplified assumptions. Actual salary may vary depending on company structure and deductions. This tool is for informational purposes only.
 </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/ajax-engine.js"></script>
 {% endblock %}
 
 {% block seo_content %}

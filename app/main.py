@@ -174,7 +174,7 @@ async def ads_txt():
     return PlainTextResponse("google.com, ca-pub-7541563552796195, DIRECT, f08c47fec0942fa0")
 
 # ============================
-# ✅ ROUTERS
+# ✅ ROUTERS (Structured for Scalability)
 # ============================
 
 app.include_router(home.router)
@@ -184,4 +184,15 @@ app.include_router(salary.router)
 # app.include_router(tax.router)  # Disabled
 app.include_router(overlap.router)
 app.include_router(legal.router)
+
+
+# ============================================
+# ✅ API ROUTES (Ready for AJAX/Future Apps)
+# ============================================
+
+# Legacy: API structure available in calculator_base.py
+# Example API patterns:
+# @app.get("/api/v1/emi")       # JSON API for EMI
+# @app.get("/api/v1/sip")       # JSON API for SIP
+# @app.post("/api/v1/calculate") # Universal calculate endpoint
 

@@ -4,7 +4,7 @@
 {% block tool_intro %}Calculate monthly loan EMI, total interest, and total payment for a fixed-rate loan. This free EMI calculator India helps compare loan affordability quickly and privately.{% endblock %}
 
 {% block tool_form %}
-<form method="post" class="card calculator-card" novalidate>
+<form id="emiForm" class="card calculator-card" data-api="/tools/emi-calculator/api" data-result="emi" novalidate>
     <div class="card-body p-4">
         <h2 class="h4 fw-bold mb-4">Enter loan details</h2>
         {% if error %}<div class="alert alert-danger" role="alert">{{ error }}</div>{% endif %}
@@ -23,22 +23,25 @@
             <input class="form-control {% if errors and errors.years %}is-invalid{% endif %}" id="years" name="years" type="number" min="1" max="40" step="1" value="{{ form.years }}" required>
             {% if errors and errors.years %}<div class="invalid-feedback">{{ errors.years }}</div>{% endif %}
         </div>
-        <button class="btn btn-gradient w-100" type="submit">Calculate EMI</button>
+        <button class="btn btn-gradient w-100" type="button" id="emiBtn" data-submit="emi">Calculate EMI</button>
     </div>
 </form>
 {% endblock %}
 
 {% block tool_result %}
-{% if result %}
-<div class="card result-card"><div class="card-body p-4">
+<div id="result-section">
+<div id="emiResultBox" class="card result-card" {% if not result %}style="display: none;"{% endif %}><div class="card-body p-4">
     <h2 class="h5 fw-bold mb-3">EMI Estimate</h2>
-    <div class="result-highlight"><span>Monthly EMI</span><strong>{{ result.emi }}</strong></div>
-    <div class="result-row"><span>Total Interest</span><strong>{{ result.total_interest }}</strong></div>
-    <div class="result-row"><span>Total Payment</span><strong>{{ result.total_payment }}</strong></div>
+    <div class="result-highlight"><span>Monthly EMI</span><strong id="emiValue">{{ result.emi if result else "0" }}</strong></div>
+    <div class="result-row"><span>Total Interest</span><strong id="emiTotalInterest">{{ result.total_interest if result else "0" }}</strong></div>
+    <div class="result-row"><span>Total Payment</span><strong id="emiTotalPayment">{{ result.total_payment if result else "0" }}</strong></div>
 </div></div>
-{% else %}
-<div class="result-empty"><h2 class="h5">Your EMI estimate appears here</h2><p class="text-secondary mb-0">Use lender documents for final loan terms.</p></div>
-{% endif %}
+<div id="emiResultEmpty" class="result-empty" {% if result %}style="display: none;"{% endif %}><h2 class="h5">Your EMI estimate appears here</h2><p class="text-secondary mb-0">Use lender documents for final loan terms.</p></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/ajax-engine.js"></script>
 {% endblock %}
 
 {% block seo_content %}
