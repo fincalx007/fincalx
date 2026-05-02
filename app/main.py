@@ -169,10 +169,14 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 # ✅ ADS.TXT for AdSense
 # ============================
 
+from fastapi.responses import PlainTextResponse
+
 @app.get("/ads.txt", include_in_schema=False)
 async def ads_txt():
-    return PlainTextResponse("google.com, ca-pub-7541563552796195, DIRECT, f08c47fec0942fa0")
-
+    return PlainTextResponse(
+        content="google.com, ca-pub-7541563552796195, DIRECT, f08c47fec0942fa0",
+        media_type="text/plain"
+    )
 # ============================
 # ✅ ROUTERS (Structured for Scalability)
 # ============================
