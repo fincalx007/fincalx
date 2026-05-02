@@ -171,7 +171,9 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 from fastapi.responses import PlainTextResponse
 
-@app.get("/ads.txt", include_in_schema=False)
+from fastapi.responses import PlainTextResponse
+
+@app.api_route("/ads.txt", methods=["GET", "HEAD"], include_in_schema=False)
 async def ads_txt():
     return PlainTextResponse(
         content="google.com, ca-pub-7541563552796195, DIRECT, f08c47fec0942fa0",
