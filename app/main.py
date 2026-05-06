@@ -7,8 +7,9 @@ from fastapi.templating import Jinja2Templates
 import logging
 import sys
 
-from app.routers import emi, home, legal, overlap, salary, sip
+from app.routers import contact, emi, home, legal, overlap, salary, sip
 from app.security import RateLimitMiddleware, add_security_headers
+
 
 # ============================
 # ✅ LOGGING
@@ -184,12 +185,14 @@ async def ads_txt():
 # ============================
 
 app.include_router(home.router)
+app.include_router(contact.router)
 app.include_router(sip.router)
 app.include_router(emi.router)
 app.include_router(salary.router)
 # app.include_router(tax.router)  # Disabled
 app.include_router(overlap.router)
 app.include_router(legal.router)
+
 
 
 # ============================================
