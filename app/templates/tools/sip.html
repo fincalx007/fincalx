@@ -92,6 +92,8 @@ Please consult a qualified professional before making financial decisions.
 A Systematic Investment Plan (SIP) allows you to invest a fixed amount every month in mutual funds. 
 Over time, your investment benefits from compounding and rupee cost averaging, helping reduce risk 
 and grow wealth steadily.
+
+This calculator uses a standard future value model with the assumption of a steady expected annual return. It is designed for quick, educational estimates so you can understand how changing monthly investment, expected return, or investment duration may affect the projected maturity value.
 {% endblock %}
 
 
@@ -117,9 +119,9 @@ n = Total number of months
             What is SIP?
         </button>
     </h2>
-    <div id="faq1" class="accordion-collapse collapse show">
+    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
         <div class="accordion-body">
-            SIP (Systematic Investment Plan) allows you to invest small amounts regularly in mutual funds.
+            SIP (Systematic Investment Plan) is a method of investing a fixed amount on a regular schedule, usually monthly, in mutual funds. It encourages discipline and lets you build wealth over time.
         </div>
     </div>
 </div>
@@ -127,12 +129,64 @@ n = Total number of months
 <div class="accordion-item">
     <h2 class="accordion-header">
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-            Is SIP safe?
+            How are SIP returns estimated here?
         </button>
     </h2>
-    <div id="faq2" class="accordion-collapse collapse">
+    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
         <div class="accordion-body">
-            SIPs are subject to market risk, but they reduce volatility through disciplined investing.
+            The tool assumes a steady expected annual return and compounds it monthly. Actual mutual fund performance can vary due to market movements and fund expenses.
+        </div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+            Can SIP returns be negative?
+        </button>
+    </h2>
+    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+            Yes. SIPs are subject to market risk. If the selected fund underperforms over the chosen period, the realized returns may be lower than expected or even negative.
+        </div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+            Is this financial advice?
+        </button>
+    </h2>
+    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+            No. This calculator provides educational projections only. It does not account for your specific situation and does not constitute financial, investment, tax, or legal advice.
+        </div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+            What assumptions does the SIP calculator use?
+        </button>
+    </h2>
+    <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+            It assumes regular monthly investing, an expected constant annual return, and compounding across months. It also treats all contributions as occurring at the same monthly intervals.
+        </div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+            How does tenure affect maturity value?
+        </button>
+    </h2>
+    <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">
+            In general, longer tenures allow more time for compounding, which may increase the projected maturity amount. However, market performance can still differ from expectations.
         </div>
     </div>
 </div>

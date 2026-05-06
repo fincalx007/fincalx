@@ -553,7 +553,10 @@ html[data-theme="dark"] .accordion-button::after {
 .accordion-body {
     background: var(--card-bg);
     color: var(--text-secondary);
+    padding: 1rem 1.25rem;
+    line-height: 1.55;
 }
+
 
 .accordion-button:not(.collapsed) {
     background: var(--purple-soft);
@@ -823,4 +826,14 @@ textarea {
         flex-direction: column;
         gap: 0.35rem;
     }
+
+    .related-tools {
+        padding: 1rem;
+        gap: 0.9rem;
+    }
+
+    .related-links {
+        justify-content: flex-start;
+    }
 }
+

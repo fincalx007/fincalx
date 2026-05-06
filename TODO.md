@@ -1,37 +1,21 @@
-# Project Improvements Completed
+# TODO - FinCalX AdSense-safe educational/SEO improvements
 
-## Frontend Improvements ✓
-- [x] JavaScript enhancements for UX
-- [x] CSS animations and transitions
-- [x] No template changes needed
+## Step 1: Update calculator pages (template-only; no form/API/JS changes)
+- [x] sip.html: add Intro, How it works, Benefits, Example scenario; expand FAQ to 4–6 items; ensure accordion targets work with existing faqAccordion container.
+- [x] emi.html: ensure required educational sections exist below calculator UI (Intro/How it works/Benefits/Example/FAQ); add missing Benefits section if absent; verify FAQ count (4–6) and soften any potentially promotional wording.
+- [x] salary.html: add required educational sections below calculator UI (Intro/How it works/Benefits/Example/FAQ); improve FAQ to 4–6 items; keep existing form ids and calculator behavior intact.
+- [x] overlap.html: add required educational sections below calculator UI (Intro/How it works/Benefits/Example/FAQ); ensure FAQ count 4–6.
+- [x] tax.html: add missing Intro/How it works/Benefits/Example/FAQ sections; expand FAQ to 4–6.
 
-## Backend Refactoring ✓
 
-### 1. Organized Code into Clean Modules
-- [x] Created `calculator_base.py` with base classes and utilities
-- [x] Standardized router structure
+## Step 2: Improve homepage (template-only)
+- [ ] home.html: add/strengthen Popular Calculators section and Why Use FinCalX section (trust + educational tone).
 
-### 2. Removed Duplication
-- [x] Each router now follows identical pattern:
-  - Constants for DEFAULTS, PAGE_TITLE, PAGE_DESC, TEMPLATE
-  - GET endpoint (render page)
-  - POST endpoint (calculate)
-  - _context() function
+## Step 3: AdSense safety review (template-only)
+- [ ] Ensure all calculator text uses educational/estimate language (no guarantees, no misleading “accuracy promises”).
+- [ ] Ensure disclaimers are clearly visible; align wording with existing legal pages.
 
-### 3. Standardized API Patterns
-- [x] All calculators use:
-  - `validate_form_data()` from forms.py
-  - `money()` or `percent()` for formatting
-  - Same context structure
+## Step 4: Verify constraints
+- [ ] Do not modify backend services, calculation formulas, routes, AJAX engine, CSP settings, or form IDs/input names/result IDs/JS behavior.
+- [ ] Only modify templates and (optionally) static CSS if necessary for readability (avoid heavy redesign).
 
-### 4. Consistent Structure
-- [x] emi.py - standardized
-- [x] sip.py - standardized  
-- [x] salary.py - standardized
-- [x] overlap.py - standardized
-
-### 5. Ready for Future Features
-- [x] calculator_base.py provides:
-  - CalculatorBase abstract class
-  - handle_form() utility function
-  - API route placeholders in main.py
