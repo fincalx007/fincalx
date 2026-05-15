@@ -42,8 +42,20 @@ async def home(request: Request):
         "home.html",
         {
             "request": request,
-            "title": "SIP Calculator India | EMI & Tax Calculator",
-            "description": "Free SIP, EMI, and Income Tax calculators for India. Fast, accurate, and no login required.",
+            "title": "FinCalX India | SIP, EMI, Salary & Portfolio Calculators",
+            "description": "Free SIP, EMI, salary, and portfolio overlap calculators for India. Fast, private, and no login required.",
             "tools": tools,
+        },
+    )
+
+
+@router.get("/about", response_class=HTMLResponse, name="about_page")
+async def about(request: Request):
+    return templates.TemplateResponse(
+        "about.html",
+        {
+            "request": request,
+            "title": "About FinCalX | Private Financial Calculators India",
+            "description": "Learn about FinCalX, a privacy-friendly finance education platform with free SIP, EMI, salary, and portfolio overlap calculators.",
         },
     )

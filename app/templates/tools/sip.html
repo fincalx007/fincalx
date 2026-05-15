@@ -3,7 +3,7 @@
 {% block tool_title %}SIP Calculator India{% endblock %}
 
 {% block tool_intro %}
-Estimate maturity value, total invested amount, and projected returns for a monthly SIP.
+Estimate maturity value, total invested amount, and projected returns for a monthly SIP. Adjust contribution, expected return, and duration to understand long-term compounding scenarios.
 {% endblock %}
 
 
@@ -75,7 +75,8 @@ Estimate maturity value, total invested amount, and projected returns for a mont
 </div>
 
 <div id="sipResultEmpty" class="result-empty{% if result %} d-none{% endif %}">
-    <h2>Your SIP result will appear here</h2>
+    <h2 class="h5">Your SIP result will appear here</h2>
+    <p class="text-secondary mb-0">Change the inputs to compare different monthly investment plans.</p>
 </div>
 
 <!-- ALWAYS VISIBLE DISCLAIMER -->
@@ -89,9 +90,7 @@ Please consult a qualified professional before making financial decisions.
 
 
 {% block explanation %}
-A Systematic Investment Plan (SIP) allows you to invest a fixed amount every month in mutual funds. 
-Over time, your investment benefits from compounding and rupee cost averaging, helping reduce risk 
-and grow wealth steadily.
+A Systematic Investment Plan (SIP) allows you to invest a fixed amount every month in mutual funds or similar market-linked products. It can support disciplined investing and gives your money more time to compound, but returns are not guaranteed and market value can move up or down.
 
 This calculator uses a standard future value model with the assumption of a steady expected annual return. It is designed for quick, educational estimates so you can understand how changing monthly investment, expected return, or investment duration may affect the projected maturity value.
 {% endblock %}

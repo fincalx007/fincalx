@@ -131,7 +131,7 @@ def render_template(
     return templates.TemplateResponse(template, context)
 
 
-def handle_form(
+async def handle_form(
     request: Request,
     form_model: type,
     calculate_fn: callable,

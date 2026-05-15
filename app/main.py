@@ -1,10 +1,11 @@
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, PlainTextResponse, Response
+from fastapi.responses import HTMLResponse, PlainTextResponse, RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import logging
+from pathlib import Path
 import sys
 
 from app.routers import contact, emi, home, legal, overlap, salary, sip
@@ -23,6 +24,9 @@ logging.basicConfig(
 logger = logging.getLogger("fincalx")
 
 ALLOWED_ORIGINS = ["http://localhost:8000"]
+CANONICAL_HOST = "getfincalx.com"
+REDIRECT_HOSTS = {"www.getfincalx.com"}
+ADS_TXT_PATH = Path("app/static/ads.txt")
 
 # ============================
 # ✅ MAIN APP (ONLY ONE!)
@@ -42,6 +46,15 @@ app = FastAPI(
 # ============================
 
 app.middleware("http")(add_security_headers)
+
+
+@app.middleware("http")
+async def canonical_host_redirect(request: Request, call_next):
+    if request.url.hostname in REDIRECT_HOSTS:
+        url = request.url.replace(netloc=CANONICAL_HOST)
+        return RedirectResponse(str(url), status_code=301)
+
+    return await call_next(request)
 
 # ============================
 # ✅ TEMPLATES
@@ -170,15 +183,11 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 # ✅ ADS.TXT for AdSense
 # ============================
 
-from fastapi.responses import PlainTextResponse
-
-from fastapi.responses import PlainTextResponse
-
 @app.api_route("/ads.txt", methods=["GET", "HEAD"], include_in_schema=False)
 async def ads_txt():
     return PlainTextResponse(
-        content="google.com, ca-pub-7541563552796195, DIRECT, f08c47fec0942fa0",
-        media_type="text/plain"
+        ADS_TXT_PATH.read_text(encoding="utf-8").rstrip("\r\n"),
+        media_type="text/plain",
     )
 # ============================
 # ✅ ROUTERS (Structured for Scalability)

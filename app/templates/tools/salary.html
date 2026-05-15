@@ -5,11 +5,6 @@
 
 {% endblock %}
 
-{% block head_extra %}
-<meta name="description" content="Calculate your in-hand salary from CTC instantly. Free salary calculator India with PF, tax, and monthly breakdown.">
-<meta name="keywords" content="salary calculator india, in hand salary calculator, ctc to in hand salary">
-{% endblock %}
-
 {% block tool_form %}
 <form id="salaryForm" class="card calculator-card" data-api="/tools/salary-calculator/api" data-result="salary" novalidate>
     <div class="card-body p-4">
@@ -96,7 +91,7 @@
                 <li><strong>Other Allowances</strong>: Special/ conveyance allowances</li>
                 <li><strong>Employer PF</strong>: 12% contribution (part of CTC)</li>
             </ul>
-            <p>Deductions from gross: Employee PF (12%), Income Tax (TDS), Professional Tax. Our calculator models this structure for accurate take-home estimates.</p>
+            <p>Deductions from gross salary can include employee PF, tax deducted at source, professional tax, insurance, and employer-specific benefits. This calculator uses the percentages you enter to create a transparent estimate, so it is useful for comparing offers and understanding how salary structure affects monthly take-home pay.</p>
         </article>
 
         <article class="mt-5">
@@ -124,12 +119,12 @@
 {% endblock %}
 
 {% block explanation %}
-The salary calculator converts CTC to in-hand using standard Indian structure. Enter CTC and percentages to see breakdown. Helps compare offers and plan finances.
+The salary calculator converts annual CTC into an estimated monthly and annual in-hand amount using the structure you enter. It separates basic salary, HRA, PF, estimated tax, and other allowances so you can understand why take-home pay is different from CTC. Use it to compare job offers, review payroll assumptions, and plan monthly cash flow. Actual salary can vary because companies use different benefit structures, professional tax rules, insurance deductions, bonus timing, and tax declarations.
 {% endblock %}
 
 {% block formula %}
 <p class="formula mb-2">In-hand = CTC - (PF + Tax)</p>
-<p>PF = Basic × 12% | Tax = effective rate on CTC</p>
+<p class="text-secondary mb-0">PF is based on the basic salary percentage you enter. Tax is treated as an effective percentage for estimation, not as a full income-tax filing calculation.</p>
 {% endblock %}
 
 {% block faq %}
