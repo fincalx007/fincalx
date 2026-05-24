@@ -1,9 +1,7 @@
 {% extends "tools/tool_base.html" %}
 
-{% block tool_title %}Salary Calculator India 2026 – In-hand Salary from CTC{% endblock %}
-{% block tool_intro %}Calculate your in-hand salary from CTC instantly with this free salary calculator India. Enter your annual CTC and standard percentages to get a detailed monthly and annual take-home breakdown after PF, tax deductions, and other components. 
-
-{% endblock %}
+{% block tool_title %}Salary Calculator India 2026 - In-hand Salary from CTC{% endblock %}
+{% block tool_intro %}Estimate monthly and annual in-hand salary from CTC using your selected basic, HRA, PF, tax, and allowance assumptions. Use it to understand how salary structure affects take-home pay.{% endblock %}
 
 {% block tool_form %}
 <form id="salaryForm" class="card calculator-card" data-api="/tools/salary-calculator/api" data-result="salary" novalidate>
@@ -12,7 +10,7 @@
         {% if error %}<div class="alert alert-danger" role="alert">{{ error }}</div>{% endif %}
 
         <div class="mb-3">
-            <label class="form-label" for="ctc">CTC (Annual) ₹</label>
+            <label class="form-label" for="ctc">CTC (Annual) Rs.</label>
             <input class="form-control {% if errors and errors.ctc %}is-invalid{% endif %}" id="ctc" name="ctc" type="number" min="1000" max="100000000" step="1000" value="{{ form.ctc }}" required>
             {% if errors and errors.ctc %}<div class="invalid-feedback">{{ errors.ctc }}</div>{% endif %}
         </div>
@@ -31,7 +29,7 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label" for="other_allowances">Other Allowances ₹</label>
+            <label class="form-label" for="other_allowances">Other Allowances Rs.</label>
             <input class="form-control {% if errors and errors.other_allowances %}is-invalid{% endif %}" id="other_allowances" name="other_allowances" type="number" min="0" max="10000000" step="1000" value="{{ form.other_allowances }}" required>
             {% if errors and errors.other_allowances %}<div class="invalid-feedback">{{ errors.other_allowances }}</div>{% endif %}
         </div>
@@ -68,58 +66,109 @@
 </div></div>
 <div id="salaryResultEmpty" class="result-empty" {% if result %}style="display: none;"{% endif %}><h2 class="h5">Your salary estimate appears here</h2><p class="text-secondary mb-0">Enter your CTC and standard percentages to see monthly and annual in-hand salary.</p></div>
 
-<!-- ALWAYS VISIBLE DISCLAIMER BELOW RESULT SECTION -->
 <div class="alert alert-warning mt-3">
-    <strong>Note:</strong> This salary calculator provides approximate results based on simplified assumptions. Actual salary may vary depending on company structure and deductions. This tool is for informational purposes only.
+    <strong>Disclaimer:</strong> This salary calculator provides approximate results based on simplified assumptions. Actual salary can vary by employer policy, reimbursements, bonuses, professional tax, insurance, declarations, and tax law. This tool is for informational purposes only; consult a qualified tax or payroll professional for decisions.
 </div>
 </div>
-{% endblock %}
-
-{% block scripts %}
-<script src="/static/js/ajax-engine.js"></script>
 {% endblock %}
 
 {% block seo_content %}
 <section class="section-pad bg-soft">
     <div class="container">
         <article>
-            <h2 class="h3 fw-bold mb-3">How Salary is Calculated in India</h2>
-            <p>In India, salary structure follows standard components defined by companies to optimize tax benefits. CTC (Cost to Company) is the total annual expense including gross salary + employer contributions. Key components:</p>
-            <ul>
-                <li><strong>Basic Salary</strong> (40-50%): Forms base for PF, gratuity</li>
-                <li><strong>HRA</strong> (40-50% of basic): Rent allowance, tax-exempt up to limits</li>
-                <li><strong>Other Allowances</strong>: Special/ conveyance allowances</li>
-                <li><strong>Employer PF</strong>: 12% contribution (part of CTC)</li>
-            </ul>
-            <p>Deductions from gross salary can include employee PF, tax deducted at source, professional tax, insurance, and employer-specific benefits. This calculator uses the percentages you enter to create a transparent estimate, so it is useful for comparing offers and understanding how salary structure affects monthly take-home pay.</p>
-        </article>
-
-        <article class="mt-5">
-            <h2 class="h3 fw-bold mb-3">Salary Calculation Formula</h2>
-            <p class="formula mb-2">In-hand Salary = CTC – (PF + Tax)</p>
-            <p>Where PF = Basic × PF% and Tax = CTC × Tax% (effective rate)</p>
-        </article>
-
-        <article class="mt-5">
-            <h2 class="h3 fw-bold mb-3">Example Calculation</h2>
-            <p>CTC ₹12,00,000, Basic 45%, HRA 50%, PF 12%, Tax 15%:</p>
-            <ul>
-                <li>Basic: ₹5,40,000</li>
-                <li>PF: ₹64,800</li>
-                <li>Tax: ₹1,80,000</li>
-                <li>Total Deductions: ₹2,44,800</li>
-                <li>Annual In-hand: ₹9,55,200</li>
-                <li><strong>Monthly In-hand: ₹79,600</strong></li>
-            </ul>
+            <h2 class="h3 fw-bold mb-3">Introduction to CTC and In-hand Salary</h2>
+            <p class="text-secondary">CTC, or Cost to Company, is the total annual cost an employer associates with your compensation. It may include fixed salary, allowances, employer contributions, insurance, benefits, and variable components. In-hand salary is the amount you actually receive after deductions.</p>
+            <p class="text-secondary mb-0">The FinCalX salary calculator helps you estimate take-home pay by separating basic salary, HRA, PF, tax, other allowances, and deductions based on the percentages you enter.</p>
         </article>
 
         {% include "partials/ad_unit.html" %}
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">How it works</h2>
+            <p class="text-secondary">Enter your annual CTC and the percentages used for basic salary, HRA, PF, and tax. The calculator estimates component values, total deductions, annual in-hand salary, and monthly in-hand salary.</p>
+            <p class="text-secondary mb-0">This is a simplified salary model. It helps compare offers and assumptions, but it is not a full payroll or income-tax computation.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Formula used</h2>
+            <p class="formula mb-2">In-hand Salary = CTC - (PF + Tax)</p>
+            <p class="text-secondary mb-0">PF is based on the basic salary percentage you enter. Tax is treated as an effective percentage for estimation, not as a complete tax return calculation.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Example calculation</h2>
+            <p class="text-secondary">For a CTC of Rs. 12,00,000 with basic salary at 45%, HRA at 50%, PF at 12%, and effective tax at 15%, an approximate breakdown may be:</p>
+            <ul class="text-secondary">
+                <li>Basic salary: Rs. 5,40,000</li>
+                <li>PF: Rs. 64,800</li>
+                <li>Tax: Rs. 1,80,000</li>
+                <li>Total deductions: Rs. 2,44,800</li>
+                <li>Annual in-hand salary: Rs. 9,55,200</li>
+                <li><strong>Monthly in-hand salary: Rs. 79,600</strong></li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Benefits and use cases</h2>
+            <ul class="text-secondary">
+                <li>Compare job offers beyond headline CTC.</li>
+                <li>Estimate monthly cash flow before accepting an offer.</li>
+                <li>Understand how PF and tax assumptions affect take-home pay.</li>
+                <li>Review the difference between CTC, gross pay, and in-hand salary.</li>
+                <li>Prepare better questions for HR, payroll, or a tax professional.</li>
+            </ul>
+        </article>
+    </div>
+</section>
+{% endblock %}
+
+{% block advanced_content %}
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4">
+            <article class="col-lg-6">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">When should you use this calculator?</h2>
+                    <p class="text-secondary">Use the salary calculator when comparing job offers, checking a revised CTC, planning monthly expenses after a raise, or understanding why the take-home amount is lower than the headline package.</p>
+                    <p class="text-secondary mb-0">It can also help before negotiation, because you can ask sharper questions about basic pay, allowances, PF, tax withholding, bonuses, and reimbursements.</p>
+                </div>
+            </article>
+            <article class="col-lg-6">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">Common mistakes people make</h2>
+                    <ul class="text-secondary mb-0">
+                        <li>Comparing two offers only by CTC without checking monthly in-hand pay.</li>
+                        <li>Treating variable bonus, joining bonus, reimbursements, and benefits as guaranteed monthly cash.</li>
+                        <li>Ignoring PF, professional tax, insurance, and tax declaration impact.</li>
+                        <li>Building a monthly budget before confirming the exact salary structure with HR.</li>
+                    </ul>
+                </div>
+            </article>
+            <article class="col-lg-4">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">Financial planning tips</h2>
+                    <p class="text-secondary mb-0">Plan expenses from expected monthly in-hand pay, not CTC. Keep bonuses and reimbursements separate in your budget until you know when and how they are paid.</p>
+                </div>
+            </article>
+            <article class="col-lg-4">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">Things to consider</h2>
+                    <p class="text-secondary mb-0">This calculator uses simplified assumptions. Actual payroll can depend on tax regime, exemptions, city rules, employer benefits, leave encashment, stock compensation, and declaration timing.</p>
+                </div>
+            </article>
+            <article class="col-lg-4">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">Who can benefit?</h2>
+                    <p class="text-secondary mb-0">Salaried employees, fresh graduates, job switchers, freelancers moving to full-time roles, and students learning payroll basics can use this tool to understand take-home pay.</p>
+                </div>
+            </article>
+        </div>
     </div>
 </section>
 {% endblock %}
 
 {% block explanation %}
-The salary calculator converts annual CTC into an estimated monthly and annual in-hand amount using the structure you enter. It separates basic salary, HRA, PF, estimated tax, and other allowances so you can understand why take-home pay is different from CTC. Use it to compare job offers, review payroll assumptions, and plan monthly cash flow. Actual salary can vary because companies use different benefit structures, professional tax rules, insurance deductions, bonus timing, and tax declarations.
+The salary calculator converts annual CTC into an estimated monthly and annual in-hand amount using the structure you enter. It separates basic salary, HRA, PF, estimated tax, and other allowances so you can understand why take-home pay is different from CTC. Actual salary can vary because companies use different benefit structures, professional tax rules, insurance deductions, bonus timing, and tax declarations.
 {% endblock %}
 
 {% block formula %}
@@ -128,60 +177,11 @@ The salary calculator converts annual CTC into an estimated monthly and annual i
 {% endblock %}
 
 {% block faq %}
-<div class="accordion-item">
-    <h3 class="accordion-header">
-        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-            What is CTC?
-        </button>
-    </h3>
-    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
-        <div class="accordion-body">Cost to Company - total annual cost to employer including salary + benefits + contributions.</div>
-    </div>
-</div>
-
-<div class="accordion-item">
-    <h3 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-            How is in-hand salary calculated?
-        </button>
-    </h3>
-    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-        <div class="accordion-body">Gross salary minus deductions (PF, tax, professional tax). Formula: In-hand = CTC – (PF + Tax).</div>
-    </div>
-</div>
-
-<div class="accordion-item">
-    <h3 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
-            Why is in-hand salary lower than CTC?
-        </button>
-    </h3>
-    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-        <div class="accordion-body">CTC includes employer contributions (PF) and future benefits you don't receive monthly. Deductions reduce take-home.</div>
-    </div>
-</div>
-
-<div class="accordion-item">
-    <h3 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
-            Is PF mandatory?
-        </button>
-    </h3>
-    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-        <div class="accordion-body">Yes for salary < ₹15,000/month. Above that optional but most companies mandate 12% contribution.</div>
-    </div>
-</div>
-
-<div class="accordion-item">
-    <h3 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
-            How to increase take-home salary?
-        </button>
-    </h3>
-    <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-        <div class="accordion-body">Tax-saving investments (80C), HRA claims, restructure allowances via FBP. Negotiate higher basic if joining new.</div>
-    </div>
-</div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#salaryFaq1">What is CTC?</button></h3><div id="salaryFaq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion"><div class="accordion-body">CTC means Cost to Company. It is the total annual cost of your compensation to the employer, including salary, benefits, and contributions.</div></div></div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#salaryFaq2">How is in-hand salary calculated?</button></h3><div id="salaryFaq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">In this calculator, estimated in-hand salary equals CTC minus PF and tax based on the assumptions you enter.</div></div></div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#salaryFaq3">Why is in-hand salary lower than CTC?</button></h3><div id="salaryFaq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">CTC may include employer contributions, insurance, benefits, variable pay, and other components that are not fully paid as monthly cash.</div></div></div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#salaryFaq4">Is this a full income-tax calculator?</button></h3><div id="salaryFaq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">No. Tax is treated as an effective percentage for estimation. For tax planning or filing, consult a qualified tax professional.</div></div></div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#salaryFaq5">Can I use this to compare offers?</button></h3><div id="salaryFaq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Yes, it can help compare assumptions across offers, but you should confirm exact payroll details with HR or payroll teams.</div></div></div>
 {% endblock %}
 
 {% block faq_schema %}
@@ -190,32 +190,14 @@ The salary calculator converts annual CTC into an estimated monthly and annual i
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "What is CTC?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Cost to Company - total annual cost to employer including salary + benefits + contributions."}
-    },
-    {
-      "@type": "Question",
-      "name": "How is in-hand salary calculated?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Gross salary minus deductions (PF, tax, professional tax). Formula: In-hand = CTC – (PF + Tax)."}
-    },
-    {
-      "@type": "Question",
-      "name": "Why is in-hand salary lower than CTC?",
-      "acceptedAnswer": {"@type": "Answer", "text": "CTC includes employer contributions (PF) and future benefits you don't receive monthly. Deductions reduce take-home."}
-    },
-    {
-      "@type": "Question",
-      "name": "Is PF mandatory?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Yes for salary < ₹15,000/month. Above that optional but most companies mandate 12% contribution."}
-    },
-    {
-      "@type": "Question",
-      "name": "How to increase take-home salary?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Tax-saving investments (80C), HRA claims, restructure allowances via FBP. Negotiate higher basic if joining new."}
-    }
+    {"@type": "Question", "name": "What is CTC?", "acceptedAnswer": {"@type": "Answer", "text": "CTC means Cost to Company. It is the total annual cost of your compensation to the employer, including salary, benefits, and contributions."}},
+    {"@type": "Question", "name": "How is in-hand salary calculated?", "acceptedAnswer": {"@type": "Answer", "text": "In this calculator, estimated in-hand salary equals CTC minus PF and tax based on the assumptions you enter."}},
+    {"@type": "Question", "name": "Is this a full income-tax calculator?", "acceptedAnswer": {"@type": "Answer", "text": "No. Tax is treated as an effective percentage for estimation. For tax planning or filing, consult a qualified tax professional."}}
   ]
 }
 </script>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/ajax-engine.js"></script>
 {% endblock %}

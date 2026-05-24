@@ -82,10 +82,90 @@ Estimate maturity value, total invested amount, and projected returns for a mont
 <!-- ALWAYS VISIBLE DISCLAIMER -->
 <div class="alert alert-warning mt-3 small">
 <strong>Disclaimer:</strong>
-This calculator provides approximate results for informational purposes only.
-It does not constitute financial, investment, tax, or legal advice.
-Please consult a qualified professional before making financial decisions.
+This calculator provides approximate results for informational purposes only. It does not constitute financial, investment, tax, or legal advice. Actual returns may vary because investments are market-linked. Please consult a qualified professional before making financial decisions.
 </div>
+{% endblock %}
+
+{% block seo_content %}
+<section class="section-pad bg-soft">
+    <div class="container">
+        <article>
+            <h2 class="h3 fw-bold mb-3">Introduction to SIP Planning</h2>
+            <p class="text-secondary">A Systematic Investment Plan, commonly called SIP, lets you invest a fixed amount at regular intervals. Many investors use monthly SIPs to build discipline, avoid timing the market, and gradually participate in market-linked investments such as mutual funds.</p>
+            <p class="text-secondary mb-0">The FinCalX SIP calculator helps you estimate the future value of regular monthly investments using your expected annual return and investment duration. It is useful for goal planning, but it should not be treated as a guarantee of future returns.</p>
+        </article>
+
+        {% include "partials/ad_unit.html" %}
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">How the SIP Calculator Works</h2>
+            <p class="text-secondary">Enter your monthly investment amount, expected annual return, and number of years. The calculator converts the annual return into a monthly rate, compounds each contribution, and estimates the maturity value at the end of the selected period.</p>
+            <p class="text-secondary mb-0">The result separates total invested amount, estimated returns, and maturity amount so you can see how much comes from contributions and how much comes from assumed growth.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Example Calculation</h2>
+            <p class="text-secondary">Suppose you invest Rs. 10,000 every month for 15 years and assume a 12% annual return. Your total investment would be Rs. 18,00,000. With monthly compounding, the estimated maturity value would be approximately Rs. 50.46 lakh, and the estimated gain would be about Rs. 32.46 lakh.</p>
+            <p class="text-secondary mb-0">If the return assumption or time period changes, the result can change significantly. That is why it is helpful to test conservative, moderate, and optimistic scenarios before setting a goal.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Benefits and Use Cases</h2>
+            <ul class="text-secondary">
+                <li>Estimate how much monthly investing may grow over time.</li>
+                <li>Compare different SIP amounts for a long-term goal.</li>
+                <li>Understand the effect of investment duration on compounding.</li>
+                <li>Review whether a planned SIP is aligned with a target corpus.</li>
+                <li>Use as a first-pass planning tool before speaking with an adviser.</li>
+            </ul>
+        </article>
+    </div>
+</section>
+{% endblock %}
+
+{% block advanced_content %}
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4">
+            <article class="col-lg-6">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">When should you use this calculator?</h2>
+                    <p class="text-secondary">Use the SIP calculator when you are setting a monthly investment target, comparing different time horizons, or checking whether a planned contribution may be enough for a future goal such as education, a home down payment, or retirement planning.</p>
+                    <p class="text-secondary mb-0">It is also useful before increasing an existing SIP, because you can see whether a small monthly change meaningfully affects the long-term estimate.</p>
+                </div>
+            </article>
+            <article class="col-lg-6">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">Common mistakes people make</h2>
+                    <ul class="text-secondary mb-0">
+                        <li>Using very high return assumptions without testing conservative scenarios.</li>
+                        <li>Ignoring inflation and assuming today&apos;s goal cost will stay unchanged.</li>
+                        <li>Stopping SIPs during market declines without reviewing the original goal.</li>
+                        <li>Comparing only maturity value instead of checking risk, time horizon, and asset allocation.</li>
+                    </ul>
+                </div>
+            </article>
+            <article class="col-lg-4">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">Financial planning tips</h2>
+                    <p class="text-secondary mb-0">Start with a realistic goal amount, then test multiple return assumptions. Keep an emergency fund separate from market-linked investments so short-term needs do not force you to redeem during a downturn.</p>
+                </div>
+            </article>
+            <article class="col-lg-4">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">Things to consider</h2>
+                    <p class="text-secondary mb-0">SIP estimates do not include fund expenses, taxes, exit loads, or market volatility. Actual returns can be higher or lower than the assumption, and short investment periods may be especially unpredictable.</p>
+                </div>
+            </article>
+            <article class="col-lg-4">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">Who can benefit?</h2>
+                    <p class="text-secondary mb-0">New investors, salaried employees, students learning compounding, freelancers with monthly surplus, and families planning long-term goals can use this tool for first-pass investment planning.</p>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
 {% endblock %}
 
 
@@ -100,7 +180,7 @@ This calculator uses a standard future value model with the assumption of a stea
 <p class="text-secondary mb-0">
 Future Value (FV) of SIP is calculated using:
 <br><br>
-FV = P × [((1 + r)<sup>n</sup> − 1) / r] × (1 + r)
+FV = P x [((1 + r)<sup>n</sup> - 1) / r] x (1 + r)
 <br><br>
 Where:
 <br>

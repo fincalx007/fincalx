@@ -23,11 +23,11 @@
         <div class="row align-items-center g-5">
             <div class="col-lg-7">
                 <span class="eyebrow">Made for Indian money decisions</span>
-                <h1 class="display-4 fw-bold mt-3 mb-3">Smart Finance Calculators for India (2026)</h1>
-                <p class="lead text-secondary mb-4">Free SIP, EMI, salary, and portfolio overlap calculators. Fast, educational, and privacy-friendly.</p>
+                <h1 class="display-4 fw-bold mt-3 mb-3">Finance calculators with the context to make better decisions</h1>
+                <p class="lead text-secondary mb-4">FinCalX combines practical calculators with plain-English education for SIP investing, loan EMI planning, salary breakdowns, and portfolio overlap reviews. The goal is simple: help you understand the estimate before you act on it.</p>
                 <div class="d-flex flex-column flex-sm-row gap-3 align-items-sm-center">
                     <a class="btn btn-gradient btn-lg px-4" href="#toolsHeading">
-                        Start Calculating
+                        Explore Calculators
                         <i class="bi bi-arrow-right ms-2" aria-hidden="true"></i>
                     </a>
                     <label for="toolSearch" class="visually-hidden">Search tools</label>
@@ -35,48 +35,91 @@
                 </div>
                 <div class="trust-signals d-flex flex-column flex-sm-row gap-2 gap-sm-4 mt-4" aria-label="Trust signals">
                     <span><i class="bi bi-check-circle-fill" aria-hidden="true"></i> No login required</span>
-                    <span><i class="bi bi-check-circle-fill" aria-hidden="true"></i> 100% free tools</span>
+                    <span><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Free educational tools</span>
                     <span><i class="bi bi-check-circle-fill" aria-hidden="true"></i> No data stored</span>
-                    <span><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Fast & private calculations</span>
+                    <span><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Educational explanations</span>
                 </div>
             </div>
             <div class="col-lg-5">
                 <div class="hero-panel">
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <div>
-                            <p class="small text-secondary mb-1">Planning snapshot</p>
-                            <h2 class="h5 fw-bold mb-0">Private by design</h2>
+                            <p class="small text-secondary mb-1">Planning workspace</p>
+                            <h2 class="h5 fw-bold mb-0">Useful estimates, clearer context</h2>
                         </div>
                         <span class="hero-panel-icon" aria-hidden="true"><i class="bi bi-shield-lock"></i></span>
                     </div>
                     <div class="metric-card">
-                        <span>SIP growth estimate</span>
-                        <strong>₹24.8L</strong>
+                        <span>SIP growth planning</span>
+                        <strong>Invest</strong>
                     </div>
                     <div class="metric-card">
-                        <span>Monthly EMI clarity</span>
-                        <strong>₹31,622</strong>
+                        <span>Loan affordability</span>
+                        <strong>Borrow</strong>
                     </div>
                     <div class="metric-card">
-                        <span>Salary take-home estimate</span>
-                        <strong>Instant</strong>
+                        <span>Salary and portfolio review</span>
+                        <strong>Compare</strong>
                     </div>
+                    <p class="small text-secondary mt-4 mb-0">FinCalX does not store calculator inputs and does not provide personalized financial advice. Use results as a starting point for informed discussion.</p>
+                </div>
+            </div>
+        </div>
+        <div class="platform-strip mt-5" aria-label="Platform trust indicators">
+            <div><i class="bi bi-lock-fill" aria-hidden="true"></i><span>Secure browsing experience</span></div>
+            <div><i class="bi bi-database-x" aria-hidden="true"></i><span>No unnecessary data collection</span></div>
+            <div><i class="bi bi-journal-text" aria-hidden="true"></i><span>Formula and assumption notes</span></div>
+            <div><i class="bi bi-exclamation-circle-fill" aria-hidden="true"></i><span>Clear educational disclaimers</span></div>
+        </div>
+    </div>
+</section>
+
+{% include "partials/ad_unit.html" %}
+
+<section class="section-pad pb-0" aria-labelledby="whyHeading">
+    <div class="container">
+        <div class="row g-4 align-items-start">
+            <div class="col-lg-5">
+                <span class="eyebrow">Why FinCalX</span>
+                <h2 id="whyHeading" class="h2 fw-bold mb-3">A planning toolkit that respects your time and privacy</h2>
+                <p class="text-secondary mb-3">Good financial planning starts with better questions: How much could I build, what will the loan cost, what salary will I actually receive, and am I repeating the same holdings?</p>
+                <p class="text-secondary mb-0">FinCalX gives you quick estimates plus plain-English context, so the calculator result feels like the beginning of a decision rather than the end of one.</p>
+            </div>
+            <div class="col-lg-7">
+                <div class="value-grid">
+                    <article class="value-card">
+                        <i class="bi bi-lightning-charge-fill" aria-hidden="true"></i>
+                        <h3 class="h5 fw-bold">Fast first-pass planning</h3>
+                        <p class="text-secondary mb-0">Change assumptions and compare scenarios in seconds before reviewing official documents.</p>
+                    </article>
+                    <article class="value-card">
+                        <i class="bi bi-mortarboard-fill" aria-hidden="true"></i>
+                        <h3 class="h5 fw-bold">Educational by default</h3>
+                        <p class="text-secondary mb-0">Each calculator explains how it works, the formula used, examples, limitations, and common questions.</p>
+                    </article>
+                    <article class="value-card">
+                        <i class="bi bi-shield-lock-fill" aria-hidden="true"></i>
+                        <h3 class="h5 fw-bold">Privacy-friendly tools</h3>
+                        <p class="text-secondary mb-0">No signup is required, and calculator inputs are not saved in an application database.</p>
+                    </article>
+                    <article class="value-card">
+                        <i class="bi bi-link-45deg" aria-hidden="true"></i>
+                        <h3 class="h5 fw-bold">Connected money decisions</h3>
+                        <p class="text-secondary mb-0">Move between investing, borrowing, salary, and portfolio tools without losing the bigger picture.</p>
+                    </article>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-{# ✅ AD 1: AFTER HERO — highest visibility on homepage #}
-{% include "partials/ad_unit.html" %}
-
 <section class="section-pad" aria-labelledby="toolsHeading">
     <div class="container">
         <div class="section-heading d-flex flex-column flex-md-row justify-content-between gap-2 mb-4">
             <div>
-                <span class="eyebrow">Calculators</span>
-                <h2 id="toolsHeading" class="h2 fw-bold mb-2">Financial tools that get to the point</h2>
-                <p class="text-secondary mb-0">Choose a calculator and get a clean estimate in seconds.</p>
+                <span class="eyebrow">Popular Calculators</span>
+                <h2 id="toolsHeading" class="h2 fw-bold mb-2">Trusted calculator categories for everyday planning</h2>
+                <p class="text-secondary mb-0">Each calculator includes the estimate, explanation, formula, examples, FAQs, and related planning tools.</p>
             </div>
         </div>
         <div id="toolGrid" class="row g-4">
@@ -90,8 +133,8 @@
                             <i class="bi bi-bar-chart-line-fill"></i>
                             {% elif "EMI" in tool.title %}
                             <i class="bi bi-calculator-fill"></i>
-                            {% elif "Tax" in tool.title %}
-                            <i class="bi bi-receipt-cutoff"></i>
+                            {% elif "Salary" in tool.title %}
+                            <i class="bi bi-cash-stack"></i>
                             {% else %}
                             <i class="bi bi-pie-chart-fill"></i>
                             {% endif %}
@@ -111,27 +154,25 @@
     </div>
 </section>
 
-{# ✅ AD 2: MID-CONTENT — after tools grid, before about section #}
 {% include "partials/ad_unit.html" %}
 
-<section class="section-pad bg-soft" aria-labelledby="aboutHeading">
+<section class="section-pad bg-soft" aria-labelledby="planningHeading">
     <div class="container">
         <div class="row g-4 align-items-start">
             <article class="col-lg-7">
-                <span class="eyebrow">About</span>
-                <h2 id="aboutHeading" class="h2 fw-bold mb-3">About This Website</h2>
-                <p class="text-secondary mb-0">
-                    FinCalX helps Indian users run quick estimates for SIP investments, loan EMI payments, in-hand salary, and portfolio overlap. It is useful for salaried professionals, students, founders, and families who want a fast first look before making a money decision. The calculators are privacy-first: no signup, no account, and no database storage of the numbers you enter. You can start with the <a href="/tools/sip-calculator">SIP calculator India</a>, compare loan costs with the <a href="/tools/emi-calculator">EMI calculator</a>, estimate take-home pay with the <a href="/tools/salary-calculator">salary calculator</a>, or check diversification with the <a href="/tools/portfolio-overlap-checker">portfolio overlap tool</a>.
-                </p>
+                <span class="eyebrow">Financial Planning</span>
+                <h2 id="planningHeading" class="h2 fw-bold mb-3">Small estimates can reveal expensive blind spots</h2>
+                <p class="text-secondary">A monthly investment, loan EMI, salary structure, or overlapping portfolio may look simple at first. The long-term impact can be very different once interest, compounding, deductions, and concentration are visible. FinCalX helps you slow down those decisions and view them with numbers.</p>
+                <p class="text-secondary mb-0">Use these tools as an educational starting point. For final decisions, review official lender documents, salary letters, fund factsheets, tax rules, and guidance from qualified professionals.</p>
             </article>
             <article class="col-lg-5">
                 <div class="info-card">
-                    <h2 class="h4 fw-bold mb-3">Why Choose Us</h2>
+                    <h2 class="h4 fw-bold mb-3">What you can plan here</h2>
                     <ul class="feature-list text-secondary mb-0">
-                        <li><i class="bi bi-lightning-charge-fill" aria-hidden="true"></i> Instant calculations</li>
-                        <li><i class="bi bi-person-x-fill" aria-hidden="true"></i> No signup required</li>
-                        <li><i class="bi bi-phone-fill" aria-hidden="true"></i> Mobile-friendly</li>
-                        <li><i class="bi bi-lock-fill" aria-hidden="true"></i> Privacy-focused</li>
+                        <li><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Estimate future SIP value and returns</li>
+                        <li><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Compare EMI, interest, and total repayment</li>
+                        <li><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Understand CTC to in-hand salary assumptions</li>
+                        <li><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Identify duplicate names across portfolios</li>
                     </ul>
                 </div>
             </article>
@@ -139,7 +180,84 @@
     </div>
 </section>
 
-{# ✅ AD 3: PRE-FAQ — captures deep-scroll users #}
+<section class="section-pad" aria-labelledby="educationHeading">
+    <div class="container">
+        <div class="section-heading mb-4">
+            <span class="eyebrow">Finance Education</span>
+                <h2 id="educationHeading" class="h2 fw-bold mb-2">Build decisions on context, not just numbers</h2>
+                <p class="text-secondary mb-0">FinCalX keeps educational guidance close to the calculator so every estimate is easier to interpret.</p>
+        </div>
+        <div class="row g-4">
+            <article class="col-md-6 col-xl-3">
+                <div class="info-card h-100">
+                    <h3 class="h5 fw-bold">Understanding SIP returns</h3>
+                    <p class="text-secondary mb-0">SIP projections depend heavily on return assumptions and time horizon. Test conservative scenarios and consider inflation before setting a target.</p>
+                </div>
+            </article>
+            <article class="col-md-6 col-xl-3">
+                <div class="info-card h-100">
+                    <h3 class="h5 fw-bold">How EMI affects budgeting</h3>
+                    <p class="text-secondary mb-0">A lower EMI may feel comfortable, but longer tenure can increase total interest. Review both monthly cash flow and lifetime repayment.</p>
+                </div>
+            </article>
+            <article class="col-md-6 col-xl-3">
+                <div class="info-card h-100">
+                    <h3 class="h5 fw-bold">How salary deductions work</h3>
+                    <p class="text-secondary mb-0">CTC is not the same as monthly cash. PF, tax withholding, benefits, and variable pay can all affect your take-home amount.</p>
+                </div>
+            </article>
+            <article class="col-md-6 col-xl-3">
+                <div class="info-card h-100">
+                    <h3 class="h5 fw-bold">Planning responsibly</h3>
+                    <p class="text-secondary mb-0">Keep an emergency fund, avoid guaranteed-return assumptions, and review official documents before making major financial commitments.</p>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="section-pad bg-soft" aria-labelledby="trustHeading">
+    <div class="container">
+        <div class="row g-4 align-items-start">
+            <article class="col-lg-6">
+                <span class="eyebrow">Why Users Trust FinCalX</span>
+                <h2 id="trustHeading" class="h2 fw-bold mb-3">Transparent tools, cautious language, and no hidden promises</h2>
+                <p class="text-secondary">FinCalX avoids guaranteed-return claims and aggressive financial messaging. Every major calculator includes assumptions, limitations, examples, and professional disclaimer text so users can interpret outputs responsibly.</p>
+                <p class="text-secondary mb-0">The platform is designed for educational exploration. For major investment, tax, lending, or salary decisions, users should verify official documents and consult qualified professionals.</p>
+            </article>
+            <aside class="col-lg-6">
+                <div class="trust-panel">
+                    <div>
+                        <strong>Privacy-friendly</strong>
+                        <span>Calculator inputs do not require account creation.</span>
+                    </div>
+                    <div>
+                        <strong>Educational-first</strong>
+                        <span>Each page explains how to read the estimate.</span>
+                    </div>
+                    <div>
+                        <strong>Responsible tone</strong>
+                        <span>No guaranteed outcomes or pressure-based CTAs.</span>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<section class="section-pad" aria-labelledby="ctaHeading">
+    <div class="container">
+        <div class="cta-band">
+            <div>
+                <span class="eyebrow">Start Planning</span>
+                <h2 id="ctaHeading" class="h3 fw-bold mb-2">Pick a calculator and test your assumptions</h2>
+                <p class="text-secondary mb-0">Run a scenario, read the explanation, then compare related tools to see the decision from more than one angle.</p>
+            </div>
+            <a class="btn btn-gradient" href="#toolsHeading">View Tools</a>
+        </div>
+    </div>
+</section>
+
 {% include "partials/ad_unit.html" %}
 
 <section class="section-pad" aria-labelledby="homeFaqHeading">
@@ -151,42 +269,34 @@
                 <div class="accordion polished-accordion" id="homeFaqAccordion">
                     <article class="accordion-item">
                         <h3 class="accordion-header">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#homeFaqOne" aria-expanded="true" aria-controls="homeFaqOne">What is SIP?</button>
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#homeFaqOne" aria-expanded="true" aria-controls="homeFaqOne">What is FinCalX?</button>
                         </h3>
                         <div id="homeFaqOne" class="accordion-collapse collapse show" data-bs-parent="#homeFaqAccordion">
-                            <div class="accordion-body">SIP stands for systematic investment plan. It is a way to invest a fixed amount regularly, usually every month, into mutual funds or similar investment products.</div>
+                            <div class="accordion-body">FinCalX is an educational finance website with free calculators for SIP planning, EMI estimation, salary breakdowns, and portfolio overlap checks.</div>
                         </div>
                     </article>
                     <article class="accordion-item">
                         <h3 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#homeFaqTwo" aria-expanded="false" aria-controls="homeFaqTwo">How EMI is calculated?</button>
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#homeFaqTwo" aria-expanded="false" aria-controls="homeFaqTwo">Are calculator results guaranteed?</button>
                         </h3>
                         <div id="homeFaqTwo" class="accordion-collapse collapse" data-bs-parent="#homeFaqAccordion">
-                            <div class="accordion-body">EMI is calculated from the loan amount, monthly interest rate, and total number of monthly payments using the standard reducing-balance loan formula.</div>
+                            <div class="accordion-body">No. Results are approximate and depend on the inputs and formulas shown. Real outcomes may vary because of market movement, taxes, fees, lender rules, employer policies, or legal changes.</div>
                         </div>
                     </article>
                     <article class="accordion-item">
                         <h3 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#homeFaqThree" aria-expanded="false" aria-controls="homeFaqThree">Is this calculator accurate?</button>
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#homeFaqThree" aria-expanded="false" aria-controls="homeFaqThree">Do you store my calculator data?</button>
                         </h3>
                         <div id="homeFaqThree" class="accordion-collapse collapse" data-bs-parent="#homeFaqAccordion">
-                            <div class="accordion-body">The calculators are accurate for the formulas and assumptions shown. Real results may vary because of fees, taxes, lender rules, market movement, or law changes.</div>
+                            <div class="accordion-body">No login is required, and calculator inputs are not stored in an application database. Avoid entering sensitive identifiers or confidential account information.</div>
                         </div>
                     </article>
                     <article class="accordion-item">
                         <h3 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#homeFaqFour" aria-expanded="false" aria-controls="homeFaqFour">Do you store my data?</button>
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#homeFaqFour" aria-expanded="false" aria-controls="homeFaqFour">Is FinCalX financial advice?</button>
                         </h3>
                         <div id="homeFaqFour" class="accordion-collapse collapse" data-bs-parent="#homeFaqAccordion">
-                            <div class="accordion-body">No. The tools are stateless, require no login, and do not save calculator inputs in a database.</div>
-                        </div>
-                    </article>
-                    <article class="accordion-item">
-                        <h3 class="accordion-header">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#homeFaqFive" aria-expanded="false" aria-controls="homeFaqFive">Is this financial advice?</button>
-                        </h3>
-                        <div id="homeFaqFive" class="accordion-collapse collapse" data-bs-parent="#homeFaqAccordion">
-                            <div class="accordion-body">No. This website provides educational estimates only and does not offer financial, investment, or tax advice.</div>
+                            <div class="accordion-body">No. FinCalX provides informational and educational estimates only. Please consult qualified financial, tax, legal, lending, or investment professionals before making important decisions.</div>
                         </div>
                     </article>
                 </div>

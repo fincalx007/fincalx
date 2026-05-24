@@ -1,7 +1,7 @@
 {% extends "tools/tool_base.html" %}
 
 {% block tool_title %}Portfolio Overlap Checker{% endblock %}
-{% block tool_intro %}Compare two plain stock-name lists and see how many names appear in both. This portfolio overlap checker helps review diversification without storing your lists.{% endblock %}
+{% block tool_intro %}Compare two plain stock-name lists and see how many names appear in both. Use this checker to review diversification and possible duplication without storing your lists.{% endblock %}
 
 {% block tool_form %}
 <form id="overlapForm" class="card calculator-card" data-api="/tools/portfolio-overlap-checker/api" data-result="overlap" novalidate>
@@ -38,69 +38,90 @@
 </div>
 {% endblock %}
 
-{% block scripts %}
-<script src="/static/js/ajax-engine.js"></script>
-{% endblock %}
-
 {% block seo_content %}
 <section class="section-pad bg-soft">
     <div class="container">
         <article>
-            <h2 class="h3 fw-bold mb-3">What is Portfolio Overlap Checker</h2>
-            <p class="text-secondary">A <strong>portfolio overlap checker</strong> is a free online tool that compares two lists of stock or fund names and identifies how many securities are common to both. For Indian investors who hold multiple mutual funds or build custom stock portfolios, overlap analysis is essential because high duplication means you are not as diversified as you think.</p>
-            <p class="text-secondary">Many investors in India unknowingly hold the same large-cap stocks across several mutual funds. For example, Nifty 50 index funds, large-cap funds, and flexi-cap funds often contain similar names like Reliance Industries, TCS, HDFC Bank, and Infosys. Our <strong>portfolio overlap checker</strong> reveals this hidden concentration so you can rebalance and reduce risk.</p>
+            <h2 class="h3 fw-bold mb-3">Introduction to Portfolio Overlap</h2>
+            <p class="text-secondary">Portfolio overlap happens when two funds, watchlists, or stock portfolios contain the same names. Some overlap is normal, but too much duplication can reduce diversification and increase concentration in the same companies.</p>
+            <p class="text-secondary mb-0">The FinCalX portfolio overlap checker compares two plain-text lists and shows common names, list counts, and an overlap percentage. It is a quick screening tool, not a complete risk analysis platform.</p>
         </article>
 
-        {# ✅ AD 2: MID-CONTENT — after first SEO article, natural reading break #}
         {% include "partials/ad_unit.html" %}
 
         <article class="mt-5">
             <h2 class="h3 fw-bold mb-3">How it works</h2>
-            <p class="text-secondary">Using our <strong>portfolio overlap checker</strong> is simple and takes only a few seconds:</p>
-            <ul class="text-secondary">
-                <li><strong>Paste Portfolio 1</strong> — Enter a plain-text list of stock or fund names from your first holding.</li>
-                <li><strong>Paste Portfolio 2</strong> — Enter a plain-text list from your second holding.</li>
-                <li><strong>Click Check Overlap</strong> — The tool normalises names, finds common entries, and calculates the overlap percentage.</li>
-            </ul>
-            <p class="text-secondary">The result shows the number of unique names in each portfolio, the overlap percentage, and a list of common securities. You can paste holdings from mutual fund factsheets, broker statements, or watchlists. This <strong>mutual fund overlap</strong> insight helps you decide whether to continue holding both funds or switch one for better diversification.</p>
-            <p class="text-secondary">The <strong>portfolio overlap checker</strong> uses a straightforward set-based formula:</p>
-            <p class="formula mb-2">Overlap % = Common unique names / Total unique names × 100</p>
-            <p class="text-secondary">Where <strong>common unique names</strong> are securities that appear in both portfolios after normalisation, and <strong>total unique names</strong> are the combined set of distinct securities across both portfolios. For example, if Portfolio A has 20 unique stocks, Portfolio B has 25 unique stocks, and 10 stocks are common, the total unique names are 35 (20 + 25 − 10). The overlap percentage is 10 ÷ 35 × 100 = 28.57%. This <strong>mutual fund overlap</strong> score tells you that roughly 29% of your combined holdings are duplicated.</p>
+            <p class="text-secondary">Paste one stock or fund name per line in each box, then click Check Overlap. The tool normalizes names, compares both lists, and identifies entries that appear in both portfolios.</p>
+            <p class="text-secondary mb-0">The result shows the number of names in each list, the overlap percentage, and the common names found. It does not analyze allocation size, market value, sector exposure, or fund quality.</p>
         </article>
 
-        <!-- <article class="mt-5">
-            <h2 class="h3 fw-bold mb-3">Benefits</h2>
-            <p class="text-secondary">A dedicated <strong>portfolio overlap checker</strong> offers several advantages for Indian investors:</p>
-            <ul class="text-secondary">
-                <li><strong>Uncover hidden concentration</strong> — Discover when multiple funds hold the same stocks, reducing effective diversification.</li>
-                <li><strong>Reduce redundancy</strong> — Eliminate overlapping holdings and free up capital for different sectors or asset classes.</li>
-                <li><strong>Improve risk management</strong> — Lower exposure to single-stock risk by spreading across truly different securities.</li>
-                <li><strong>Quick screening</strong> — Compare any two portfolios in seconds without downloading software or creating accounts.</li>
-                <li><strong>Fund comparison</strong> — Evaluate <strong>mutual fund overlap</strong> before adding a new fund to your existing portfolio.</li>
-                <li><strong>Privacy first</strong> — Your portfolio lists are processed for the request only and are never stored.</li>
-            </ul>
-        </article> -->
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Formula used</h2>
+            <p class="formula mb-2">Overlap % = Common unique names / Total unique names x 100</p>
+            <p class="text-secondary mb-0">Common unique names are entries found in both lists. Total unique names are the combined distinct names across both lists after removing duplicates.</p>
+        </article>
 
         <article class="mt-5">
             <h2 class="h3 fw-bold mb-3">Example calculation</h2>
-            <p class="text-secondary">Consider Ravi, an investor in Mumbai who holds two popular equity funds. He copies the top holdings from each fund's monthly factsheet and pastes them into our <strong>portfolio overlap checker</strong>:</p>
-            <ul class="text-secondary">
-                <li><strong>Fund A holdings:</strong> Reliance Industries, TCS, HDFC Bank, Infosys, ICICI Bank, Hindustan Unilever, Bajaj Finance, Kotak Mahindra Bank, Axis Bank, L&T</li>
-                <li><strong>Fund B holdings:</strong> TCS, HDFC Bank, Infosys, ICICI Bank, Bharti Airtel, Maruti Suzuki, Sun Pharma, Axis Bank, ITC, SBI</li>
-            </ul>
-            <p class="text-secondary">The <strong>portfolio overlap checker</strong> finds 6 common names: TCS, HDFC Bank, Infosys, ICICI Bank, Axis Bank. Total unique names are 15. The overlap percentage is 6 ÷ 15 × 100 = 40%. Ravi realises that 40% of his combined equity exposure is concentrated in the same stocks. He decides to replace Fund B with a mid-cap or international fund to improve diversification.</p>
+            <p class="text-secondary">Suppose Portfolio A has Reliance Industries, TCS, HDFC Bank, Infosys, and ICICI Bank. Portfolio B has TCS, Infosys, Axis Bank, ITC, and SBI. The common names are TCS and Infosys.</p>
+            <p class="text-secondary mb-0">There are 8 unique names across both portfolios and 2 common names, so overlap is 2 / 8 x 100 = 25%. This means one quarter of the combined name list is duplicated.</p>
         </article>
 
         <article class="mt-5">
-            <h2 class="h3 fw-bold mb-3">Why use this tool</h2>
-            <p class="text-secondary">This <strong>portfolio overlap checker</strong> is built for speed, accuracy, and privacy. There is no registration, no ads inside the tool, and no data storage. You get instant overlap analysis that helps you review diversification, compare funds, and rebalance with confidence.</p>
-            <p class="text-secondary">Strengthen your overall financial strategy with these free calculators:</p>
+            <h2 class="h3 fw-bold mb-3">Benefits and use cases</h2>
             <ul class="text-secondary">
-                <li><a href="/tools/sip-calculator">Try our SIP Calculator India</a> — Plan monthly mutual fund investments and estimate long-term wealth.</li>
-                <li><a href="/tools/emi-calculator">Check EMI Calculator India</a> — Calculate home, car, and personal loan EMIs before borrowing.</li>
-                <li><a href="/">FinCalX Home</a> — Access all fast, private financial calculators in one place.</li>
+                <li>Check whether two mutual funds hold many of the same stocks.</li>
+                <li>Compare a new fund or watchlist with your existing holdings.</li>
+                <li>Spot hidden concentration before adding another investment.</li>
+                <li>Review diversification during periodic portfolio cleanups.</li>
+                <li>Use the result as a starting point for deeper portfolio research.</li>
             </ul>
         </article>
+    </div>
+</section>
+{% endblock %}
+
+{% block advanced_content %}
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4">
+            <article class="col-lg-6">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">When should you use this calculator?</h2>
+                    <p class="text-secondary">Use the overlap checker before adding a new mutual fund, comparing two watchlists, reviewing family portfolios, or checking whether multiple funds are giving you similar exposure.</p>
+                    <p class="text-secondary mb-0">It is a helpful first screen when your portfolio has grown through many small purchases and you want to understand duplication before doing deeper research.</p>
+                </div>
+            </article>
+            <article class="col-lg-6">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">Common mistakes people make</h2>
+                    <ul class="text-secondary mb-0">
+                        <li>Owning many funds and assuming that automatically means diversification.</li>
+                        <li>Ignoring repeated large-cap names across index, flexi-cap, and large-cap funds.</li>
+                        <li>Looking only at fund returns without checking what the funds actually hold.</li>
+                        <li>Using name overlap as a complete risk score instead of a starting signal.</li>
+                    </ul>
+                </div>
+            </article>
+            <article class="col-lg-4">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">Financial planning tips</h2>
+                    <p class="text-secondary mb-0">Review holdings periodically, especially after adding a fund. If overlap is high, check whether the second fund adds a different style, sector, market cap, or asset class.</p>
+                </div>
+            </article>
+            <article class="col-lg-4">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">Things to consider</h2>
+                    <p class="text-secondary mb-0">This tool compares names only. It does not account for allocation weight, sector exposure, cash positions, fund manager style, expense ratio, taxation, or liquidity.</p>
+                </div>
+            </article>
+            <article class="col-lg-4">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">Who can benefit?</h2>
+                    <p class="text-secondary mb-0">Mutual fund investors, DIY stock investors, financial literacy learners, families consolidating holdings, and students studying diversification can use this tool for quick screening.</p>
+                </div>
+            </article>
+        </div>
     </div>
 </section>
 {% endblock %}
@@ -110,14 +131,14 @@
     <div class="col-lg-7">
         <div class="alert alert-warning rounded-4" role="note">
             <i class="bi bi-exclamation-triangle-fill me-2" aria-hidden="true"></i>
-            <strong>Disclaimer:</strong> Data is user-provided and results are indicative only.
+            <strong>Disclaimer:</strong> Results are indicative and based only on user-provided names. This tool does not evaluate allocation, risk, returns, suitability, or investment quality. Consult qualified professionals before making financial decisions.
         </div>
     </div>
 </div>
 {% endblock %}
 
 {% block explanation %}
-The portfolio overlap checker compares two plain-text lists of stock or fund names and identifies common holdings. It is useful when checking whether two portfolios are truly diversified or whether multiple funds contain similar securities. Indian investors can paste holdings from two portfolios, mutual fund factsheets, or watchlists and quickly see the common names. The result shows counts, overlap percentage, and matching entries. This tool compares names only and does not analyze allocation, weight, market value, sector exposure, price movement, or portfolio risk. Use it as a quick screening utility before doing deeper research.
+The portfolio overlap checker compares two plain-text lists of stock or fund names and identifies common holdings. It is useful when checking whether two portfolios are truly diversified or whether multiple funds contain similar securities. This tool compares names only and does not analyze allocation, weight, market value, sector exposure, price movement, or portfolio risk.
 {% endblock %}
 
 {% block formula %}
@@ -126,12 +147,11 @@ The portfolio overlap checker compares two plain-text lists of stock or fund nam
 {% endblock %}
 
 {% block faq %}
-<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#overlapFaq1">How is portfolio overlap calculated?</button></h3><div id="overlapFaq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion"><div class="accordion-body">The portfolio overlap checker divides common unique names by the total unique names across both lists, then multiplies by 100 to get a percentage. This simple metric reveals how much duplication exists between two portfolios or mutual funds.</div></div></div>
-<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#overlapFaq2">Does this tool analyze holdings, weights, or sector allocation?</button></h3><div id="overlapFaq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">No. This basic version compares names only. It does not use prices, quantities, portfolio weights, sector exposure, or market capitalisation. For deep analysis, use a full portfolio analytics platform after initial screening with this mutual fund overlap tool.</div></div></div>
-<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#overlapFaq3">Can I compare mutual fund holdings with this tool?</button></h3><div id="overlapFaq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Yes. Paste plain holding names from two mutual fund factsheets or portfolio statements. The portfolio overlap checker will identify common stocks. Remember that it checks name overlap only, not fund allocation, expense ratio, or risk profile.</div></div></div>
-<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#overlapFaq4">Do you store portfolio lists?</button></h3><div id="overlapFaq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">No. Lists are processed for the request and are not stored in a database. Your portfolio data remains private and is never shared with third parties.</div></div></div>
-<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#overlapFaq5">Why can names mismatch between portfolios?</button></h3><div id="overlapFaq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Different spelling, abbreviations, merged company names, or ticker-style entries can affect matching. The tool normalises text to improve accuracy, but perfect matching requires consistent naming across both lists.</div></div></div>
-<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#overlapFaq6">What is a good portfolio overlap percentage?</button></h3><div id="overlapFaq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">There is no universal rule, but many investors prefer mutual fund overlap below 30% between two funds. Higher overlap means less diversification benefit. If overlap exceeds 50%, the second fund may add little value to your portfolio. Use the portfolio overlap checker regularly when rebalancing.</div></div></div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#overlapFaq1">How is portfolio overlap calculated?</button></h3><div id="overlapFaq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion"><div class="accordion-body">The tool divides common unique names by total unique names across both lists, then multiplies by 100 to estimate overlap percentage.</div></div></div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#overlapFaq2">Does this analyze weights or sector allocation?</button></h3><div id="overlapFaq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">No. This version compares names only. It does not evaluate quantities, allocation weights, sector exposure, market value, or risk.</div></div></div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#overlapFaq3">Can I compare mutual fund holdings?</button></h3><div id="overlapFaq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Yes. Paste plain holding names from two mutual fund factsheets or portfolio statements to identify common stocks.</div></div></div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#overlapFaq4">Do you store portfolio lists?</button></h3><div id="overlapFaq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">No login is required, and portfolio lists are not stored in an application database.</div></div></div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#overlapFaq5">Why can names mismatch?</button></h3><div id="overlapFaq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Different spellings, abbreviations, punctuation, or ticker-style entries can affect matching. Consistent naming improves accuracy.</div></div></div>
 {% endblock %}
 
 {% block faq_schema %}
@@ -140,56 +160,14 @@ The portfolio overlap checker compares two plain-text lists of stock or fund nam
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "How is portfolio overlap calculated?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "The portfolio overlap checker divides common unique names by the total unique names across both lists, then multiplies by 100 to get a percentage. This simple metric reveals how much duplication exists between two portfolios or mutual funds."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Does this tool analyze holdings, weights, or sector allocation?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. This basic version compares names only. It does not use prices, quantities, portfolio weights, sector exposure, or market capitalisation. For deep analysis, use a full portfolio analytics platform after initial screening with this mutual fund overlap tool."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Can I compare mutual fund holdings with this tool?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. Paste plain holding names from two mutual fund factsheets or portfolio statements. The portfolio overlap checker will identify common stocks. Remember that it checks name overlap only, not fund allocation, expense ratio, or risk profile."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Do you store portfolio lists?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. Lists are processed for the request and are not stored in a database. Your portfolio data remains private and is never shared with third parties."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Why can names mismatch between portfolios?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Different spelling, abbreviations, merged company names, or ticker-style entries can affect matching. The tool normalises text to improve accuracy, but perfect matching requires consistent naming across both lists."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "What is a good portfolio overlap percentage?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "There is no universal rule, but many investors prefer mutual fund overlap below 30% between two funds. Higher overlap means less diversification benefit. If overlap exceeds 50%, the second fund may add little value to your portfolio. Use the portfolio overlap checker regularly when rebalancing."
-      }
-    }
+    {"@type": "Question", "name": "How is portfolio overlap calculated?", "acceptedAnswer": {"@type": "Answer", "text": "The tool divides common unique names by total unique names across both lists, then multiplies by 100 to estimate overlap percentage."}},
+    {"@type": "Question", "name": "Does this analyze weights or sector allocation?", "acceptedAnswer": {"@type": "Answer", "text": "No. This version compares names only. It does not evaluate quantities, allocation weights, sector exposure, market value, or risk."}},
+    {"@type": "Question", "name": "Do you store portfolio lists?", "acceptedAnswer": {"@type": "Answer", "text": "No login is required, and portfolio lists are not stored in an application database."}}
   ]
 }
 </script>
 {% endblock %}
 
+{% block scripts %}
+<script src="/static/js/ajax-engine.js"></script>
+{% endblock %}

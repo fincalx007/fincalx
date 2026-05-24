@@ -9,15 +9,22 @@
                 <h1 class="display-6 fw-bold mt-3 mb-2">{% block tool_title %}{% endblock %}</h1>
                 {% block tool_extra %}{% endblock %}
                 <p class="lead text-secondary mb-0">{% block tool_intro %}{% endblock %}</p>
+                <p class="small text-secondary mt-3 mb-0">Last updated: May 24, 2026</p>
             </div>
             <div class="col-lg-4">
                 <div class="trust-card">
                     <div><i class="bi bi-check-circle-fill" aria-hidden="true"></i> No login required</div>
-                    <div><i class="bi bi-shield-lock-fill" aria-hidden="true"></i> No data stored</div>
+                    <div><i class="bi bi-shield-lock-fill" aria-hidden="true"></i> Privacy-friendly</div>
                     <div><i class="bi bi-mortarboard-fill" aria-hidden="true"></i> Educational estimates</div>
                     <div><i class="bi bi-phone-fill" aria-hidden="true"></i> Mobile friendly</div>
                 </div>
             </div>
+        </div>
+        <div class="platform-strip mt-4" aria-label="Calculator trust indicators">
+            <div><i class="bi bi-calculator-fill" aria-hidden="true"></i><span>Instant estimate</span></div>
+            <div><i class="bi bi-journal-text" aria-hidden="true"></i><span>Formula explained</span></div>
+            <div><i class="bi bi-link-45deg" aria-hidden="true"></i><span>Related planning tools</span></div>
+            <div><i class="bi bi-info-circle-fill" aria-hidden="true"></i><span>Approximate results only</span></div>
         </div>
     </div>
 </section>
@@ -32,10 +39,12 @@
     </div>
 </section>
 
-{# ✅ AD 1: AFTER CALCULATOR RESULT — highest CTR position #}
+{# AD 1: AFTER CALCULATOR RESULT #}
 {% include "partials/ad_unit.html" %}
 
 {% block seo_content %}{% endblock %}
+
+{% block advanced_content %}{% endblock %}
 
 <section class="section-pad pt-0">
     <div class="container">
@@ -56,7 +65,7 @@
     </div>
 </section>
 
-{# ✅ AD 3: PRE-FAQ — captures deep-scroll users #}
+{# AD 3: PRE-FAQ #}
 {% include "partials/ad_unit.html" %}
 
 <section class="section-pad bg-soft">
@@ -73,7 +82,7 @@
                 <div class="disclaimer-card">
                     <i class="bi bi-info-circle-fill" aria-hidden="true"></i>
                     <h2 class="h5 fw-bold mt-3">Disclaimer</h2>
-                    <p class="text-secondary mb-0">{% block disclaimer %}This calculator is for educational purposes only and does not constitute financial, investment, legal, or tax advice. Please consult a qualified professional before making decisions.{% endblock %}</p>
+                    <p class="text-secondary mb-0">{% block disclaimer %}Results are approximate and for informational purposes only. This calculator does not provide financial, investment, legal, tax, lending, or professional advice. Please consult qualified professionals before making financial decisions.{% endblock %}</p>
                 </div>
             </aside>
         </div>
