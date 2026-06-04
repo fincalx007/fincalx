@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="legal-hero">
+    <div class="container">
+        <span class="eyebrow">Financial Planning Resources</span>
+        <h1 class="display-5 fw-bold mt-3 mb-3">Printable-friendly personal finance checklists</h1>
+        <p class="lead text-secondary mb-0">Use these checklists to prepare for retirement planning, investing, budgeting, home buying, salary review, emergency funds, and goal planning.</p>
+        <div class="compliance-notice mt-4" role="note">
+            <div class="compliance-icon" aria-hidden="true"><i class="bi bi-clipboard-check-fill"></i></div>
+            <div>
+                <h2 class="h5 fw-bold mb-2">Planning disclaimer</h2>
+                <p class="text-secondary mb-0">Planning tools and checklists are designed to help users organize financial goals and should not replace personalized financial planning advice. Verify assumptions independently and consult qualified professionals where appropriate.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4">
+            {% for slug, title, items in checklists %}
+            <article class="col-lg-6" id="{{ slug }}">
+                <div class="checklist-card h-100">
+                    <h2 class="h4 fw-bold">{{ title }}</h2>
+                    <ul>
+                        {% for item in items %}
+                        <li><span></span>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

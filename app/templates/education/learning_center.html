@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="legal-hero">
+    <div class="container">
+        <span class="eyebrow">Finance Learning Center</span>
+        <h1 class="display-5 fw-bold mt-3 mb-3">Personal finance guides for clearer decisions</h1>
+        <p class="lead text-secondary mb-0">Learn the ideas behind SIP investing, loans, salary structure, tax basics, budgeting, emergency funds, retirement, inflation, compounding, and wealth building.</p>
+        <div class="compliance-notice mt-4" role="note">
+            <div class="compliance-icon" aria-hidden="true"><i class="bi bi-mortarboard-fill"></i></div>
+            <div>
+                <h2 class="h5 fw-bold mb-2">Educational content disclaimer</h2>
+                <p class="text-secondary mb-0">The information provided in FinCalX guides is intended for educational purposes only and should not be considered professional financial advice. Users should conduct their own research and consult qualified professionals before making financial decisions.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4">
+            {% for guide in guides %}
+            <article class="col-md-6 col-xl-4">
+                <div class="resource-card h-100">
+                    <span class="eyebrow">Guide</span>
+                    <h2 class="h5 fw-bold mt-2">{{ guide.title }}</h2>
+                    <p class="text-secondary">{{ guide.summary }}</p>
+                    <div class="related-links justify-content-start mb-3">
+                        <a href="{{ guide.calculator.href }}">{{ guide.calculator.title }}</a>
+                    </div>
+                    <a class="stretched-link resource-link" href="/learning-center/{{ guide.slug }}">Read guide</a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<section class="section-pad bg-soft">
+    <div class="container">
+        <div class="related-tools">
+            <div>
+                <span class="eyebrow">Continue Learning</span>
+                <h2 class="h4 fw-bold mb-0">Explore connected resources</h2>
+            </div>
+            <div class="related-links">
+                <a href="/finance-glossary">Finance Glossary</a>
+                <a href="/comparison-guides">Comparison Guides</a>
+                <a href="/financial-planning-resources">Planning Resources</a>
+                <a href="/planning-tools">Planning Tools</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

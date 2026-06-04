@@ -35,6 +35,13 @@
             <div class="col-lg-7">{% block tool_form %}{% endblock %}</div>
             <aside class="col-lg-5 tool-result-wrap">{% block tool_result %}{% endblock %}</aside>
         </div>
+        <div class="compliance-notice mt-4" role="note" aria-label="Calculator disclaimer">
+            <div class="compliance-icon" aria-hidden="true"><i class="bi bi-info-circle-fill"></i></div>
+            <div>
+                <h2 class="h5 fw-bold mb-2">{% block calculator_disclaimer_title %}{{ self.tool_title()|striptags }} Disclaimer{% endblock %}</h2>
+                <p class="text-secondary mb-0">{% block calculator_disclaimer_text %}This calculator provides estimates based on the information entered by the user and the assumptions used in the calculation. Actual outcomes may vary due to market conditions, fees, taxes, inflation, lender rules, employer policies, and other factors. Results should be used for informational and educational purposes only and should not be considered financial, tax, investment, legal, lending, or professional advice.{% endblock %}</p>
+            </div>
+        </div>
         {% block tool_disclaimer %}{% endblock %}
     </div>
 </section>

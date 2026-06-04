@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block head_extra %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ guide.title }}",
+  "description": "{{ guide.summary }}",
+  "author": {"@type": "Organization", "name": "FinCalX"},
+  "publisher": {"@type": "Organization", "name": "FinCalX"},
+  "mainEntityOfPage": "{{ request.url }}"
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="legal-hero">
+    <div class="container">
+        <span class="eyebrow">FinCalX Guide</span>
+        <h1 class="display-5 fw-bold mt-3 mb-3">{{ guide.title }}</h1>
+        <p class="lead text-secondary mb-3">{{ guide.summary }}</p>
+        <div class="platform-strip mt-4" aria-label="Guide trust indicators">
+            <div><i class="bi bi-journal-text" aria-hidden="true"></i><span>Original education</span></div>
+            <div><i class="bi bi-calculator-fill" aria-hidden="true"></i><span>Calculator linked</span></div>
+            <div><i class="bi bi-info-circle-fill" aria-hidden="true"></i><span>No guarantees</span></div>
+            <div><i class="bi bi-shield-lock-fill" aria-hidden="true"></i><span>Privacy-friendly</span></div>
+        </div>
+        <div class="compliance-notice mt-4" role="note">
+            <div class="compliance-icon" aria-hidden="true"><i class="bi bi-mortarboard-fill"></i></div>
+            <div>
+                <h2 class="h5 fw-bold mb-2">Educational disclaimer</h2>
+                <p class="text-secondary mb-0">The information provided on this page is intended for educational purposes only and should not be considered professional financial advice. Users should conduct their own research and consult qualified professionals before making financial decisions.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4 align-items-start">
+            <article class="col-lg-8">
+                <div class="article-body">
+                    {% for heading, body in guide.sections %}
+                    <section>
+                        <h2>{{ heading }}</h2>
+                        <p>{{ body }}</p>
+                    </section>
+                    {% endfor %}
+                    <section>
+                        <h2>Responsible disclaimer</h2>
+                        <p>FinCalX content is for educational and informational purposes only. It does not provide personalized financial, investment, tax, legal, lending, or professional advice. Check official documents and consult qualified professionals before making important decisions.</p>
+                    </section>
+                </div>
+            </article>
+            <aside class="col-lg-4">
+                <div class="sticky-resource">
+                    <div class="info-card mb-4">
+                        <h2 class="h5 fw-bold">Related calculator</h2>
+                        <p class="text-secondary">Use the calculator to test the assumptions discussed in this guide.</p>
+                        <a class="btn btn-gradient w-100" href="{{ guide.calculator.href }}">{{ guide.calculator.title }}</a>
+                    </div>
+                    <div class="info-card">
+                        <h2 class="h5 fw-bold">Related guides</h2>
+                        <div class="resource-list">
+                            {% for item in related_guides %}
+                            <a href="/learning-center/{{ item.slug }}">{{ item.title }}</a>
+                            {% endfor %}
+                            <a href="/finance-glossary">Finance Glossary</a>
+                            <a href="/financial-planning-resources">Planning Checklists</a>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock %}

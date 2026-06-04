@@ -8,7 +8,7 @@ import logging
 from pathlib import Path
 import sys
 
-from app.routers import contact, emi, home, legal, overlap, salary, sip
+from app.routers import contact, education, emi, home, legal, overlap, salary, sip
 from app.security import RateLimitMiddleware, add_security_headers
 
 
@@ -75,6 +75,11 @@ async def sitemap():
   <url><loc>https://getfincalx.com/tools/emi-calculator</loc></url>
   <url><loc>https://getfincalx.com/tools/salary-calculator</loc></url>
   <url><loc>https://getfincalx.com/tools/portfolio-overlap-checker</loc></url>
+  <url><loc>https://getfincalx.com/learning-center</loc></url>
+  <url><loc>https://getfincalx.com/finance-glossary</loc></url>
+  <url><loc>https://getfincalx.com/comparison-guides</loc></url>
+  <url><loc>https://getfincalx.com/financial-planning-resources</loc></url>
+  <url><loc>https://getfincalx.com/planning-tools</loc></url>
 </urlset>"""
     return Response(content=xml_content.strip(), media_type="application/xml")
 
@@ -195,6 +200,7 @@ async def ads_txt():
 
 app.include_router(home.router)
 app.include_router(contact.router)
+app.include_router(education.router)
 app.include_router(sip.router)
 app.include_router(emi.router)
 app.include_router(salary.router)

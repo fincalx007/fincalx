@@ -750,6 +750,31 @@ html[data-theme="dark"] .accordion-button::after {
     font-size: 1.5rem;
 }
 
+.compliance-notice {
+    align-items: flex-start;
+    background: color-mix(in srgb, var(--purple-soft) 72%, var(--card-bg));
+    border: 1px solid color-mix(in srgb, var(--primary) 24%, var(--line));
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    gap: 1rem;
+    padding: 1.15rem 1.25rem;
+}
+
+.compliance-icon {
+    align-items: center;
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    color: var(--primary);
+    display: inline-flex;
+    flex: 0 0 auto;
+    font-size: 1.1rem;
+    height: 42px;
+    justify-content: center;
+    width: 42px;
+}
+
 .related-tools {
     align-items: center;
     background: var(--card-bg);
@@ -877,6 +902,140 @@ textarea {
 .legal-card,
 .info-card {
     line-height: 1.7;
+}
+
+.resource-card,
+.glossary-term,
+.checklist-card {
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    padding: 1.35rem;
+    position: relative;
+}
+
+.resource-card:hover,
+.glossary-term:hover {
+    border-color: rgba(108, 76, 241, 0.28);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.resource-link {
+    color: var(--primary);
+    font-weight: 800;
+}
+
+.article-body {
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 2rem;
+}
+
+.article-body section + section {
+    border-top: 1px solid var(--line);
+    margin-top: 1.7rem;
+    padding-top: 1.7rem;
+}
+
+.article-body h2 {
+    font-size: 1.35rem;
+    font-weight: 800;
+    margin-bottom: 0.75rem;
+}
+
+.article-body p,
+.glossary-term p {
+    color: var(--text-secondary);
+}
+
+.sticky-resource {
+    position: sticky;
+    top: 6rem;
+}
+
+.resource-list {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.resource-list a {
+    background: var(--purple-soft);
+    border-radius: 12px;
+    color: var(--primary);
+    font-weight: 800;
+    padding: 0.75rem 0.9rem;
+}
+
+.glossary-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.comparison-table-wrap {
+    background: var(--card-bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 1rem;
+}
+
+.comparison-table {
+    color: var(--text-primary);
+    margin-bottom: 0;
+}
+
+.comparison-table th,
+.comparison-table td {
+    background: transparent;
+    border-color: var(--line);
+    color: var(--text-primary);
+    vertical-align: top;
+}
+
+.comparison-table td {
+    color: var(--text-secondary);
+}
+
+.checklist-card ul {
+    display: grid;
+    gap: 0.85rem;
+    list-style: none;
+    margin: 1rem 0 0;
+    padding: 0;
+}
+
+.checklist-card li {
+    align-items: flex-start;
+    color: var(--text-secondary);
+    display: flex;
+    gap: 0.7rem;
+}
+
+.checklist-card li span {
+    border: 2px solid var(--primary);
+    border-radius: 6px;
+    flex: 0 0 auto;
+    height: 20px;
+    margin-top: 0.2rem;
+    width: 20px;
+}
+
+.mini-form {
+    margin-top: auto;
+}
+
+.mini-form label {
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-weight: 800;
+    margin-bottom: 0.4rem;
 }
 
 /* ============================================
@@ -1025,6 +1184,10 @@ textarea {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
+    .glossary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .platform-strip div:nth-child(odd) {
         border-left: 0;
     }
@@ -1040,6 +1203,11 @@ textarea {
 
     .related-links {
         justify-content: flex-start;
+    }
+
+    .compliance-notice {
+        flex-direction: column;
+        padding: 1rem;
     }
 }
 
@@ -1097,6 +1265,14 @@ textarea {
         grid-template-columns: 1fr;
     }
 
+    .article-body {
+        padding: 1.25rem;
+    }
+
+    .glossary-grid {
+        grid-template-columns: 1fr;
+    }
+
     .platform-strip div,
     .platform-strip div + div,
     .platform-strip div:nth-child(n + 3) {
@@ -1114,6 +1290,26 @@ textarea {
 
     .related-links {
         justify-content: flex-start;
+    }
+}
+
+@media print {
+    .site-navbar,
+    .site-footer,
+    .ad-section,
+    .theme-toggle {
+        display: none !important;
+    }
+
+    body {
+        background: #ffffff;
+        color: #111827;
+    }
+
+    .checklist-card,
+    .article-body {
+        box-shadow: none;
+        break-inside: avoid;
     }
 }
 

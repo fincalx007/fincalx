@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="legal-hero">
+    <div class="container">
+        <span class="eyebrow">Comparison Guides</span>
+        <h1 class="display-5 fw-bold mt-3 mb-3">Compare common finance choices responsibly</h1>
+        <p class="lead text-secondary mb-0">Review pros, cons, use cases, and related calculators before comparing investments, loans, and planning choices.</p>
+        <div class="compliance-notice mt-4" role="note">
+            <div class="compliance-icon" aria-hidden="true"><i class="bi bi-balance-scale"></i></div>
+            <div>
+                <h2 class="h5 fw-bold mb-2">Neutral comparison disclaimer</h2>
+                <p class="text-secondary mb-0">These comparisons are provided for informational purposes only. Suitability depends on individual financial goals, risk tolerance, income, liquidity needs, tax position, and investment horizon.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4">
+            {% for slug, title, summary, left, right, calculator in comparisons %}
+            <article class="col-md-6 col-xl-4">
+                <div class="resource-card h-100">
+                    <span class="eyebrow">Comparison</span>
+                    <h2 class="h5 fw-bold mt-2">{{ title }}</h2>
+                    <p class="text-secondary">{{ summary }}</p>
+                    <a class="btn btn-gradient mt-auto" href="/comparison-guides/{{ slug }}">Compare {{ left }} and {{ right }}</a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

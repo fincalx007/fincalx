@@ -23,7 +23,7 @@ DEFAULTS = {
 }
 
 PAGE_TITLE = "SIP Calculator India 2026 – Calculate Returns & Investment Growth"
-PAGE_DESC = "Free SIP calculator India 2026: plan monthly mutual fund investments, estimate maturity amount & compare returns. Private, fast & accurate."
+PAGE_DESC = "Free SIP calculator India 2026: plan monthly mutual fund investments, estimate maturity amount, and compare assumptions privately."
 TEMPLATE = "tools/sip.html"
 
 

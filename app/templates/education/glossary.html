@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="legal-hero">
+    <div class="container">
+        <span class="eyebrow">Financial Glossary</span>
+        <h1 class="display-5 fw-bold mt-3 mb-3">Plain-English finance terms with examples</h1>
+        <p class="lead text-secondary mb-0">Use this glossary to understand common investing, salary, loan, tax, and planning terms before using calculators or reading guides.</p>
+    </div>
+</section>
+
+<section class="section-pad">
+    <div class="container">
+        <div class="glossary-grid">
+            {% for item in terms %}
+            <article class="glossary-term" id="{{ item.term|lower|replace(' ', '-') }}">
+                <h2 class="h5 fw-bold">{{ item.term }}</h2>
+                <p><strong>Definition:</strong> {{ item.definition }}</p>
+                <p><strong>Simple explanation:</strong> {{ item.simple }}</p>
+                <p><strong>Example:</strong> {{ item.example }}</p>
+                <div class="related-links justify-content-start">
+                    <a href="{{ item.calculator.href }}">{{ item.calculator.title }}</a>
+                    <a href="/learning-center/{{ item.guide.slug }}">{{ item.guide.title }}</a>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -22,7 +22,7 @@ DEFAULTS = {
 }
 
 PAGE_TITLE = "Portfolio Overlap Checker – Compare Mutual Fund Holdings"
-PAGE_DESC = "Free portfolio overlap checker: compare mutual fund holdings & stock portfolios instantly. Reduce duplication, improve diversification & invest smarter."
+PAGE_DESC = "Free portfolio overlap checker: compare mutual fund holdings and stock portfolio names to review duplication and diversification assumptions."
 TEMPLATE = "tools/overlap.html"
 
 

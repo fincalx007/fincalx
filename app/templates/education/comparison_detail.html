@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% set slug = comparison[0] %}
+{% set page_title = comparison[1] %}
+{% set summary = comparison[2] %}
+{% set left = comparison[3] %}
+{% set right = comparison[4] %}
+{% set calculator = comparison[5] %}
+
+{% block content %}
+<section class="legal-hero">
+    <div class="container">
+        <span class="eyebrow">Comparison Guide</span>
+        <h1 class="display-5 fw-bold mt-3 mb-3">{{ page_title }}</h1>
+        <p class="lead text-secondary mb-0">{{ summary }}</p>
+        <div class="compliance-notice mt-4" role="note">
+            <div class="compliance-icon" aria-hidden="true"><i class="bi bi-balance-scale"></i></div>
+            <div>
+                <h2 class="h5 fw-bold mb-2">Neutrality disclaimer</h2>
+                <p class="text-secondary mb-0">This comparison is provided for informational purposes only. Suitability depends on individual financial goals, risk tolerance, income, liquidity needs, tax position, and investment horizon.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-pad">
+    <div class="container">
+        <div class="table-responsive comparison-table-wrap mb-5">
+            <table class="table comparison-table">
+                <thead>
+                    <tr><th>Factor</th><th>{{ left }}</th><th>{{ right }}</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Best fit</td><td>Useful when its features match your timeline, cash flow, and risk comfort.</td><td>Useful when its features match your timeline, cash flow, and risk comfort.</td></tr>
+                    <tr><td>Risk</td><td>Review product, market, credit, liquidity, or commitment risk before choosing.</td><td>Review product, market, credit, liquidity, or commitment risk before choosing.</td></tr>
+                    <tr><td>Liquidity</td><td>Check lock-in, exit cost, and access time.</td><td>Check lock-in, exit cost, and access time.</td></tr>
+                    <tr><td>Planning role</td><td>Can support a specific goal when used with realistic assumptions.</td><td>Can support a specific goal when used with realistic assumptions.</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row g-4">
+            <article class="col-lg-4"><div class="info-card h-100"><h2 class="h4 fw-bold">Pros</h2><p class="text-secondary mb-0">{{ left }} may be useful when you understand its cost, risk, liquidity, and goal fit. {{ right }} may be useful when it better matches your comfort, timeline, or required flexibility.</p></div></article>
+            <article class="col-lg-4"><div class="info-card h-100"><h2 class="h4 fw-bold">Cons</h2><p class="text-secondary mb-0">Neither choice is universally better. Poor assumptions, unsuitable timelines, hidden costs, and emotional decisions can make either option ineffective.</p></div></article>
+            <article class="col-lg-4"><div class="info-card h-100"><h2 class="h4 fw-bold">Best use cases</h2><p class="text-secondary mb-0">Use this comparison as a decision checklist, then test numbers with the related calculator and review official product or lender documents.</p></div></article>
+        </div>
+        <div class="related-tools mt-5">
+            <div><span class="eyebrow">Related Calculator</span><h2 class="h4 fw-bold mb-0">{{ calculator.title }}</h2></div>
+            <div class="related-links"><a href="{{ calculator.href }}">Open {{ calculator.title }}</a><a href="/comparison-guides">All comparison guides</a><a href="/finance-glossary">Glossary</a></div>
+        </div>
+    </div>
+</section>
+{% endblock %}

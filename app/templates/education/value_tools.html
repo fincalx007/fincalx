@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="legal-hero">
+    <div class="container">
+        <span class="eyebrow">Planning Tools</span>
+        <h1 class="display-5 fw-bold mt-3 mb-3">Lightweight resources beyond calculators</h1>
+        <p class="lead text-secondary mb-0">Use these planners, scorecards, learning paths, and roadmaps to turn financial education into a repeatable planning habit.</p>
+        <div class="compliance-notice mt-4" role="note">
+            <div class="compliance-icon" aria-hidden="true"><i class="bi bi-clipboard-check-fill"></i></div>
+            <div>
+                <h2 class="h5 fw-bold mb-2">Planning tools disclaimer</h2>
+                <p class="text-secondary mb-0">Planning tools and checklists are designed to help users organize financial goals and should not replace personalized financial planning advice. They are educational resources, not recommendations or suitability assessments.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4">
+            {% for slug, title, summary in tools %}
+            <article class="col-md-6 col-xl-3" id="{{ slug }}">
+                <div class="resource-card h-100">
+                    <span class="eyebrow">Resource</span>
+                    <h2 class="h5 fw-bold mt-2">{{ title }}</h2>
+                    <p class="text-secondary">{{ summary }}</p>
+                    <div class="mini-form">
+                        <label>Notes</label>
+                        <textarea class="form-control" rows="3" placeholder="Write your planning notes"></textarea>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        </div>
+        <div class="related-tools mt-5">
+            <div><span class="eyebrow">Connect The Plan</span><h2 class="h4 fw-bold mb-0">Use calculators after clarifying the decision</h2></div>
+            <div class="related-links">
+                {% for calculator in calculators %}
+                <a href="{{ calculator.href }}">{{ calculator.title }}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
