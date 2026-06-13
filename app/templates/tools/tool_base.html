@@ -39,10 +39,19 @@
             <div class="compliance-icon" aria-hidden="true"><i class="bi bi-info-circle-fill"></i></div>
             <div>
                 <h2 class="h5 fw-bold mb-2">{% block calculator_disclaimer_title %}{{ self.tool_title()|striptags }} Disclaimer{% endblock %}</h2>
+<<<<<<< HEAD
                 <p class="text-secondary mb-0">{% block calculator_disclaimer_text %}This calculator provides estimates based on the information entered by the user and the assumptions used in the calculation. Actual outcomes may vary due to market conditions, fees, taxes, inflation, lender rules, employer policies, and other factors. Results should be used for informational and educational purposes only and should not be considered financial, tax, investment, legal, lending, or professional advice.{% endblock %}</p>
             </div>
         </div>
         {% block tool_disclaimer %}{% endblock %}
+=======
+                <p class="text-secondary mb-0">{% block calculator_disclaimer_text %}This calculator provides estimates based on the information entered by the user and the assumptions used in the calculation. Actual outcomes may vary due to market conditions, fees, taxes, inflation, lender rules, employer policies, and other factors. Results should be used for informational and educational purposes only and should not be considered financial, tax, investment, legal, lending, or professional advice.
+<br><br>
+<em>This calculator is provided for educational and informational purposes only. Results are estimates and may vary based on actual market conditions, inflation, interest rates, fees, assumptions, and individual circumstances. This calculator does not constitute financial, investment, tax, legal, or professional advice.</em>{% endblock %}</p>
+            </div>
+        </div>
+        {# Removed per-page duplicate disclaimer alerts. Use the compliance notice above as the single Disclaimer. #}
+>>>>>>> fd6b176 (13-06-26)
     </div>
 </section>
 
@@ -87,10 +96,10 @@
             </div>
             <aside class="col-lg-4">
                 <div class="disclaimer-card">
-                    <i class="bi bi-info-circle-fill" aria-hidden="true"></i>
-                    <h2 class="h5 fw-bold mt-3">Disclaimer</h2>
-                    <p class="text-secondary mb-0">{% block disclaimer %}Results are approximate and for informational purposes only. This calculator does not provide financial, investment, legal, tax, lending, or professional advice. Please consult qualified professionals before making financial decisions.{% endblock %}</p>
-                </div>
+                        <i class="bi bi-info-circle-fill" aria-hidden="true"></i>
+                        <h2 class="h5 fw-bold mt-3">Educational Note</h2>
+                        <p class="text-secondary mb-0">{% block educational_note %}Use this calculator as a planning tool and not as a prediction of future performance. Actual outcomes may differ from estimates.{% endblock %}</p>
+                    </div>
             </aside>
         </div>
     </div>
@@ -108,7 +117,9 @@
                 <a href="/tools/emi-calculator">EMI Calculator India</a>
                 <a href="/tools/salary-calculator">Salary Calculator India</a>
                 <a href="/tools/portfolio-overlap-checker">Portfolio Overlap Checker</a>
+                <a href="/tools/cagr-calculator">CAGR Calculator</a>
             </div>
+
         </div>
     </div>
 </section>

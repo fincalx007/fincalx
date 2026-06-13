@@ -1,0 +1,262 @@
+{% extends "tools/tool_base.html" %}
+
+{% block tool_title %}Lumpsum Calculator India{% endblock %}
+
+{% block tool_intro %}
+Estimate maturity value from a one-time lumpsum investment using an expected annual return. Use the result as an educational estimate, not a guarantee.
+{% endblock %}
+
+{% block tool_form %}
+<form id="lumpsumForm" class="card calculator-card" data-api="/tools/lumpsum-calculator/api" data-result="lumpsum" novalidate>
+    <div class="card-body p-4">
+        <h2 class="h4 fw-bold mb-4">Enter investment details</h2>
+
+        {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% endif %}
+
+        <div class="mb-3">
+            <label class="form-label" for="investment_amount">Investment Amount</label>
+            <input class="form-control" id="investment_amount" name="investment_amount" type="number"
+                   min="1" max="1000000000" step="100" value="{{ form.investment_amount }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="expected_annual_return">Expected Annual Return (%)</label>
+            <input class="form-control" id="expected_annual_return" name="expected_annual_return" type="number"
+                   min="0" max="100" step="0.1" value="{{ form.expected_annual_return }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="investment_duration_years">Investment Duration (Years)</label>
+            <input class="form-control" id="investment_duration_years" name="investment_duration_years" type="number"
+                   min="1" max="60" step="1" value="{{ form.investment_duration_years }}" required>
+        </div>
+
+        <button type="button" id="lumpsumBtn" class="btn btn-gradient w-100" data-submit="lumpsum">
+            Calculate Maturity
+        </button>
+    </div>
+</form>
+{% endblock %}
+
+{% block tool_result %}
+<div id="result-section">
+    <div id="lumpsumResultBox" class="card result-card {% if not result %}d-none{% endif %}">
+        <div class="card-body p-4">
+            <h2 class="h5 fw-bold mb-3">Lumpsum Estimate</h2>
+
+            <div class="result-highlight">
+                <span>Maturity Value</span>
+                <strong id="lumpsumMaturityValue" class="fs-4">{{ result.maturity_value if result else "₹0" }}</strong>
+            </div>
+
+            <div class="result-row">
+                <span>Invested Amount</span>
+                <strong id="lumpsumInvestedAmount">{{ result.invested_amount if result else "₹0" }}</strong>
+            </div>
+
+            <div class="result-row">
+                <span>Estimated Returns</span>
+                <strong id="lumpsumEstimatedReturns">{{ result.estimated_returns if result else "₹0" }}</strong>
+            </div>
+        </div>
+    </div>
+
+    <div id="lumpsumResultEmpty" class="result-empty{% if result %} d-none{% endif %}">
+        <h2 class="h5">Your maturity result will appear here</h2>
+        <p class="text-secondary mb-0">Enter the investment amount, expected return, and duration to estimate maturity value.</p>
+    </div>
+
+    {# Standard disclaimer removed here; the single Disclaimer is provided by tool_base.html #}
+</div>
+{% endblock %}
+
+{% block seo_content %}
+<section class="section-pad bg-soft">
+    <div class="container">
+        <article>
+            <h2 class="h3 fw-bold mb-3">Introduction to Lumpsum Investing</h2>
+            <p class="text-secondary">A lumpsum investment is a one-time deposit made at the beginning. The future value depends on the assumed annual return and the number of years money stays invested.</p>
+        </article>
+
+        {% include "partials/ad_unit.html" %}
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">How the Lumpsum Calculator Works</h2>
+            <p class="text-secondary">Enter a one-time investment amount, an expected annual return, and the investment duration in years. The calculator compounds the investment annually to estimate the maturity value, then subtracts the original amount to estimate returns.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Formula explanation</h2>
+            <p class="text-secondary mb-0"><strong>Future Value = P × (1 + r/100) ^ n</strong></p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Example calculation</h2>
+            <p class="text-secondary">Suppose you invest Rs. 1,00,000 at 12% expected annual return for 5 years.</p>
+            <ul class="text-secondary">
+                <li>FV = 1,00,000 × (1.12)^5 ≈ 1,76,234</li>
+                <li>Estimated returns ≈ 1,76,234 − 1,00,000 ≈ 76,234</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Benefits</h2>
+            <ul class="text-secondary">
+                <li>Quickly test how time and return assumptions change outcomes.</li>
+                <li>Useful for planning target maturity amounts.</li>
+                <li>Helps compare whether a lumpsum investment fits your timeline.</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Common Mistakes</h2>
+            <ul class="text-secondary">
+                <li>Assuming expected returns will be achieved every year.</li>
+                <li>Ignoring inflation and fees when evaluating real purchasing power.</li>
+                <li>Using one return number even when risk level and volatility differ.</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">When to choose Lumpsum vs SIP</h2>
+            <p class="text-secondary">Choose lumpsum when you have capital today and believe the investment horizon and valuation are favourable for immediate deployment—this captures the full compounding benefit. Choose SIP when you want to spread entry risk over time, particularly if markets look volatile or you are unsure about short-term timing. Example: investing a year-end bonus as a lumpsum may outperform gradual deployment if markets rally; conversely, in choppy markets a phased SIP may reduce regret from poor timing.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Tax and inflation considerations</h2>
+            <p class="text-secondary">Lump-sum maturity is typically quoted pre-tax. Different instruments have distinct tax treatments (capital gains, interest income, dividends); always estimate taxes to compute net outcomes. Also convert nominal return expectations to real returns by subtracting expected inflation to understand purchasing-power growth. For long horizons, small differences in inflation assumptions materially change target planning.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Deployment and monitoring plan</h2>
+            <p class="text-secondary">After deploying a lumpsum, set periodic reviews (quarterly/annually) to monitor performance versus expectations and rebalance if asset allocation drifts. Keep a portion liquid for emergencies to avoid forced sales. If you prefer phased deployment, set a calendar: e.g., allocate 50% now and spread 50% monthly over 6 months, then review. Document your plan and stick to rules to avoid emotional reactions to short-term volatility.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Behavioral tips</h2>
+            <p class="text-secondary">A clear written plan reduces impulsive reactions to market moves. Decide beforehand whether you will top up, rebalance, or stay invested through downturns. If market timing causes stress, consider a phased deployment to smooth entry and preserve sleep-at-night comfort.</p>
+        </article>
+        
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">What is this calculator?</h2>
+            <p class="text-secondary">The Lumpsum calculator determines the future value of a one-time investment given an expected annual return and duration. It helps you assess whether a lumpsum investment can meet a target amount under simplified assumptions.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Formula explanation (detailed)</h2>
+            <p class="text-secondary">Future value grows by compounding the principal at the stated rate each year. Using yearly compounding: FV = P × (1 + r)^n. Adjust for inflation to estimate real purchasing power at maturity.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Worked example (practical)</h2>
+            <p class="text-secondary">If you invest Rs. 2,00,000 today at 8% for 10 years, FV = 2,00,000 × (1.08)^10 ≈ Rs. 4,31,000. This helps compare options such as investing now versus investing later or using SIPs to reach a similar target.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Benefits</h2>
+            <ul class="text-secondary">
+                <li>Quickly compare one-time investment outcomes across time horizons.</li>
+                <li>Helps decide whether a lumpsum or a phased SIP approach is more appropriate.</li>
+                <li>Useful for planning lump-sum events like inheritance or bonus deployment.</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">FAQs</h2>
+            <div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#lsFaq1">Should I invest lumpsum or SIP?</button></h3><div id="lsFaq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion"><div class="accordion-body">Choice depends on market valuation, risk tolerance, and available capital. Lumpsum benefits from immediate compounding, while SIP mitigates timing risk for volatile markets.</div></div></div>
+            <div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#lsFaq2">Does compounding frequency matter?</button></h3><div id="lsFaq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Yes. More frequent compounding slightly increases maturity for the same nominal annual rate. This calculator assumes annual compounding by default.</div></div></div>
+            <div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#lsFaq3">How do I include taxes?</button></h3><div id="lsFaq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Adjust the final value after estimating tax liabilities for the product. For clarity, use pre-tax assumptions here and compute net returns separately.</div></div></div>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Educational note</h2>
+            <p class="text-secondary">Lump-sum investing can be attractive when you have capital and a long horizon. If markets are expensive, consider phased deployment or dollar-cost averaging to spread entry risk. Always align deployment strategy with your risk appetite and liquidity needs.</p>
+        </article>
+
+        <div class="alert alert-secondary mt-4">Disclaimer: Educational only — results are estimates and do not include taxes, fees, or product-specific terms. Consult a financial advisor for personal advice.</div>
+    </div>
+</section>
+{% endblock %}
+
+{% block advanced_content %}
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4">
+            <article class="col-lg-6">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">When to use this calculator?</h2>
+                    <p class="text-secondary">Use it when you want a simple “one-time investment” projection and an educational sense of maturity value under a chosen return assumption.</p>
+                </div>
+            </article>
+            <article class="col-lg-6">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">Things to consider</h2>
+                    <p class="text-secondary">This tool assumes a constant expected return and ignores taxes, fees, and changing market conditions. Actual results can differ.</p>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block explanation %}
+A lumpsum calculator estimates the future value of a one-time investment by compounding it at an assumed annual return over a fixed number of years.
+{% endblock %}
+
+{% block formula %}
+<p class="text-secondary mb-0"><strong>Future Value = P × (1 + r/100) ^ n</strong></p>
+{% endblock %}
+
+{% block faq %}
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#lumpsumFaq1">What does “expected annual return” mean?</button>
+    </h2>
+    <div id="lumpsumFaq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">It’s an assumed average annual growth rate used by the calculator to project a possible future value. It is not a guarantee of actual performance.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#lumpsumFaq2">Does this calculator include taxes and fees?</button>
+    </h2>
+    <div id="lumpsumFaq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">No. It focuses on the core compounding assumption. Taxes, fees, and real-world returns can change the final outcome.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#lumpsumFaq3">Can I use lumpsum results for SIP planning?</button>
+    </h2>
+    <div id="lumpsumFaq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">You can use it as a rough educational reference, but SIP uses recurring contributions and different timing effects. For SIP projections, use the SIP calculator.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#lumpsumFaq4">How does compounding frequency affect the result?</button>
+    </h2>
+    <div id="lumpsumFaq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">This calculator assumes annual compounding at the entered annual rate. More frequent compounding (monthly/quarterly) would slightly increase the maturity value for the same nominal annual rate.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#lumpsumFaq5">Are results shown before or after tax?</button>
+    </h2>
+    <div id="lumpsumFaq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Results are pre-tax estimates. Tax treatment depends on the product and jurisdiction; adjust your planning for likely taxes when evaluating net outcomes.</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/lumpsum.js"></script>
+{% endblock %}
+

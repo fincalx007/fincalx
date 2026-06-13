@@ -1,0 +1,211 @@
+{% extends "tools/tool_base.html" %}
+
+{% block tool_title %}Emergency Fund Calculator India{% endblock %}
+
+{% block tool_intro %}
+Estimate a recommended emergency fund based on your monthly expenses and the number of months of coverage.
+{% endblock %}
+
+{% block tool_form %}
+<form id="emergencyFundForm" class="card calculator-card" data-api="/tools/emergency-fund-calculator/api" data-result="emergency_fund" novalidate>
+    <div class="card-body p-4">
+        <h2 class="h4 fw-bold mb-4">Enter your inputs</h2>
+
+        {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% endif %}
+
+        <div class="mb-3">
+            <label class="form-label" for="monthly_expenses">Monthly Expenses</label>
+            <input class="form-control" id="monthly_expenses" name="monthly_expenses" type="number"
+                   min="1" max="100000000" step="100" value="{{ form.monthly_expenses }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="emergency_coverage_months">Emergency Coverage Months</label>
+            <input class="form-control" id="emergency_coverage_months" name="emergency_coverage_months" type="number"
+                   min="1" max="24" step="1" value="{{ form.emergency_coverage_months }}" required>
+        </div>
+
+        <button type="button" id="emergencyFundBtn" class="btn btn-gradient w-100" data-submit="emergency_fund">
+            Recommend Emergency Fund
+        </button>
+    </div>
+</form>
+{% endblock %}
+
+{% block tool_result %}
+<div id="result-section">
+    <div id="emergencyFundResultBox" class="card result-card {% if not result %}d-none{% endif %}">
+        <div class="card-body p-4">
+            <h2 class="h5 fw-bold mb-3">Emergency Fund Recommendation</h2>
+
+            <div class="result-highlight">
+                <span>Recommended Emergency Fund</span>
+                <strong id="emergencyFundRecommended" class="fs-4">{{ result.recommended_emergency_fund if result else "₹0" }}</strong>
+            </div>
+        </div>
+    </div>
+
+    <div id="emergencyFundResultEmpty" class="result-empty{% if result %} d-none{% endif %}">
+        <h2 class="h5">Your recommendation will appear here</h2>
+        <p class="text-secondary mb-0">Enter monthly expenses and choose how many months you want to cover.</p>
+    </div>
+
+    {# Standard disclaimer removed here; the single Disclaimer is provided by tool_base.html #}
+</div>
+{% endblock %}
+
+{% block seo_content %}
+<section class="section-pad bg-soft">
+    <div class="container">
+        <article>
+            <h2 class="h3 fw-bold mb-3">Introduction</h2>
+            <p class="text-secondary">An emergency fund is a dedicated pool of liquid savings intended to cover essential expenses during unforeseen financial shocks—job loss, medical emergencies, urgent home repairs, or other disruptions. This Emergency Fund Calculator provides a simple, practical recommendation by multiplying your monthly essential expenses by the number of months of coverage you want.</p>
+        </article>
+
+        {% include "partials/ad_unit.html" %}
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">What is this calculator?</h2>
+            <p class="text-secondary">This tool estimates the size of an emergency fund based on the essential monthly expenses you provide and a chosen coverage period (e.g., three to twelve months). It is a heuristic designed to provide a safe starting point for liquidity planning, not a comprehensive risk model.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">How it works</h2>
+            <p class="text-secondary">Enter the amount you would need each month to cover essential expenses (rent/mortgage, food, utilities, minimum loan payments, insurance, and essential transport). Multiply this by the number of months you plan to be covered. The simple multiplication gives a recommended emergency fund that would meet essential needs without selling long-term investments in a crisis.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Formula</h2>
+            <p class="text-secondary mb-0"><strong>Recommended Emergency Fund = Monthly Essential Expenses × Coverage Months</strong></p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Worked example</h2>
+            <p class="text-secondary">Example: Monthly essential expenses Rs. 60,000, coverage 6 months → Fund = 60,000 × 6 = Rs. 3,60,000. If you expect greater job instability or have dependents, a longer coverage (9–12 months) may be prudent.</p>
+            <p class="text-secondary mb-0">Adjust the monthly essential expenses definition conservatively—exclude discretionary spending and focus on what you truly need to maintain fundamental standards of living.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Benefits</h2>
+            <ul class="text-secondary">
+                <li>Reduces the need to liquidate long-term investments at unfavourable times.</li>
+                <li>Provides peace of mind and financial resilience during income disruptions.</li>
+                <li>Improves overall financial stability and supports long-term investment strategies.</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Common mistakes</h2>
+            <ul class="text-secondary">
+                <li>Underestimating essential expenses or omitting irregular recurring costs (insurance, maintenance).</li>
+                <li>Placing emergency funds in illiquid or high-volatility investments.</li>
+                <li>Using the emergency fund for non-essential expenses; treat it as a last-resort resource.</li>
+            </ul>
+        </article>
+        
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Building a plan and funding strategy</h2>
+            <p class="text-secondary">Set a realistic target and build the fund gradually. Start by automating a small monthly transfer into a dedicated account and increase the amount when you receive salary hikes or bonuses. Aim to reach at least three months of coverage within the first year and scale toward your chosen safety margin (6–12 months) over subsequent years.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Where to hold the emergency fund</h2>
+            <p class="text-secondary">Prioritise liquidity and capital preservation. Good options include high-yield savings accounts, liquid mutual funds, or short-term fixed deposits with minimal penalty for early withdrawal. Balance yield with access — a slightly lower rate with instant access is often preferable to higher returns that are subject to lock-in or market risk.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Replenishment and usage policy</h2>
+            <p class="text-secondary">Treat the emergency fund as a separate bucket. If you use it for a true emergency, prioritise replenishment by diverting a portion of monthly savings until the target is restored. Establish simple rules (what qualifies as an emergency, who authorises withdrawals) to avoid misuse and ensure the fund is available when needed.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Practical example</h2>
+            <p class="text-secondary">Case: A household with essential monthly expenses of Rs. 40,000 chooses 6 months of coverage → target Rs. 2,40,000. They automate Rs. 10,000 monthly transfers; after 4 months, they have Rs. 40,000. After a year, with incremental increases from bonuses, they reach the target. Regular reviews and earmarked accounts prevent accidental spending and make the buffer actionable.</p>
+        </article>
+    </div>
+</section>
+{% endblock %}
+
+{% block advanced_content %}
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4">
+            <article class="col-lg-6">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">When should you use it?</h2>
+                    <p class="text-secondary">Use it as a starting point for how large your safety buffer should be before investing aggressively.</p>
+                </div>
+            </article>
+            <article class="col-lg-6">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">Things to consider</h2>
+                    <p class="text-secondary">This is a simple multiplier model. Your essentials and true emergency needs can differ.</p>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block explanation %}
+An emergency fund protects you from forced borrowing or distressed selling by keeping cash for unexpected events.
+{% endblock %}
+
+{% block formula %}
+<p class="text-secondary mb-0"><strong>Recommended = Monthly Expenses × Coverage Months</strong></p>
+{% endblock %}
+
+{% block faq %}
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#efFaq1">What is a good starting coverage month count?</button>
+    </h2>
+    <div id="efFaq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">A common starting point is three to six months of essential expenses. Choose more months if your job has higher instability, you are self-employed, or you have significant dependents.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#efFaq2">Where should I keep the emergency fund?</button>
+    </h2>
+    <div id="efFaq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Keep it liquid and low-risk: high-yield savings accounts, liquid mutual funds, or short-term fixed deposits are typical options. Ensure easy access without penalties.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#efFaq3">Should I invest my emergency fund?</button>
+    </h2>
+    <div id="efFaq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Generally no—emergency funds should prioritize safety and liquidity over returns. Investing in volatile assets risks being forced to sell at a loss during a crisis.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#efFaq4">How often should I top up the fund?</button>
+    </h2>
+    <div id="efFaq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Review the fund annually and after major life events. Top up with windfalls or periodic contributions until your target coverage is reached.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#efFaq5">Can I use part of the emergency fund for planned expenses?</button>
+    </h2>
+    <div id="efFaq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Only if you plan to replenish it promptly. Mixing planned spending with emergency reserves increases the chance of underfunding when true emergencies occur.</div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/emergency_fund.js"></script>
+{% endblock %}
+

@@ -47,13 +47,11 @@ Estimate maturity value, total invested amount, and projected returns for a mont
 
 {% block tool_result %}
 <div id="result-section">
-<div id="resultBox" class="card result-card" {% if not result %}style="display: none;"{% endif %}>
+<div id="resultBox" class="card result-card {% if not result %}d-none{% endif %}">
     <div class="card-body p-4">
         <h2 class="h5 fw-bold mb-3">SIP Estimate</h2>
 
-        <div style="background: #111827;
-                    border: 1px solid rgba(255,255,255,.12);
-                    border-radius: 14px; padding: 1.5rem; text-align: center;">
+        <div class="result-visual-dark">
 
             <div class="result-row">
                 <span>Total Invested</span>
@@ -79,11 +77,7 @@ Estimate maturity value, total invested amount, and projected returns for a mont
     <p class="text-secondary mb-0">Change the inputs to compare different monthly investment plans.</p>
 </div>
 
-<!-- ALWAYS VISIBLE DISCLAIMER -->
-<div class="alert alert-warning mt-3 small">
-<strong>Disclaimer:</strong>
-This calculator provides approximate results for informational purposes only. It does not constitute financial, investment, tax, or legal advice. Actual returns may vary because investments are market-linked. Please consult a qualified professional before making financial decisions.
-</div>
+{# Standard disclaimer removed here; the single Disclaimer is provided by tool_base.html #}
 {% endblock %}
 
 {% block seo_content %}
@@ -119,6 +113,47 @@ This calculator provides approximate results for informational purposes only. It
                 <li>Use as a first-pass planning tool before speaking with an adviser.</li>
             </ul>
         </article>
+        
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">What is this calculator?</h2>
+            <p class="text-secondary">This SIP calculator converts recurring monthly contributions into an estimated future corpus assuming a constant expected annual return. It models the future value of a regular investment stream using standard financial mathematics and is intended for planning and comparison purposes.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Formula &amp; explanation</h2>
+            <p class="text-secondary mb-0"><strong>Formula:</strong> FV = P × [((1 + r)^n − 1) / r] × (1 + r) where P is monthly investment, r is monthly rate and n is total months.</p>
+            <p class="text-secondary">The formula calculates the future value of an ordinary annuity with monthly contributions. Converting the annual return to a monthly rate applies consistent compounding to each contribution. The multiplier separates capital invested from growth, making it clear how much comes from contributions versus market returns.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Common mistakes (expanded)</h2>
+            <ul class="text-secondary">
+                <li>Assuming a constant high return without running conservative scenarios.</li>
+                <li>Forgetting to account for fund expense ratios and taxes when estimating real returns.</li>
+                <li>Using the calculator for very short horizons where market timing and volatility dominate.</li>
+                <li>Not keeping an emergency fund separate, which can force early redemptions at bad times.</li>
+                <li>Mismatching nominal and real (inflation-adjusted) targets—plan in real terms if you care about purchasing power.</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Practical worked example (detailed)</h2>
+            <p class="text-secondary">Example: You invest Rs. 8,000 monthly for 20 years with an expected annual return of 10% (monthly r ≈ 0.8333%). Total invested = Rs. 8,000 × 240 = Rs. 19,20,000. Applying the formula yields a maturity amount in the vicinity of Rs. 1.16 crore. The invested capital is under one-fifth of the total maturity, illustrating the power of long-term compounding.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Related calculators</h2>
+            <p class="text-secondary">Complement with the <a href="/tools/lumpsum">Lumpsum</a> calculator for one-time investments, the <a href="/tools/step-up-sip">Step-Up SIP</a> calculator for planned contribution increases, and the <a href="/tools/goal">Goal-based investment</a> tool to map SIPs to concrete targets.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Educational note</h2>
+            <p class="text-secondary">SIP returns are sensitive to the starting point and the path markets take over your investment period. Regular investing smooths entry points but does not eliminate market risk. Use multiple return scenarios and maintain multi-year perspectives; short-term performance should not determine long-term discipline.</p>
+        </article>
+
+        
+
+        <div class="alert alert-secondary mt-4">Disclaimer: Educational only. Results are estimates and not financial advice. This calculator does not include taxes, fund fees, or transaction costs. Consult a certified financial advisor for personalised planning.</div>
     </div>
 </section>
 {% endblock %}
@@ -211,6 +246,17 @@ n = Total number of months
             How are SIP returns estimated here?
         </button>
     </h2>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq7">
+                    How should I choose an expected return for projections?
+                </button>
+            </h2>
+            <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">Choose conservative, moderate, and optimistic return assumptions based on historical performance of the asset class, fees, and your investment horizon. For planning, use a conservative estimate to avoid under-saving.</div>
+            </div>
+        </div>
     <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
         <div class="accordion-body">
             The tool assumes a steady expected annual return and compounds it monthly. Actual mutual fund performance can vary due to market movements and fund expenses.

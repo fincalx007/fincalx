@@ -1,0 +1,238 @@
+{% extends "tools/tool_base.html" %}
+
+{% block tool_title %}Step-Up SIP Calculator India{% endblock %}
+
+{% block tool_intro %}
+Estimate maturity value, total invested amount, and projected wealth growth for a step-up SIP. Your SIP amount increases every year by the selected step-up percentage, while returns are estimated using your expected annual return.
+{% endblock %}
+
+{% block tool_form %}
+<form id="stepUpSIPForm" class="card calculator-card" data-api="/tools/step-up-sip-calculator/api" data-result="step_up_sip" novalidate>
+    <div class="card-body p-4">
+        <h2 class="h4 fw-bold mb-4">Enter Step-Up SIP details</h2>
+
+        {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% endif %}
+
+        <div class="mb-3">
+            <label class="form-label" for="step_monthly_investment">Monthly SIP amount</label>
+            <input class="form-control" id="step_monthly_investment" name="monthly_investment" type="number"
+                   min="100" max="10000000" step="100" value="{{ form.monthly_investment }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="step_up_pct">Annual step-up percentage (%)</label>
+            <input class="form-control" id="step_up_pct" name="annual_step_up_percentage" type="number"
+                   min="0" max="100" step="0.5" value="{{ form.annual_step_up_percentage }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="step_expected_return">Expected annual return (%)</label>
+            <input class="form-control" id="step_expected_return" name="expected_annual_return" type="number"
+                   min="0" max="40" step="0.1" value="{{ form.expected_annual_return }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="step_years">Investment duration (years)</label>
+            <input class="form-control" id="step_years" name="years" type="number"
+                   min="1" max="60" step="1" value="{{ form.years }}" required>
+        </div>
+
+        <button type="button" id="stepUpSIPBtn" class="btn btn-gradient w-100" data-submit="step_up_sip">
+            Calculate Step-Up SIP
+        </button>
+    </div>
+</form>
+{% endblock %}
+
+{% block tool_result %}
+<div id="result-section">
+    <div id="stepUpSIPResultBox" class="card result-card {% if not result %}d-none{% endif %}">
+        <div class="card-body p-4">
+            <h2 class="h5 fw-bold mb-3">Step-Up SIP Estimate</h2>
+
+            <div class="result-highlight">
+                <span>Maturity Value</span>
+                <strong id="stepUpSIPMaturity" class="fs-4">{{ result.maturity_value if result else "0" }}</strong>
+            </div>
+
+            <div class="result-row">
+                <span>Total Investment</span>
+                <strong id="stepUpSIPInvested">{{ result.total_investment if result else "0" }}</strong>
+            </div>
+
+            <div class="result-row">
+                <span>Wealth Generated</span>
+                <strong id="stepUpSIPWealth">{{ result.wealth_generated if result else "0" }}</strong>
+            </div>
+        </div>
+    </div>
+
+    <div id="stepUpSIPResultEmpty" class="result-empty{% if result %} d-none{% endif %}">
+        <h2 class="h5">Your Step-Up SIP result will appear here</h2>
+        <p class="text-secondary mb-0">Enter your monthly SIP amount, step-up %, expected return, and years to estimate growth.</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block seo_content %}
+<section class="section-pad bg-soft">
+    <div class="container">
+        <article>
+            <h2 class="h3 fw-bold mb-3">Introduction to Step-Up SIP</h2>
+            <p class="text-secondary">A Step-Up SIP is a systematic investment scheme where the monthly contribution increases at a predefined rate—usually annually—to reflect expected income growth or increasing savings capacity. This approach lets investors start with an affordable investment amount and gradually increase contributions, benefiting from compounding as contributions grow. The Step-Up SIP Calculator demonstrates how incremental increases compound over time and what maturity value you can expect under an assumed annual return.</p>
+        </article>
+
+        {% include "partials/ad_unit.html" %}
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">What is this calculator?</h2>
+            <p class="text-secondary">This calculator estimates the maturity value, total invested amount, and wealth generated from a SIP where the monthly contribution steps up each year by a specified percentage. It models annual increases to the monthly contribution and applies monthly compounding of returns to each contribution until maturity.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">How the calculator works</h2>
+            <p class="text-secondary">You provide a starting monthly SIP amount, an annual step-up percentage, expected annual return, and total investment duration. The calculator increases the monthly contribution at the start of each year by the step-up percentage and compounds each month’s contribution at the expected monthly return until maturity. The results show how the growing contribution schedule affects final corpus versus a fixed SIP contribution.</p>
+            <p class="text-secondary mb-0">This model assumes uniform annual step-ups and constant average returns; real-world returns are variable and step-up timing may differ across products.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Formula explanation</h2>
+            <p class="text-secondary mb-0">The calculation treats each year as a block where monthly contributions are constant within the year but increase at each year boundary. Each individual monthly contribution is compounded forward using the monthly return rate until the end of the horizon and then summed to obtain maturity value. The total invested is the sum of all monthly contributions, and wealth generated is maturity minus total invested.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Worked example</h2>
+            <p class="text-secondary">Example: Start at Rs. 10,000/month, annual step-up 10%, expected annual return 12%, duration 5 years. Year 1 contributions are Rs. 10,000 per month; Year 2 becomes Rs. 11,000 per month; Year 3 becomes Rs. 12,100, and so on. Each monthly installment is compounded at the monthly rate derived from 12% to the horizon. The calculator sums the future value of every monthly installment to arrive at maturity. This illustrates the power of disciplined increases combined with compounding.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Benefits and use cases</h2>
+            <ul class="text-secondary">
+                <li>Enables gradual increases in savings aligned with career progression or income growth.</li>
+                <li>May significantly boost maturity value relative to a fixed SIP, especially over long horizons.</li>
+                <li>Useful for funding long-term goals where early contributions are lower and later contributions are higher.</li>
+                <li>Helps visualize the trade-off between start amount, step-up rate, and duration.</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Common mistakes people make</h2>
+            <ul class="text-secondary">
+                <li>Selecting an aggressive step-up rate not supported by future income expectations.</li>
+                <li>Neglecting expense ratios and taxes from fund returns.</li>
+                <li>Assuming returns are linear—markets fluctuate and short-term underperformance can affect outcomes.</li>
+                <li>Failing to re-evaluate the plan if income or life circumstances change.</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Educational note</h2>
+            <p class="text-secondary">Step-Up SIPs are a behavioural tool: they leverage expected increases in capacity to save and make long-term commitments more manageable early on. When using this approach, monitor fund selection and expense ratios carefully; small fee differences compound over long horizons. Consider tax-efficient account wrappers where available and revise step-up rates as actual income patterns emerge.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Related calculators</h2>
+            <p class="text-secondary">Compare with the <a href="/tools/sip">SIP</a> calculator for fixed monthly contributions, <a href="/tools/goal">Goal-based</a> planning for target-based saving, and <a href="/tools/lumpsum">Lumpsum</a> if you have capital to invest upfront.</p>
+        </article>
+
+        <div class="alert alert-secondary mt-4">Disclaimer: Results are educational and approximate. They do not include taxes, fees, or product-specific features. Consult a financial advisor for personalised plans.</div>
+    </div>
+</section>
+{% endblock %}
+
+{% block advanced_content %}
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4">
+            <article class="col-lg-6">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">When should you use this calculator?</h2>
+                    <p class="text-secondary">Use the Step-Up SIP calculator when you expect your disposable income to rise and you want to model an increasing contribution pattern. It can be helpful for long-term goals where discipline matters more than short-term timing.</p>
+                </div>
+            </article>
+            <article class="col-lg-6">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">Things to consider</h2>
+                    <p class="text-secondary">This tool assumes annual step-up happens once per year and uses a constant expected annual return. It does not include taxes, fund expenses, inflation effects, or the possibility of changing employment/income.</p>
+                    <p class="text-secondary mb-0">Treat the result as an educational estimate based on your inputs.</p>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block explanation %}
+A Step-Up SIP is a SIP where your monthly contribution increases over time, typically based on an annual step-up percentage. This can help you invest more as your income grows while keeping your initial SIP manageable.
+{% endblock %}
+
+{% block formula %}
+<p class="text-secondary mb-0">
+The projected maturity is computed by accumulating each month’s contribution with monthly compounding using the expected annual return.
+</p>
+{% endblock %}
+
+{% block faq %}
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#stepFaq1">What does “step-up SIP” mean?</button>
+    </h2>
+    <div id="stepFaq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">A step-up SIP is a SIP where your monthly contribution increases over time, usually once per year, based on a selected step-up percentage.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#stepFaq2">Does this calculator include taxes and fund charges?</button>
+    </h2>
+    <div id="stepFaq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">No. It uses only your inputs and a constant return assumption. Taxes and fund expense ratios are not included in the projection.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#stepFaq3">Is step-up SIP better than fixed SIP?</button>
+    </h2>
+    <div id="stepFaq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">It can be suitable when your income is expected to rise. However, the “better” choice depends on your ability to sustain higher contributions and the risk/return of the chosen investment.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#stepFaq4">What happens if my expected return is wrong?</button>
+    </h2>
+    <div id="stepFaq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">If the return assumption differs from actual performance, the maturity estimate will change. Use conservative scenarios to plan responsibly.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#stepFaq5">Can I model irregular step-ups (different percentages)?</button>
+    </h2>
+    <div id="stepFaq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">This calculator assumes a uniform annual step-up percentage. For irregular step-ups, run multiple scenarios or use a spreadsheet to model year-by-year changes and re-run the calculator for each scenario if needed.</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block related_calculators %}
+<section class="section-pad bg-soft">
+    <div class="container">
+        <h3 class="h5 fw-bold mb-3">Related calculators</h3>
+        <p class="text-secondary">Related: <a href="/tools/sip">SIP</a>, <a href="/tools/goal">Goal-based</a>, <a href="/tools/lumpsum">Lumpsum</a>.</p>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/ajax-engine.js"></script>
+<script src="/static/js/step_up_sip.js"></script>
+{% endblock %}
+

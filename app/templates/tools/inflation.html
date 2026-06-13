@@ -1,0 +1,172 @@
+{% extends "tools/tool_base.html" %}
+
+{% block tool_title %}Inflation Calculator India{% endblock %}
+
+{% block tool_intro %}
+Estimate future value and purchasing power impact due to inflation over a chosen number of years.
+{% endblock %}
+
+{% block tool_form %}
+<form id="inflationForm" class="card calculator-card" data-api="/tools/inflation-calculator/api" data-result="inflation" novalidate>
+    <div class="card-body p-4">
+        <h2 class="h4 fw-bold mb-4">Enter inflation details</h2>
+
+        {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% endif %}
+
+        <div class="mb-3">
+            <label class="form-label" for="current_amount">Current Amount</label>
+            <input class="form-control" id="current_amount" name="current_amount" type="number"
+                   min="1" max="1000000000" step="100" value="{{ form.current_amount }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="inflation_rate">Inflation Rate (%)</label>
+            <input class="form-control" id="inflation_rate" name="inflation_rate" type="number"
+                   min="0" max="100" step="0.1" value="{{ form.inflation_rate }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="number_of_years">Number of Years</label>
+            <input class="form-control" id="number_of_years" name="number_of_years" type="number"
+                   min="1" max="60" step="1" value="{{ form.number_of_years }}" required>
+        </div>
+
+        <button type="button" id="inflationBtn" class="btn btn-gradient w-100" data-submit="inflation">
+            Calculate Inflation Impact
+        </button>
+    </div>
+</form>
+{% endblock %}
+
+{% block tool_result %}
+<div id="result-section">
+    <div id="inflationResultBox" class="card result-card {% if not result %}d-none{% endif %}">
+        <div class="card-body p-4">
+            <h2 class="h5 fw-bold mb-3">Inflation Estimate</h2>
+
+            <div class="result-highlight">
+                <span>Future Value</span>
+                <strong id="inflationFutureValue" class="fs-4">{{ result.future_value if result else "₹0" }}</strong>
+            </div>
+
+            <div class="result-row">
+                <span>Purchasing Power Impact</span>
+                <strong id="inflationImpact">{{ result.purchasing_power_impact if result else "₹0" }}</strong>
+            </div>
+        </div>
+    </div>
+
+    <div id="inflationResultEmpty" class="result-empty{% if result %} d-none{% endif %}">
+        <h2 class="h5">Your inflation result will appear here</h2>
+        <p class="text-secondary mb-0">Enter current amount, inflation rate, and years to estimate future value impact.</p>
+    </div>
+
+    {# Standard disclaimer removed here; the single Disclaimer is provided by tool_base.html #}
+</div>
+{% endblock %}
+
+{% block seo_content %}
+<section class="section-pad bg-soft">
+    <div class="container">
+        <article>
+            <h2 class="h3 fw-bold mb-3">Introduction to Inflation</h2>
+            <p class="text-secondary">Inflation reduces purchasing power over time. Even if the nominal number increases, the real value of money can fall.</p>
+        </article>
+
+        {% include "partials/ad_unit.html" %}
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">How the Inflation Calculator Works</h2>
+            <p class="text-secondary">Enter your current amount, assume an inflation rate, and select the number of years. The calculator compounds your amount to estimate future value, and the difference represents the purchasing power impact.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Formula explanation</h2>
+            <p class="text-secondary mb-0"><strong>FV = A × (1 + i/100)^n</strong></p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Example calculation</h2>
+            <p class="text-secondary">If you have Rs. 10,00,000 now and inflation is 6% for 10 years:</p>
+            <ul class="text-secondary">
+                <li>FV = 10,00,000 × (1.06)^10</li>
+                <li>Impact = FV − 10,00,000</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Benefits</h2>
+            <ul class="text-secondary">
+                <li>Helps estimate future costs for planning goals.</li>
+                <li>Makes purchasing power risks visible.</li>
+                <li>Useful alongside compound interest and SIP planning.</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Common Mistakes</h2>
+            <ul class="text-secondary">
+                <li>Using inflation-neutral assumptions for long-term planning.</li>
+                <li>Ignoring that inflation can vary over time.</li>
+                <li>Comparing nominal returns without considering real returns.</li>
+            </ul>
+        </article>
+    </div>
+</section>
+{% endblock %}
+
+{% block advanced_content %}
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4">
+            <article class="col-lg-6">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">When should you use it?</h2>
+                    <p class="text-secondary">Use it when you want to understand how inflation might affect the future purchasing power of today’s money.</p>
+                </div>
+            </article>
+            <article class="col-lg-6">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">Things to consider</h2>
+                    <p class="text-secondary">This assumes a constant inflation rate for the entire period. Real inflation rates may differ.</p>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block explanation %}
+This calculator estimates how inflation can change the future value of money and how much purchasing power may be lost over time.
+{% endblock %}
+
+{% block formula %}
+<p class="text-secondary mb-0"><strong>FV = A × (1 + i/100)^n</strong></p>
+{% endblock %}
+
+{% block faq %}
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#inflFaq1">Is inflation always bad?</button>
+    </h2>
+    <div id="inflFaq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Inflation is not “good” or “bad” by itself—its impact depends on how your income and investments perform relative to inflation.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#inflFaq2">Does this calculator adjust for taxes?</button>
+    </h2>
+    <div id="inflFaq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">No. It estimates inflation impact on the money value only. Taxes and fees can further affect outcomes.</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/inflation.js"></script>
+{% endblock %}
+

@@ -2,15 +2,14 @@
 {% if ad_slot %}
 <section class="ad-section" aria-label="Sponsored advertisement">
     <div class="container">
-        <p class="small text-muted text-uppercase mb-2" style="font-size: 0.7rem; letter-spacing: 0.05em;">Sponsored</p>
+        <p class="small text-muted text-uppercase mb-2 sponsored-label">Sponsored</p>
         <div class="ad-slot">
             <ins class="adsbygoogle"
-                style="display:block"
                 data-ad-client="ca-pub-7541563552796195"
                 data-ad-slot="{{ ad_slot }}"
                 data-ad-format="auto"
                 data-full-width-responsive="true"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            <script nonce="{{ request.state.csp_nonce }}">(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
     </div>
 </section>
@@ -18,7 +17,7 @@
 {# Fallback placeholder for development / before AdSense approval #}
 <section class="ad-section" aria-label="Sponsored advertisement">
     <div class="container">
-        <p class="small text-muted text-uppercase mb-2" style="font-size: 0.7rem; letter-spacing: 0.05em;">Sponsored</p>
+        <p class="small text-muted text-uppercase mb-2 sponsored-label">Sponsored</p>
         <div class="ad-slot">
             <span>Advertisement</span>
         </div>

@@ -25,16 +25,16 @@
 
 {% block tool_result %}
 <div id="result-section">
-<div id="overlapResultBox" class="card result-card" {% if not result %}style="display: none;"{% endif %}><div class="card-body p-4">
+<div id="overlapResultBox" class="card result-card {% if not result %}d-none{% endif %}"><div class="card-body p-4">
     <h2 class="h5 fw-bold mb-3">Overlap Result</h2>
     <div class="result-row"><span>Portfolio 1 Names</span><strong id="overlapFirstCount">{{ result.first_count if result else "0" }}</strong></div>
     <div class="result-row"><span>Portfolio 2 Names</span><strong id="overlapSecondCount">{{ result.second_count if result else "0" }}</strong></div>
     <div class="result-highlight"><span>Overlap</span><strong id="overlapPercentage">{{ result.overlap_percentage if result else "0%" }}</strong></div>
     <h3 class="h6 mt-4">Common names</h3>
-    <ul id="overlapCommonList" class="mb-0" {% if not result or not result.common %}style="display: none;"{% endif %}>{% if result and result.common %}{% for item in result.common %}<li>{{ item|title }}</li>{% endfor %}{% endif %}</ul>
-    <p id="overlapNoCommon" class="text-secondary mb-0" {% if result and result.common %}style="display: none;"{% endif %}>No common names found.</p>
+    <ul id="overlapCommonList" class="mb-0 {% if not result or not result.common %}d-none{% endif %}">{% if result and result.common %}{% for item in result.common %}<li>{{ item|title }}</li>{% endfor %}{% endif %}</ul>
+    <p id="overlapNoCommon" class="text-secondary mb-0 {% if result and result.common %}d-none{% endif %}">No common names found.</p>
 </div></div>
-<div id="overlapResultEmpty" class="result-empty" {% if result %}style="display: none;"{% endif %}><h2 class="h5">Your overlap result appears here</h2><p class="text-secondary mb-0">Names are processed only for this request.</p></div>
+<div id="overlapResultEmpty" class="result-empty {% if result %}d-none{% endif %}"><h2 class="h5">Your overlap result appears here</h2><p class="text-secondary mb-0">Names are processed only for this request.</p></div>
 </div>
 {% endblock %}
 
@@ -126,16 +126,7 @@
 </section>
 {% endblock %}
 
-{% block tool_disclaimer %}
-<div class="row mt-4">
-    <div class="col-lg-7">
-        <div class="alert alert-warning rounded-4" role="note">
-            <i class="bi bi-exclamation-triangle-fill me-2" aria-hidden="true"></i>
-            <strong>Disclaimer:</strong> Results are indicative and based only on user-provided names. This tool does not evaluate allocation, risk, returns, suitability, or investment quality. Consult qualified professionals before making financial decisions.
-        </div>
-    </div>
-</div>
-{% endblock %}
+{# Per-page overlap disclaimer removed; use global Disclaimer in tool_base.html. #}
 
 {% block explanation %}
 The portfolio overlap checker compares two plain-text lists of stock or fund names and identifies common holdings. It is useful when checking whether two portfolios are truly diversified or whether multiple funds contain similar securities. This tool compares names only and does not analyze allocation, weight, market value, sector exposure, price movement, or portfolio risk.
@@ -155,7 +146,7 @@ The portfolio overlap checker compares two plain-text lists of stock or fund nam
 {% endblock %}
 
 {% block faq_schema %}
-<script type="application/ld+json">
+<script type="application/ld+json" nonce="{{ request.state.csp_nonce }}">
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",

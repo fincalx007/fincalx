@@ -30,13 +30,13 @@
 
 {% block tool_result %}
 <div id="result-section">
-<div id="emiResultBox" class="card result-card" {% if not result %}style="display: none;"{% endif %}><div class="card-body p-4">
+<div id="emiResultBox" class="card result-card {% if not result %}d-none{% endif %}"><div class="card-body p-4">
     <h2 class="h5 fw-bold mb-3">EMI Estimate</h2>
     <div class="result-highlight"><span>Monthly EMI</span><strong id="emiValue">{{ result.emi if result else "0" }}</strong></div>
     <div class="result-row"><span>Total Interest</span><strong id="emiTotalInterest">{{ result.total_interest if result else "0" }}</strong></div>
     <div class="result-row"><span>Total Payment</span><strong id="emiTotalPayment">{{ result.total_payment if result else "0" }}</strong></div>
 </div></div>
-<div id="emiResultEmpty" class="result-empty" {% if result %}style="display: none;"{% endif %}><h2 class="h5">Your EMI estimate appears here</h2><p class="text-secondary mb-0">Use lender documents for final loan terms.</p></div>
+<div id="emiResultEmpty" class="result-empty {% if result %}d-none{% endif %}"><h2 class="h5">Your EMI estimate appears here</h2><p class="text-secondary mb-0">Use lender documents for final loan terms.</p></div>
 </div>
 {% endblock %}
 
@@ -84,6 +84,45 @@
                 <li>Use as a starting point for prepayment or refinancing discussions.</li>
             </ul>
         </article>
+        
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">What is this calculator?</h2>
+            <p class="text-secondary">This EMI calculator computes the Equated Monthly Instalment for a fixed-rate loan using the standard reducing-balance formula. It helps borrowers see monthly commitments, total interest paid, and total repayment over the loan life for planning and comparison.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Formula explanation (detailed)</h2>
+            <p class="text-secondary">The EMI formula converts a loan amount, monthly interest, and number of instalments into a fixed monthly payment. It assumes interest is charged on the outstanding principal each month and that the EMI is split between interest and principal progressively. Early payments are interest-heavy, while later payments increase principal repayment share.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Worked example (detailed)</h2>
+            <p class="text-secondary">Example: A home loan of Rs. 35,00,000 at 7.5% fixed annual rate for 15 years. Monthly rate ≈ 0.625%. Using the EMI formula gives a monthly EMI around Rs. 32,033, total interest approx Rs. 2,69,940, total repayment Rs. 37,69,940. Compare a 20-year tenure: EMI falls but total interest rises substantially. Use this tool to compare such trade-offs.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Common mistakes (expanded)</h2>
+            <ul class="text-secondary">
+                <li>Neglecting processing charges, insurance, and other upfront costs when comparing lenders.</li>
+                <li>Assuming floating rates won’t change—this can increase EMI or tenure depending on the loan type.</li>
+                <li>Not planning for prepayment options, which can reduce total interest but may incur penalties.</li>
+                <li>Forgetting to maintain a buffer for variable expenses and emergency funds alongside EMIs.</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Related calculators</h2>
+            <p class="text-secondary">See <a href="/tools/emi">EMI</a> comparisons (this page), the <a href="/tools/lumpsum">Lumpsum</a> tool for one-time payments, and the <a href="/tools/overlap">Overlap</a> or <a href="/tools/net_worth">Net Worth</a> calculators for broader affordability context.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Educational note</h2>
+            <p class="text-secondary">When planning loans, model worst-case scenarios for income and rising rates. If you expect rate increases, consider shorter fixed-rate periods or larger down payments. Use prepayment judiciously to reduce expensive floating-rate interest before considering risk to your liquidity.</p>
+        </article>
+
+        
+
+        <div class="alert alert-secondary mt-4">Disclaimer: Educational only. Use lender documents for final terms; consult a financial professional for personalised advice.</div>
     </div>
 </section>
 {% endblock %}
@@ -133,16 +172,7 @@
 </section>
 {% endblock %}
 
-{% block tool_disclaimer %}
-<div class="row mt-4">
-    <div class="col-lg-7">
-        <div class="alert alert-warning rounded-4" role="note">
-            <i class="bi bi-exclamation-triangle-fill me-2" aria-hidden="true"></i>
-            <strong>Disclaimer:</strong> Results are approximate and for informational purposes only. Actual loan terms may vary by lender, fees, insurance, floating rates, and repayment rules. Consult qualified professionals and review official lender documents before borrowing.
-        </div>
-    </div>
-</div>
-{% endblock %}
+{# Per-page EMI disclaimer removed; use global Disclaimer in tool_base.html. #}
 
 {% block explanation %}
 The EMI calculator helps estimate the fixed monthly payment for a loan based on the principal amount, annual interest rate, and tenure. It also shows total interest and total repayment over the loan period. Actual payments can differ because of processing fees, insurance, prepayment rules, floating interest rates, lender-specific rounding, or changes in repayment schedule.
@@ -159,10 +189,13 @@ The EMI calculator helps estimate the fixed monthly payment for a loan based on 
 <div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#emiFaq3">Can interest rates change my EMI?</button></h3><div id="emiFaq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Yes. Floating-rate loans can change based on lender policy or benchmarks. Fixed-rate loans usually keep EMI unchanged for the fixed period.</div></div></div>
 <div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#emiFaq4">Does this include processing fees?</button></h3><div id="emiFaq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">No. This tool uses loan amount, rate, and tenure only. Processing fees, insurance, penalties, and other charges are not included.</div></div></div>
 <div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#emiFaq5">Is my loan data stored?</button></h3><div id="emiFaq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">No login is required, and calculator inputs are not stored in an application database.</div></div></div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#emiFaq6">Can I prepay my loan to reduce interest?</button></h3><div id="emiFaq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Most lenders allow prepayment partially or fully; check for charges and whether the reduction will be applied to EMI or tenure. Prepayment reduces interest cost overall but may incur fees.</div></div></div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#emiFaq7">What is the impact of increasing EMI slightly?</button></h3><div id="emiFaq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">A modest increase in EMI can significantly reduce total interest and shorten tenure. Use the calculator to simulate incremental prepayment strategies before deciding.</div></div></div>
+<div class="accordion-item"><h3 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#emiFaq8">What should I check in the sanction letter?</button></h3><div id="emiFaq8" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body">Verify interest rate type, processing fees, prepayment/foreclosure charges, insurance requirements, and any clauses that affect EMI or tenure in adverse events.</div></div></div>
 {% endblock %}
 
 {% block faq_schema %}
-<script type="application/ld+json">
+<script type="application/ld+json" nonce="{{ request.state.csp_nonce }}">
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",

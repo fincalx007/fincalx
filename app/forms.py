@@ -151,6 +151,254 @@ class SalaryInput(BaseModel):
         )
 
 
+class CAGRInput(BaseModel):
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
+    initial_investment: Annotated[float, Field(ge=1, le=1000000000)]
+    final_value: Annotated[float, Field(ge=1, le=1000000000)]
+    years: Annotated[int, Field(ge=1, le=60)]
+
+    @classmethod
+    def as_form(
+        cls,
+        initial_investment: float = Form(...),
+        final_value: float = Form(...),
+        years: int = Form(...),
+    ) -> "CAGRInput":
+        return _validate_form(
+            cls,
+            initial_investment=initial_investment,
+            final_value=final_value,
+            years=years,
+        )
+
+
+class LumpsumInput(BaseModel):
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
+    investment_amount: Annotated[float, Field(ge=1, le=1000000000)]
+    expected_annual_return: Annotated[float, Field(ge=0, le=100)]
+    investment_duration_years: Annotated[int, Field(ge=1, le=60)]
+
+    @classmethod
+    def as_form(
+        cls,
+        investment_amount: float = Form(...),
+        expected_annual_return: float = Form(...),
+        investment_duration_years: int = Form(...),
+    ) -> "LumpsumInput":
+        return _validate_form(
+            cls,
+            investment_amount=investment_amount,
+            expected_annual_return=expected_annual_return,
+            investment_duration_years=investment_duration_years,
+        )
+
+
+class CompoundInterestInput(BaseModel):
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
+    principal_amount: Annotated[float, Field(ge=1, le=1000000000)]
+    interest_rate: Annotated[float, Field(ge=0, le=100)]
+    time_period_years: Annotated[int, Field(ge=1, le=60)]
+    compounding_frequency: Annotated[int, Field(ge=1, le=365)]
+
+    @classmethod
+    def as_form(
+        cls,
+        principal_amount: float = Form(...),
+        interest_rate: float = Form(...),
+        time_period_years: int = Form(...),
+        compounding_frequency: int = Form(...),
+    ) -> "CompoundInterestInput":
+        return _validate_form(
+            cls,
+            principal_amount=principal_amount,
+            interest_rate=interest_rate,
+            time_period_years=time_period_years,
+            compounding_frequency=compounding_frequency,
+        )
+
+
+class InflationInput(BaseModel):
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
+    current_amount: Annotated[float, Field(ge=1, le=1000000000)]
+    inflation_rate: Annotated[float, Field(ge=0, le=100)]
+    number_of_years: Annotated[int, Field(ge=1, le=60)]
+
+    @classmethod
+    def as_form(
+        cls,
+        current_amount: float = Form(...),
+        inflation_rate: float = Form(...),
+        number_of_years: int = Form(...),
+    ) -> "InflationInput":
+        return _validate_form(
+            cls,
+            current_amount=current_amount,
+            inflation_rate=inflation_rate,
+            number_of_years=number_of_years,
+        )
+
+
+class EmergencyFundInput(BaseModel):
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
+    monthly_expenses: Annotated[float, Field(ge=1, le=100000000)]
+    emergency_coverage_months: Annotated[int, Field(ge=1, le=24)]
+
+    @classmethod
+    def as_form(
+        cls,
+        monthly_expenses: float = Form(...),
+        emergency_coverage_months: int = Form(...),
+    ) -> "EmergencyFundInput":
+        return _validate_form(
+            cls,
+            monthly_expenses=monthly_expenses,
+            emergency_coverage_months=emergency_coverage_months,
+        )
+
+
+class NetWorthInput(BaseModel):
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
+    total_assets: Annotated[float, Field(ge=0, le=1000000000)]
+    total_liabilities: Annotated[float, Field(ge=0, le=1000000000)]
+
+    @classmethod
+    def as_form(
+        cls,
+        total_assets: float = Form(...),
+        total_liabilities: float = Form(...),
+    ) -> "NetWorthInput":
+        return _validate_form(
+            cls,
+            total_assets=total_assets,
+            total_liabilities=total_liabilities,
+        )
+
+
+class StepUpSIPInput(BaseModel):
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
+    monthly_investment: Annotated[float, Field(ge=100, le=10000000)]
+    annual_step_up_percentage: Annotated[float, Field(ge=0, le=100)]
+    expected_annual_return: Annotated[float, Field(ge=0, le=40)]
+    years: Annotated[int, Field(ge=1, le=60)]
+
+    @classmethod
+    def as_form(
+        cls,
+        monthly_investment: float = Form(...),
+        annual_step_up_percentage: float = Form(...),
+        expected_annual_return: float = Form(...),
+        years: int = Form(...),
+    ) -> "StepUpSIPInput":
+        return _validate_form(
+            cls,
+            monthly_investment=monthly_investment,
+            annual_step_up_percentage=annual_step_up_percentage,
+            expected_annual_return=expected_annual_return,
+            years=years,
+        )
+
+
+class SWPInput(BaseModel):
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
+    initial_corpus: Annotated[float, Field(ge=1, le=1000000000)]
+    monthly_withdrawal: Annotated[float, Field(ge=1, le=1000000000)]
+    expected_annual_return: Annotated[float, Field(ge=0, le=40)]
+    years: Annotated[int, Field(ge=1, le=60)]
+
+    @classmethod
+    def as_form(
+        cls,
+        initial_corpus: float = Form(...),
+        monthly_withdrawal: float = Form(...),
+        expected_annual_return: float = Form(...),
+        years: int = Form(...),
+    ) -> "SWPInput":
+        return _validate_form(
+            cls,
+            initial_corpus=initial_corpus,
+            monthly_withdrawal=monthly_withdrawal,
+            expected_annual_return=expected_annual_return,
+            years=years,
+        )
+
+
+class GoalInput(BaseModel):
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
+    goal_amount: Annotated[float, Field(ge=1, le=1000000000)]
+    years: Annotated[int, Field(ge=1, le=60)]
+    expected_annual_return: Annotated[float, Field(ge=0, le=40)]
+
+    @classmethod
+    def as_form(
+        cls,
+        goal_amount: float = Form(...),
+        years: int = Form(...),
+        expected_annual_return: float = Form(...),
+    ) -> "GoalInput":
+        return _validate_form(
+            cls,
+            goal_amount=goal_amount,
+            years=years,
+            expected_annual_return=expected_annual_return,
+        )
+
+
+class RetirementInput(BaseModel):
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
+    current_age: Annotated[int, Field(ge=18, le=100)]
+    retirement_age: Annotated[int, Field(ge=19, le=100)]
+    current_savings: Annotated[float, Field(ge=0, le=1000000000)]
+    monthly_investment: Annotated[float, Field(ge=0, le=10000000)]
+    expected_annual_return: Annotated[float, Field(ge=0, le=40)]
+
+    @classmethod
+    def as_form(
+        cls,
+        current_age: int = Form(...),
+        retirement_age: int = Form(...),
+        current_savings: float = Form(...),
+        monthly_investment: float = Form(...),
+        expected_annual_return: float = Form(...),
+    ) -> "RetirementInput":
+        return _validate_form(
+            cls,
+            current_age=current_age,
+            retirement_age=retirement_age,
+            current_savings=current_savings,
+            monthly_investment=monthly_investment,
+            expected_annual_return=expected_annual_return,
+        )
+
+
+class FIREInput(BaseModel):
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
+
+    annual_expenses: Annotated[float, Field(ge=0, le=1000000000)]
+    safe_withdrawal_rate: Annotated[float, Field(ge=0.01, le=100)]
+
+    @classmethod
+    def as_form(
+        cls,
+        annual_expenses: float = Form(...),
+        safe_withdrawal_rate: float = Form(...),
+    ) -> "FIREInput":
+        return _validate_form(
+            cls,
+            annual_expenses=annual_expenses,
+            safe_withdrawal_rate=safe_withdrawal_rate,
+        )
+
+
 class OverlapInput(BaseModel):
     model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
 

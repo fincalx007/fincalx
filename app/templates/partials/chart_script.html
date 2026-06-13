@@ -1,11 +1,11 @@
-<script>
+<script nonce="{{ request.state.csp_nonce }}">
 document.addEventListener("DOMContentLoaded", function () {
     const ctx = document.getElementById('resultChart');
 
     if (!ctx) return;
 
     const invested = parseFloat(ctx.dataset.invested || 0);
-    const returns = parseFloat(ctx.dataset.returns || 0);
+</script>
 
     console.log("Chart loaded");
     console.log("Invested:", invested, "Returns:", returns);

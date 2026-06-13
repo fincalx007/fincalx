@@ -1,0 +1,285 @@
+{% extends "tools/tool_base.html" %}
+
+{% block tool_title %}Compound Interest Calculator India{% endblock %}
+
+{% block tool_intro %}
+Estimate interest earned and maturity value using compound interest with a chosen compounding frequency.
+{% endblock %}
+
+{% block tool_form %}
+<form id="compoundInterestForm" class="card calculator-card" data-api="/tools/compound-interest-calculator/api" data-result="compound_interest" novalidate>
+    <div class="card-body p-4">
+        <h2 class="h4 fw-bold mb-4">Enter investment details</h2>
+
+        {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% endif %}
+
+        <div class="mb-3">
+            <label class="form-label" for="principal_amount">Principal Amount</label>
+            <input class="form-control" id="principal_amount" name="principal_amount" type="number"
+                   min="1" max="1000000000" step="100" value="{{ form.principal_amount }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="interest_rate">Interest Rate (%)</label>
+            <input class="form-control" id="interest_rate" name="interest_rate" type="number"
+                   min="0" max="100" step="0.1" value="{{ form.interest_rate }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="time_period_years">Time Period (Years)</label>
+            <input class="form-control" id="time_period_years" name="time_period_years" type="number"
+                   min="1" max="60" step="1" value="{{ form.time_period_years }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="compounding_frequency">Compounding Frequency (times per year)</label>
+            <input class="form-control" id="compounding_frequency" name="compounding_frequency" type="number"
+                   min="1" max="365" step="1" value="{{ form.compounding_frequency }}" required>
+        </div>
+
+        <button type="button" id="compoundInterestBtn" class="btn btn-gradient w-100" data-submit="compound_interest">
+            Calculate Compound Interest
+        </button>
+    </div>
+</form>
+{% endblock %}
+
+{% block tool_result %}
+<div id="result-section">
+    <div id="compoundInterestResultBox" class="card result-card {% if not result %}d-none{% endif %}">
+        <div class="card-body p-4">
+            <h2 class="h5 fw-bold mb-3">Compound Interest Estimate</h2>
+
+            <div class="result-highlight">
+                <span>Maturity Value</span>
+                <strong id="compoundInterestMaturityValue" class="fs-4">{{ result.maturity_value if result else "₹0" }}</strong>
+            </div>
+
+            <div class="result-row">
+                <span>Interest Earned</span>
+                <strong id="compoundInterestEarned">{{ result.interest_earned if result else "₹0" }}</strong>
+            </div>
+        </div>
+    </div>
+
+    <div id="compoundInterestResultEmpty" class="result-empty{% if result %} d-none{% endif %}">
+        <h2 class="h5">Your compound interest result will appear here</h2>
+        <p class="text-secondary mb-0">Enter principal, rate, time period, and compounding frequency.</p>
+    </div>
+
+    {# Standard disclaimer removed here; the single Disclaimer is provided by tool_base.html #}
+</div>
+{% endblock %}
+
+{% block seo_content %}
+<section class="section-pad bg-soft">
+    <div class="container">
+        <article>
+            <h2 class="h3 fw-bold mb-3">Introduction to Compound Interest</h2>
+            <p class="text-secondary">Compounding means your interest earns interest. The frequency of compounding influences how quickly growth can build over time.</p>
+        </article>
+
+        {% include "partials/ad_unit.html" %}
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">How the Compound Interest Calculator Works</h2>
+            <p class="text-secondary">Enter principal, annual interest rate, the number of years, and compounding frequency. The calculator applies the compound interest formula to estimate maturity value, then subtracts principal to compute interest earned.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Formula explanation</h2>
+            <p class="text-secondary mb-0"><strong>A = P × (1 + r/n)^(n×t)</strong></p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Example calculation</h2>
+            <p class="text-secondary">Suppose P = Rs. 1,00,000, r = 10%, t = 5 years, compounded monthly (n = 12).</p>
+            <ul class="text-secondary">
+                <li>maturity ≈ P × (1 + 0.10/12)^(12×5)</li>
+                <li>interest earned = maturity − P</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Benefits</h2>
+            <ul class="text-secondary">
+                <li>Understand how compounding frequency changes results.</li>
+                <li>Helps compare savings products with different interest rules.</li>
+                <li>Good educational tool for time-based growth.</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Common Mistakes</h2>
+            <ul class="text-secondary">
+                <li>Using an unrealistic compounding frequency for the product.</li>
+                <li>Ignoring taxes/fees that reduce effective returns.</li>
+                <li>Confusing nominal interest with inflation-adjusted returns.</li>
+            </ul>
+        </article>
+        
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">What is this calculator?</h2>
+            <p class="text-secondary">This compound interest calculator estimates maturity value and interest earned for a principal invested at a stated annual rate and compounding frequency. It is useful for bank deposits, fixed-income products, and theoretical examples to compare compounding effects.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Formula &amp; explanation</h2>
+            <p class="text-secondary mb-0"><strong>A = P × (1 + r/n)^(n×t)</strong></p>
+            <p class="text-secondary">Here P is principal, r is annual rate (decimal), n is compounding frequency per year, and t is years. More frequent compounding increases the effective annual yield slightly for the same nominal rate.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Worked example (detailed)</h2>
+            <p class="text-secondary">Suppose P = Rs. 50,000 at 7% compounded quarterly for 10 years (n = 4). The formula yields maturity ≈ 50,000 × (1 + 0.07/4)^(40) ≈ Rs. 98,235. Interest earned is approximately Rs. 48,235. That difference illustrates compounding at work.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Benefits</h2>
+            <ul class="text-secondary">
+                <li>Demonstrates how compounding boosts returns over time.</li>
+                <li>Helpful for comparing deposit products and investment accounts with different compounding rules.</li>
+                <li>Useful for education and goal planning with fixed-income instruments.</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Practical product mapping</h2>
+            <p class="text-secondary">Different savings products advertise interest differently: bank fixed deposits often specify annual nominal rates with quarterly or monthly compounding, recurring deposits credit interest monthly, and some corporate bonds pay coupons periodically. Match the calculator's compounding frequency to the product's actual rules to get realistic estimates. Also account for fund expense ratios and custodial fees when comparing mutual fund returns to deposit rates.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Multiple examples and sensitivity</h2>
+            <p class="text-secondary">Example A: Small principal with frequent compounding—P = Rs. 10,000 at 6% compounded monthly for 5 years yields slightly more than annual compounding due to intra-year crediting. Example B: Large principal for long horizons amplifies differences in compounding frequency. Run sensitivity checks by varying rate, frequency, and time to see which assumption materially affects your plan.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Investor checklist</h2>
+            <ul class="text-secondary">
+                <li>Confirm compounding frequency from product terms.</li>
+                <li>Estimate post-fee and post-tax returns for net outcomes.</li>
+                <li>Keep liquidity needs separate from long-term deposits to avoid forced withdrawal.</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Frequency comparison and sensitivity</h2>
+            <p class="text-secondary">Compare annual, semi-annual, quarterly, monthly and daily compounding for the same nominal rate to see effective yield differences. For small principals and short horizons the differences are tiny; for large principals and multi-decade horizons they can meaningfully affect outcomes. Use this calculator to run scenarios and document the sensitivity of final maturity to compounding frequency.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Choosing instruments</h2>
+            <p class="text-secondary">Match instrument features to goals: bank FDs for capital preservation and guaranteed interest, corporate bonds for higher yields with credit risk, and funds for market-linked growth. For long-term goals, consider equity-oriented solutions; for short-term predictable income, prefer term deposits with clear compounding rules.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Real vs nominal returns — a worked note</h2>
+            <p class="text-secondary">If your nominal rate is 8% and expected inflation is 4%, the real return approximately equals 3.8% after adjusting for inflation. For planning goals like buying a home or funding education, always convert nominal projections to real terms to understand future purchasing power. Re-run assumptions periodically as inflation and product terms change.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Tax-sensitive investor tips</h2>
+            <p class="text-secondary">If the product is taxable, estimate post-tax interest by applying your marginal tax rate to interest or capital gains. Tax treatment can significantly reduce net returns for fixed-income products, so always compute after-tax maturity when comparing instruments.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Educational note</h2>
+            <p class="text-secondary">Compounding accelerates growth and rewards time in the market. Small differences in rate or frequency compound over long horizons into meaningful differences. Use conservative return assumptions and account for taxes when projecting real purchasing power.</p>
+        </article>
+
+        <div class="alert alert-secondary mt-4">Disclaimer: Educational only. This calculator provides estimates; actual product returns depend on fees, taxes, terms, and market conditions.</div>
+    </div>
+</section>
+{% endblock %}
+
+{% block advanced_content %}
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4">
+            <article class="col-lg-6">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">When should you use it?</h2>
+                    <p class="text-secondary">Use this when you know principal, expected rate, time horizon, and compounding frequency (e.g., quarterly/monthly compounding).</p>
+                </div>
+            </article>
+            <article class="col-lg-6">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">Things to consider</h2>
+                    <p class="text-secondary">This assumes constant rate and fixed compounding frequency. Real products may differ.</p>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block explanation %}
+Compound interest estimates growth by repeatedly applying interest across time periods at a chosen compounding frequency.
+{% endblock %}
+
+{% block formula %}
+<p class="text-secondary mb-0"><strong>A = P × (1 + r/n)^(n×t)</strong></p>
+{% endblock %}
+
+{% block faq %}
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#ciFaq1">What compounding frequency should I use?</button>
+    </h2>
+    <div id="ciFaq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Use the frequency matching the product’s interest calculation. For example, monthly compounding is 12 times per year.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ciFaq2">Does this include taxes?</button>
+    </h2>
+    <div id="ciFaq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">No. This is a simplified education calculator. Actual returns depend on taxes, fees, and product terms.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ciFaq3">Is compound interest always higher than simple interest?</button>
+    </h2>
+    <div id="ciFaq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Usually, yes—because interest is repeatedly compounded. However, the real outcome depends on rate, frequency, and fees.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ciFaq4">How do I convert nominal to real returns?</button>
+    </h2>
+    <div id="ciFaq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Estimate real return ≈ (1 + nominal) / (1 + inflation) − 1. Use conservative inflation assumptions for long-term planning.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ciFaq5">Does compounding frequency matter much over long horizons?</button>
+    </h2>
+    <div id="ciFaq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Over long horizons differences between monthly and quarterly compounding shrink relative to overall returns, but they still matter for precise projections and large principals.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#ciFaq6">When is continuous compounding used?</button>
+    </h2>
+    <div id="ciFaq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Continuous compounding is a mathematical limit useful in some financial models; most retail products use discrete compounding (monthly/quarterly/annually).</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/compound_interest.js"></script>
+{% endblock %}
+

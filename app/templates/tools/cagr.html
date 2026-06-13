@@ -1,0 +1,293 @@
+{% extends "tools/tool_base.html" %}
+
+{% block tool_title %}CAGR Calculator India{% endblock %}
+
+{% block tool_intro %}
+Estimate the Compound Annual Growth Rate (CAGR) between two values over a chosen number of years. Use it to understand the annualized pace of growth for an investment.
+{% endblock %}
+
+{% block tool_form %}
+<form id="cagrForm" class="card calculator-card" data-api="/tools/cagr-calculator/api" data-result="cagr" novalidate>
+    <div class="card-body p-4">
+        <h2 class="h4 fw-bold mb-4">Enter investment details</h2>
+
+        {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% endif %}
+
+        <div class="mb-3">
+            <label class="form-label" for="initial_investment">Initial investment</label>
+            <input class="form-control" id="initial_investment" name="initial_investment" type="number"
+                   min="1" max="1000000000" step="100" value="{{ form.initial_investment }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="final_value">Final value</label>
+            <input class="form-control" id="final_value" name="final_value" type="number"
+                   min="1" max="1000000000" step="100" value="{{ form.final_value }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="years">Investment period (years)</label>
+            <input class="form-control" id="years" name="years" type="number"
+                   min="1" max="60" step="1" value="{{ form.years }}" required>
+        </div>
+
+        <button type="button" id="cagrBtn" class="btn btn-gradient w-100" data-submit="cagr">
+            Calculate CAGR
+        </button>
+    </div>
+</form>
+{% endblock %}
+
+{% block tool_result %}
+<div id="result-section">
+<div id="cagrResultBox" class="card result-card {% if not result %}d-none{% endif %}">
+    <div class="card-body p-4">
+        <h2 class="h5 fw-bold mb-3">CAGR Estimate</h2>
+
+        <div class="result-highlight">
+            <span>Compound Annual Growth Rate</span>
+            <strong id="cagrValue" class="fs-4">{{ result.cagr if result else "0.00%" }}</strong>
+        </div>
+
+<div class="result-row">
+            <span>Initial investment</span>
+            <strong>{{ "Rs. " ~ (form.initial_investment if form.initial_investment else 0) }}</strong>
+        </div>
+
+        <div class="result-row">
+            <span>Final value</span>
+            <strong>{{ "Rs." ~ ("%0.2f"|format(form.final_value|float)) if form.final_value is not none else "Rs. 0.00" }}</strong>
+        </div>
+
+        <div class="result-row">
+            <span>Investment period</span>
+            <strong>{{ form.years if form.years else "0" }} years</strong>
+        </div>
+
+    </div>
+</div>
+
+<div id="cagrResultEmpty" class="result-empty{% if result %} d-none{% endif %}">
+    <h2 class="h5">Your CAGR result will appear here</h2>
+    <p class="text-secondary mb-0">Enter initial value, final value, and years to estimate annualized growth.</p>
+</div>
+
+{# Standard disclaimer removed here; the single Disclaimer is provided by tool_base.html #}
+{% endblock %}
+
+{% block seo_content %}
+<section class="section-pad bg-soft">
+    <div class="container">
+        <article>
+            <h2 class="h3 fw-bold mb-3">Introduction to CAGR</h2>
+            <p class="text-secondary">CAGR (Compound Annual Growth Rate) estimates the annualized growth rate that would take an investment from an initial value to a final value over a specified period. It smooths out the year-by-year ups and downs into one average annual rate.</p>
+            <p class="text-secondary mb-0">The FinCalX CAGR calculator is designed for quick, educational estimates. It is useful for comparing how different investments might have grown over time, but it does not guarantee future performance.</p>
+        </article>
+
+        {% include "partials/ad_unit.html" %}
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">How the CAGR Calculator Works</h2>
+            <p class="text-secondary">Enter the initial investment amount, the final value you achieved (or expect), and the investment period in years. The calculator applies the CAGR formula to estimate the annualized growth rate over that duration.</p>
+            <p class="text-secondary mb-0">If your initial value is greater than the final value, the CAGR can be negative, indicating a loss over the period.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Formula explanation</h2>
+            <p class="text-secondary">CAGR is calculated as:</p>
+            <p class="text-secondary mb-0"><strong>CAGR = ((Final Value / Initial Investment)^(1 / Years) - 1) × 100</strong></p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Example calculation</h2>
+            <p class="text-secondary">Suppose an investment grows from Rs. 1,00,000 to Rs. 2,00,000 over 5 years.</p>
+            <ul class="text-secondary">
+                <li>Final / Initial = 2.0</li>
+                <li>(2.0)^(1/5) ≈ 1.1487</li>
+                <li>CAGR ≈ (1.1487 - 1) × 100 ≈ 14.87%</li>
+            </ul>
+            <p class="text-secondary mb-0">This is an annualized estimate. The actual path of returns may have been higher or lower year-by-year.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Benefits and use cases</h2>
+            <ul class="text-secondary">
+                <li>Compare growth rates across investments with different time horizons.</li>
+                <li>Understand how fast your investment capital might have grown on average.</li>
+                <li>Evaluate whether past performance meets your expectations for a goal timeline.</li>
+                <li>Share a single annualized figure with yourself or a planner to discuss planning assumptions.</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Common mistakes people make</h2>
+            <ul class="text-secondary">
+                <li>Assuming CAGR represents smooth returns—market returns can be uneven.</li>
+                <li>Using CAGR as a guarantee of future outcomes.</li>
+                <li>Ignoring that fees, taxes, and withdrawals change the effective growth.</li>
+                <li>Comparing investments with different risk levels and cash-flow patterns.</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">What is this calculator?</h2>
+            <p class="text-secondary">This CAGR calculator gives the annualized rate that would take an initial investment to a final value over the chosen years. It is intended to summarise multi-year performance into a single, comparable rate for planning and analysis.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Formula</h2>
+            <p class="text-secondary mb-0"><strong>CAGR = ((Final Value / Initial Investment)^(1 / Years) - 1) × 100</strong></p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Worked example (practical)</h2>
+            <p class="text-secondary">If you invested Rs. 2,50,000 in 2016 and it grew to Rs. 6,00,000 by 2024 (8 years), CAGR = ((6,00,000 / 2,50,000)^(1/8) - 1) × 100 ≈ 11.4%. This rate helps compare different investments or funds on a like-for-like annualized basis.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Related calculators</h2>
+            <p class="text-secondary">For recurring investments, use the <a href="/tools/sip">SIP</a> calculator or <a href="/tools/step-up-sip">Step-Up SIP</a>. For cash-flow aware rates, consider an XIRR tool (not included here).</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Limitations &amp; best practices</h2>
+            <p class="text-secondary">CAGR compresses multi-year return paths into a single number and therefore hides volatility, interim drawdowns, and timing effects. For investments with multiple flows (SIPs, systematic withdrawals) or irregular cash flows, prefer XIRR or cash-flow aware measures. When using CAGR for planning, test multiple horizons, include fees and taxes in start/end values where possible, and report both nominal and inflation-adjusted rates to reflect purchasing power.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Investor scenarios and examples</h2>
+            <p class="text-secondary">Scenario 1: Short-term speculative holding (1–3 years) where CAGR can be misleading due to high volatility. Scenario 2: Long-term equity holding (10+ years) where CAGR gives a clearer sense of average annual performance. Scenario 3: Comparing funds with different risk profiles—adjust comparisons for risk and fees before deciding based solely on CAGR.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">CAGR vs XIRR — what's the difference?</h2>
+            <p class="text-secondary">CAGR assumes a single initial and final value and smooth annual growth; XIRR accounts for multiple cash flows at irregular intervals. Use CAGR for single lump-sum comparisons over fixed horizons. Use XIRR when contributions or withdrawals occur at varying times (SIPs, systematic withdrawals). In practice, both metrics can be complementary: CAGR for quick high-level comparisons and XIRR for cash-flow-accurate performance measurement.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Practical tips for interpretation</h2>
+            <p class="text-secondary">Always show the time period alongside CAGR (e.g., 8% over 5 years). Report nominal and inflation-adjusted rates if inflation matters for your decision. When comparing two investments, ensure you compare net-of-fees returns and the same horizon. Finally, complement CAGR with volatility measures or drawdown statistics to understand risk behind the average return.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Quick checklist</h2>
+            <p class="text-secondary">Before using CAGR: confirm time range, include fees and taxes where relevant, and cross-check with cash-flow aware metrics for investments with multiple flows.</p>
+        </article>
+
+        <div class="alert alert-secondary mt-4">Disclaimer: Educational only. Use actual cash flows and professional guidance for investment decisions.</div>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block advanced_content %}
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4">
+            <article class="col-lg-6">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">When should you use this calculator?</h2>
+                    <p class="text-secondary">Use the CAGR calculator when you want a simple annualized growth estimate between two values. It can help you compare different investments across time and communicate performance assumptions in planning discussions.</p>
+                    <p class="text-secondary mb-0">If you want a return measure that accounts for multiple cash flows and dates, you may need a different metric such as XIRR.</p>
+                </div>
+            </article>
+            <article class="col-lg-6">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">Things to consider</h2>
+                    <p class="text-secondary">This calculator uses a single-period CAGR model. It does not include fund expenses, taxes, entry/exit charges, inflation effects, or changing contributions/withdrawals. Actual outcomes can differ.</p>
+                    <p class="text-secondary mb-0">CAGR is not a promise of future returns—treat it as an educational estimate based on your inputs.</p>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block explanation %}
+CAGR (Compound Annual Growth Rate) summarizes how an investment grows per year on an annualized basis over a fixed period. It converts the start and end values into one average annual growth rate, ignoring year-by-year volatility.
+{% endblock %}
+
+{% block formula %}
+<p class="text-secondary mb-0">
+CAGR = ((Final Value / Initial Investment)<sup>(1 / Years)</sup> - 1) × 100
+</p>
+{% endblock %}
+
+{% block faq %}
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#cagrFaq1">What does CAGR mean?</button>
+    </h2>
+    <div id="cagrFaq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">CAGR is the annualized rate that describes how an investment value grows from an initial amount to a final amount over a number of years.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cagrFaq2">Is CAGR the same as actual annual returns?</button>
+    </h2>
+    <div id="cagrFaq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">No. CAGR is a smoothed average annual growth rate. Actual returns can vary year by year.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cagrFaq3">Can CAGR be negative?</button>
+    </h2>
+    <div id="cagrFaq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Yes. If the final value is lower than the initial investment, the CAGR becomes negative, indicating an average annual loss.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cagrFaq4">Does this include taxes and fees?</button>
+    </h2>
+    <div id="cagrFaq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">No. This tool uses only your initial value, final value, and years. If your initial/final values already include fees and taxes, then they are reflected indirectly.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cagrFaq5">Which CAGR should I use for SIPs?</button>
+    </h2>
+    <div id="cagrFaq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">For recurring contributions like SIPs, CAGR might not fully capture timing effects. You can still approximate CAGR using total invested and final value, but XIRR may be more realistic for multiple cash flows.</div>
+    </div>
+</div>
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cagrFaq6">Should I account for fees when calculating CAGR?</button>
+    </h2>
+    <div id="cagrFaq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Yes—subtract expected fees and charges from returns when possible to produce a net-of-fees CAGR that better reflects investor outcomes.</div>
+    </div>
+</div>
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cagrFaq7">How many years make CAGR meaningful?</button>
+    </h2>
+    <div id="cagrFaq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Longer horizons (typically 5–10+ years) provide more meaningful CAGR comparisons because short-term noise has less impact on long-term averages.</div>
+    </div>
+</div>
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#cagrFaq8">Can CAGR be used to forecast future returns?</button>
+    </h2>
+    <div id="cagrFaq8" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">No—CAGR describes past or assumed growth between two points. Forecasting future returns requires market analysis and is inherently uncertain.</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/ajax-engine.js"></script>
+<script src="/static/js/cagr.js"></script>
+{% endblock %}
+

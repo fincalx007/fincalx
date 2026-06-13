@@ -54,7 +54,7 @@
 
 {% block tool_result %}
 <div id="result-section" class="result-section">
-<div id="salaryResultBox" class="card result-card" {% if not result %}style="display: none;"{% endif %}><div class="card-body p-4">
+<div id="salaryResultBox" class="card result-card {% if not result %}d-none{% endif %}"><div class="card-body p-4">
     <h2 class="h5 fw-bold mb-3">Salary Estimate</h2>
     <div class="result-highlight"><span>Monthly In-hand</span><strong id="salaryMonthly">{{ result.monthly if result else "0" }}</strong></div>
     <div class="result-row"><span>Annual In-hand</span><strong id="salaryInHand">{{ result.in_hand if result else "0" }}</strong></div>
@@ -64,11 +64,9 @@
     <div class="result-row"><span>Basic Salary</span><strong id="salaryBasic">{{ result.basic if result else "0" }}</strong></div>
     <div class="result-row"><span>HRA</span><strong id="salaryHra">{{ result.hra if result else "0" }}</strong></div>
 </div></div>
-<div id="salaryResultEmpty" class="result-empty" {% if result %}style="display: none;"{% endif %}><h2 class="h5">Your salary estimate appears here</h2><p class="text-secondary mb-0">Enter your CTC and standard percentages to see monthly and annual in-hand salary.</p></div>
+<div id="salaryResultEmpty" class="result-empty {% if result %}d-none{% endif %}"><h2 class="h5">Your salary estimate appears here</h2><p class="text-secondary mb-0">Enter your CTC and standard percentages to see monthly and annual in-hand salary.</p></div>
 
-<div class="alert alert-warning mt-3">
-    <strong>Disclaimer:</strong> This salary calculator provides approximate results based on simplified assumptions. Actual salary can vary by employer policy, reimbursements, bonuses, professional tax, insurance, declarations, and tax law. This tool is for informational purposes only; consult a qualified tax or payroll professional for decisions.
-</div>
+{# Per-page salary disclaimer removed; use global Disclaimer in tool_base.html. #}
 </div>
 {% endblock %}
 
@@ -185,7 +183,7 @@ The salary calculator converts annual CTC into an estimated monthly and annual i
 {% endblock %}
 
 {% block faq_schema %}
-<script type="application/ld+json">
+<script type="application/ld+json" nonce="{{ request.state.csp_nonce }}">
 {
   "@context": "https://schema.org",
   "@type": "FAQPage",

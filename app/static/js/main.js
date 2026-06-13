@@ -49,16 +49,25 @@ if (themeToggle) {
 }
 
 // ============================================
-// SEARCH FUNCTIONALITY
+// SEARCH FUNCTIONALITY (robust fallback)
 // ============================================
 if (searchInput) {
+    // Collect tool cards at load. If tool cards are added dynamically, consider
+    // re-querying inside the input handler.
     const cards = Array.from(document.querySelectorAll(".tool-card"));
 
     searchInput.addEventListener("input", () => {
-        const query = searchInput.value.trim().toLowerCase();
+        const query = (searchInput.value || "").trim().toLowerCase();
         cards.forEach((card) => {
-            const text = card.dataset.search.toLowerCase();
-            card.classList.toggle("d-none", query.length > 0 && !text.includes(query));
+            try {
+                // Prefer explicit `data-search` when provided; fall back to visible text.
+                const raw = card.dataset.search || card.innerText || "";
+                const text = String(raw).trim().toLowerCase();
+                card.classList.toggle("d-none", query.length > 0 && !text.includes(query));
+            } catch (err) {
+                // Defensive: ensure search never throws and doesn't break the page
+                console.warn('Search: failed to process a card', err);
+            }
         });
     });
 }
@@ -312,64 +321,7 @@ if (searchInput) {
 })();
 
 
-// ============================================
-// CSS KEYFRAME FOR SHAKE ANIMATION (should be in styles.css)
-// ============================================
-// This is handled via JavaScript to keep animations in one place
-const style = document.createElement("style");
-style.textContent = `
-@keyframes shakeIn {
-    0%, 100% { transform: translateX(0); }
-    20% { transform: translateX(-8px); }
-    40% { transform: translateX(8px); }
-    60% { transform: translateX(-4px); }
-    80% { transform: translateX(4px); }
-}
-
-.loading-spinner {
-    display: inline-block;
-    width: 16px;
-    height: 16px;
-    border: 2px solid rgba(255,255,255,0.3);
-    border-top-color: #fff;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    vertical-align: middle;
-    margin-right: 8px;
-}
-
-.btn-loading .loading-spinner {
-    border-color: rgba(108, 76, 241, 0.3);
-    border-top-color: #6c4cf1;
-    background: transparent;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-/* Smooth transitions for form interactions */
-.form-control, .form-select, .btn {
-    transition: all 0.2s ease;
-}
-
-.form-control:focus, .form-select:focus {
-    transition: box-shadow 0.2s ease, border-color 0.2s ease;
-}
-
-/* Focus visible for accessibility */
-.btn:focus-visible {
-    outline: 3px solid rgba(108, 76, 241, 0.5);
-    outline-offset: 2px;
-}
-
-/* Smooth loading button */
-.btn-loading {
-    cursor: wait;
-    opacity: 0.9;
-}
-`;
-document.head.appendChild(style);
+// NOTE: CSS keyframes and spinner styles moved to styles.css for CSP compliance.
 
 
 // ============================================

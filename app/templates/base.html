@@ -17,20 +17,7 @@
     <meta name="twitter:card" content="summary">
     <link rel="icon" type="image/png" href="{{ url_for('static', path='/img/fincalx-icon-light.png') }}">
     <link rel="apple-touch-icon" href="{{ url_for('static', path='/img/fincalx-icon-light.png') }}">
-    <script>
-        (function () {
-            let savedTheme = null;
-            try {
-                savedTheme = localStorage.getItem("theme");
-            } catch (error) {
-                savedTheme = null;
-            }
-            const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-            if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
-                document.documentElement.dataset.theme = "dark";
-            }
-        })();
-    </script>
+    <script src="{{ url_for('static', path='/js/theme-init.js') }}" nonce="{{ request.state.csp_nonce }}"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="{{ url_for('static', path='/css/styles.css') }}" rel="stylesheet">
@@ -52,16 +39,27 @@
             </button>
             <div class="collapse navbar-collapse" id="mainNav">
                 <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-1">
+<<<<<<< HEAD
                     <li class="nav-item"><a class="nav-link" href="/tools/sip-calculator">SIP</a></li>
                     <li class="nav-item"><a class="nav-link" href="/tools/emi-calculator">EMI</a></li>
                     <li class="nav-item"><a class="nav-link" href="/tools/salary-calculator">Salary</a></li>
                     <li class="nav-item"><a class="nav-link" href="/tools/portfolio-overlap-checker">Overlap</a></li>
                     <li class="nav-item"><a class="nav-link" href="/learning-center">Learn</a></li>
                     <li class="nav-item"><a class="nav-link" href="/finance-glossary">Glossary</a></li>
+=======
+                    <li class="nav-item" id="toolsNav">
+                        <a class="nav-link" href="/tools">Tools</a>
+                    </li>
+
+                    <li class="nav-item"><a class="nav-link" href="/learning-center">Learn</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/finance-glossary">Glossary</a></li>
+
+>>>>>>> fd6b176 (13-06-26)
                     <li class="nav-item"><a class="nav-link" href="/financial-planning-resources">Planning</a></li>
                     <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
                     <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
                 </ul>
+
                 <button class="theme-toggle ms-lg-3 mt-3 mt-lg-0" type="button" aria-label="Switch to dark mode" aria-pressed="false" data-theme-toggle>
                     <i class="bi bi-moon-stars-fill theme-icon-dark" aria-hidden="true"></i>
                     <i class="bi bi-sun-fill theme-icon-light" aria-hidden="true"></i>
@@ -70,6 +68,8 @@
         </div>
     </nav>
 </header>
+
+<script src="{{ url_for('static', path='/js/mega-menu.js') }}" nonce="{{ request.state.csp_nonce }}"></script>
 
 <main>
     {% block content %}{% endblock %}
@@ -99,6 +99,8 @@
                         <a href="/tools/emi-calculator">EMI Calculator</a>
                         <a href="/tools/salary-calculator">Salary Calculator</a>
                         <a href="/tools/portfolio-overlap-checker">Overlap Checker</a>
+                        <a href="/tools/cagr-calculator">CAGR Calculator</a>
+
                     </nav>
                     <nav class="col-sm-6" aria-label="Company and legal links">
                         <h2 class="h6 fw-bold mb-3">Trust &amp; Support</h2>
@@ -129,23 +131,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="{{ url_for('static', path='/js/main.js') }}"></script>
-<script>
-window.addEventListener("beforeunload", function () {
-    sessionStorage.setItem("scrollPos", window.scrollY);
-});
-
-window.addEventListener("load", function () {
-    const scrollPos = sessionStorage.getItem("scrollPos");
-    if (scrollPos !== null) {
-        window.scrollTo({
-            top: parseInt(scrollPos),
-            behavior: "instant"
-        });
-        sessionStorage.removeItem("scrollPos");
-    }
-});
-</script>
+<script src="{{ url_for('static', path='/js/page-state.js') }}" nonce="{{ request.state.csp_nonce }}"></script>
+<script src="{{ url_for('static', path='/js/main.js') }}" nonce="{{ request.state.csp_nonce }}"></script>
 {% block scripts %}{% endblock %}
 </body>
 </html>

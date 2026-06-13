@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
             resultBoxId: "salaryResultBox",
             emptyBoxId: "salaryResultEmpty",
             fields: {
+
                 salaryMonthly: {key: "monthly", format: formatMoney},
                 salaryInHand: {key: "in_hand", format: formatMoney},
                 salaryTotalDeductions: {key: "total_deductions", format: formatMoney},

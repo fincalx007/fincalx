@@ -1,21 +1,19 @@
-# TODO - FinCalX AdSense-safe educational/SEO improvements
+# TODO - New Calculators (Lumpsum, Compound Interest, Inflation, Emergency Fund, Net Worth)
 
-## Step 1: Update calculator pages (template-only; no form/API/JS changes)
-- [x] sip.html: add Intro, How it works, Benefits, Example scenario; expand FAQ to 4–6 items; ensure accordion targets work with existing faqAccordion container.
-- [x] emi.html: ensure required educational sections exist below calculator UI (Intro/How it works/Benefits/Example/FAQ); add missing Benefits section if absent; verify FAQ count (4–6) and soften any potentially promotional wording.
-- [x] salary.html: add required educational sections below calculator UI (Intro/How it works/Benefits/Example/FAQ); improve FAQ to 4–6 items; keep existing form ids and calculator behavior intact.
-- [x] overlap.html: add required educational sections below calculator UI (Intro/How it works/Benefits/Example/FAQ); ensure FAQ count 4–6.
-- [x] tax.html: add missing Intro/How it works/Benefits/Example/FAQ sections; expand FAQ to 4–6.
+- [x] Create forms models in `app/forms.py` for 5 calculators
 
+- [x] Create services in `app/services/` for 5 calculators
 
-## Step 2: Improve homepage (template-only)
-- [ ] home.html: add/strengthen Popular Calculators section and Why Use FinCalX section (trust + educational tone).
+- [x] Create routers in `app/routers/` for 5 calculators (GET page + POST + JSON API)
 
-## Step 3: AdSense safety review (template-only)
-- [ ] Ensure all calculator text uses educational/estimate language (no guarantees, no misleading “accuracy promises”).
-- [ ] Ensure disclaimers are clearly visible; align wording with existing legal pages.
+- [x] Create templates in `app/templates/tools/` for 5 calculators (clone CAGR architecture; mandatory disclaimer below results)
+- [x] Create dedicated JS files in `app/static/js/` for 5 calculators (AJAX/no reload)
 
-## Step 4: Verify constraints
-- [ ] Do not modify backend services, calculation formulas, routes, AJAX engine, CSP settings, or form IDs/input names/result IDs/JS behavior.
-- [ ] Only modify templates and (optionally) static CSS if necessary for readability (avoid heavy redesign).
+- [ ] Update discovery containers:
+  - [x] `app/routers/home.py` add 5 tool cards
+  - [x] `app/routers/education.py` extend `CALCULATORS`
+  - [x] `app/main.py` add 5 URLs to hardcoded `sitemap.xml`
+
+- [ ] Quality checks: verify no existing calculators/routes/APIs/templates/nav/security/CSP changed except discovery + new files
+- [x] Run server and validate AJAX + endpoints for all 5 calculators
 

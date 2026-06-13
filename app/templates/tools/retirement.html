@@ -1,0 +1,212 @@
+{% extends "tools/tool_base.html" %}
+
+{% block tool_title %}Retirement Calculator{% endblock %}
+
+{% block tool_intro %}
+Estimate your retirement corpus and possible retirement income using current savings and monthly investments.
+{% endblock %}
+
+{% block tool_form %}
+<form id="retirementForm" class="card calculator-card" data-api="/tools/retirement-calculator/api" data-result="retirement" novalidate>
+    <div class="card-body p-4">
+        <h2 class="h4 fw-bold mb-4">Enter retirement details</h2>
+
+        {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% endif %}
+
+        <div class="mb-3">
+            <label class="form-label" for="current_age">Current age</label>
+            <input class="form-control" id="current_age" name="current_age" type="number" min="18" max="100" step="1" value="{{ form.current_age }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="retirement_age">Retirement age</label>
+            <input class="form-control" id="retirement_age" name="retirement_age" type="number" min="19" max="100" step="1" value="{{ form.retirement_age }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="current_savings">Current savings</label>
+            <input class="form-control" id="current_savings" name="current_savings" type="number" min="0" max="1000000000" step="1000" value="{{ form.current_savings }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="monthly_investment">Monthly investment</label>
+            <input class="form-control" id="monthly_investment" name="monthly_investment" type="number" min="0" max="10000000" step="100" value="{{ form.monthly_investment }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="expected_annual_return">Expected annual return (%)</label>
+            <input class="form-control" id="expected_annual_return" name="expected_annual_return" type="number" min="0" max="40" step="0.1" value="{{ form.expected_annual_return }}" required>
+        </div>
+
+        <button type="button" id="retirementBtn" class="btn btn-gradient w-100" data-submit="retirement">
+            Calculate Retirement Corpus
+        </button>
+    </div>
+</form>
+{% endblock %}
+
+{% block tool_result %}
+<div id="result-section">
+    <div id="retirementResultBox" class="card result-card {% if not result %}d-none{% endif %}">
+        <div class="card-body p-4">
+            <h2 class="h5 fw-bold mb-3">Retirement Estimate</h2>
+
+            <div class="result-highlight">
+                <span>Retirement Corpus</span>
+                <strong id="retirementCorpus" class="fs-4">{{ result.retirement_corpus if result else "0" }}</strong>
+            </div>
+
+            <div class="result-row">
+                <span>Estimated Annual Income</span>
+                <strong id="retirementIncome">{{ result.estimated_annual_income if result else "0" }}</strong>
+            </div>
+        </div>
+    </div>
+
+    <div id="retirementResultEmpty" class="result-empty{% if result %} d-none{% endif %}">
+        <h2 class="h5">Your retirement result will appear here</h2>
+        <p class="text-secondary mb-0">Enter your current age, retirement age, savings, and monthly investment to estimate your retirement corpus.</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/ajax-engine.js"></script>
+<script src="/static/js/retirement.js"></script>
+{% endblock %}
+
+{% block seo_content %}
+<section class="section-pad bg-soft">
+    <div class="container">
+        <article>
+            <h2 class="h3 fw-bold mb-3">Introduction</h2>
+            <p class="text-secondary">Retirement planning is about converting today’s savings and contributions into future income that sustains your lifestyle. This Retirement Calculator projects the value of your current savings plus periodic contributions by your selected retirement age using an assumed rate of return. It’s intended to help you determine if you are saving enough, and to show how return assumptions and contribution levels influence your retirement corpus.</p>
+        </article>
+
+        {% include "partials/ad_unit.html" %}
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">What is this calculator?</h2>
+            <p class="text-secondary">This tool models the compounded growth of a lump-sum and a series of monthly contributions until your chosen retirement age. It can work in two common modes: project the corpus you’ll have given current inputs, or calculate the monthly savings required to reach a target corpus by retirement. The calculator uses deterministic compounding based on an expected annual return converted to a monthly rate.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">How it works</h2>
+            <p class="text-secondary">The calculator takes the expected annual return and converts it to an effective monthly rate. It compounds any existing savings for the total number of months until retirement and also compounds each monthly contribution from its deposit date to retirement. The sum of the future value of the lump-sum and the future value of the annuity (monthly contributions) gives an estimated retirement corpus.</p>
+            <p class="text-secondary mb-0">This projection assumes constant monthly contributions and a steady average return; it does not model market volatility or the tax treatment of different accounts, which can materially change outcomes.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Formula</h2>
+            <p class="text-secondary mb-0"><strong>FV = PV × (1 + r)^n + P × (((1 + r)^n − 1) / r)</strong> where <em>PV</em> is current savings, <em>P</em> is monthly contribution, <em>r</em> is monthly rate, and <em>n</em> is number of months until retirement.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Formula explanation</h2>
+            <p class="text-secondary">The first term compounds an existing lump sum to the retirement date. The second term calculates the future value of a series of equal monthly contributions (an ordinary annuity). Converting annual return to a monthly rate and using months as the time unit ensures contributions are compounded correctly. Small changes in return or time horizon compound into large differences over decades.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Worked example</h2>
+            <p class="text-secondary">Example: Age 30, retirement at 60, current savings Rs. 5,00,000, monthly investment Rs. 5,000, expected annual return 10%. Convert 10% to a monthly rate (~0.7974% per month), compound the lump-sum and each monthly contribution for 360 months, and sum them to estimate the corpus at retirement. This number tells you whether your current saving plan will likely meet your retirement needs.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Benefits</h2>
+            <ul class="text-secondary">
+                <li>Turns vague retirement goals into concrete saving targets.</li>
+                <li>Illustrates the power of compounding and the importance of time horizon.</li>
+                <li>Helps evaluate the impact of increasing monthly contributions or deferring retirement.</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Common mistakes</h2>
+            <ul class="text-secondary">
+                <li>Assuming constant high returns without considering drawdown risk and volatility.</li>
+                <li>Failing to account for taxes, investment fees, or changing financial commitments over time.</li>
+                <li>Not maintaining a contingency (emergency fund) which can force early liquidation of investments.</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Related calculators</h2>
+            <p class="text-secondary">Compare results with the <a href="/tools/fire">FIRE</a> calculator to translate corpus into withdrawal targets, use <a href="/tools/sip">SIP</a> to design contribution strategies, and <a href="/tools/swp">SWP</a> for post-retirement withdrawal planning.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Educational note</h2>
+            <p class="text-secondary">This calculator provides deterministic estimates. For a comprehensive plan, layer Monte Carlo or historical-scenario analysis, consider tax-efficient product selection (tax-advantaged accounts, annuities), and prepare for varying spending patterns in retirement.</p>
+        </article>
+
+        <div class="alert alert-secondary mt-4">Disclaimer: Results are illustrative and educational only and are not financial advice. Consult a qualified financial advisor for tailored planning.</div>
+    </div>
+</section>
+{% endblock %}
+
+{% block explanation %}
+This retirement calculator projects your savings into the future by compounding current savings and monthly investments at the expected annual return until your retirement age, producing an estimated retirement corpus and a basic annual income estimate.
+{% endblock %}
+
+{% block formula %}
+<p class="text-secondary mb-0">The projection combines two parts: (1) future value of current savings compounded at expected return, and (2) future value of an annuity representing monthly investments compounded monthly. These sums produce the estimated retirement corpus.</p>
+{% endblock %}
+
+{% block faq %}
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#retFaq1">What return should I assume?</button>
+    </h2>
+    <div id="retFaq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Choose a conservative estimate based on your asset allocation; test scenarios with lower returns (e.g., -2–4%) to understand downside risk.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#retFaq2">Does this include inflation?</button>
+    </h2>
+    <div id="retFaq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">No—enter inflation-adjusted targets yourself or deflate future needs to present values. Consider separate inflation assumptions when setting goals.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#retFaq3">Can I model pension or other income?</button>
+    </h2>
+    <div id="retFaq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">This basic calculator focuses on savings and investments. For pension or defined-benefit income, adjust the final corpus target or use the SWP/Retirement tools for income estimates.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#retFaq4">How often should I revisit my plan?</button>
+    </h2>
+    <div id="retFaq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Review assumptions annually or after major life events (job change, marriage, childbirth). Re-running scenarios helps you stay on track.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#retFaq5">Related calculators?</button>
+    </h2>
+    <div id="retFaq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Use Goal, FIRE, SWP, and Step-Up SIP calculators to refine savings strategies and withdrawal plans.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#retFaq6">Should I plan for long-term care?</button>
+    </h2>
+    <div id="retFaq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Long-term care can be a major retirement expense. Include conservative estimates for healthcare and insurance costs in your annual expenses when using this calculator.</div>
+    </div>
+</div>
+
+{% endblock %}

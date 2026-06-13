@@ -1,0 +1,228 @@
+{% extends "tools/tool_base.html" %}
+
+{% block tool_title %}SWP (Systematic Withdrawal Plan) Calculator India{% endblock %}
+
+{% block tool_intro %}
+Estimate remaining corpus and cumulative withdrawals for a systematic withdrawal plan. Enter your initial corpus, monthly withdrawal amount, expected annual return, and duration.
+{% endblock %}
+
+{% block tool_form %}
+<form id="swpForm" class="card calculator-card" data-api="/tools/swp-calculator/api" data-result="swp" novalidate>
+    <div class="card-body p-4">
+        <h2 class="h4 fw-bold mb-4">Enter SWP details</h2>
+
+        {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% endif %}
+
+        <div class="mb-3">
+            <label class="form-label" for="swp_initial_corpus">Initial corpus</label>
+            <input class="form-control" id="swp_initial_corpus" name="initial_corpus" type="number"
+                   min="1" max="1000000000" step="1000" value="{{ form.initial_corpus }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="swp_monthly_withdrawal">Monthly withdrawal</label>
+            <input class="form-control" id="swp_monthly_withdrawal" name="monthly_withdrawal" type="number"
+                   min="1" max="10000000" step="100" value="{{ form.monthly_withdrawal }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="swp_expected_return">Expected annual return (%)</label>
+            <input class="form-control" id="swp_expected_return" name="expected_annual_return" type="number"
+                   min="0" max="40" step="0.1" value="{{ form.expected_annual_return }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="swp_years">Duration (years)</label>
+            <input class="form-control" id="swp_years" name="years" type="number"
+                   min="1" max="60" step="1" value="{{ form.years }}" required>
+        </div>
+
+        <button type="button" id="swpBtn" class="btn btn-gradient w-100" data-submit="swp">
+            Calculate SWP
+        </button>
+    </div>
+</form>
+{% endblock %}
+
+{% block tool_result %}
+<div id="result-section">
+    <div id="swpResultBox" class="card result-card {% if not result %}d-none{% endif %}">
+        <div class="card-body p-4">
+            <h2 class="h5 fw-bold mb-3">SWP Estimate</h2>
+
+            <div class="result-highlight">
+                <span>Remaining Corpus</span>
+                <strong id="swpRemaining" class="fs-4">{{ result.remaining_corpus if result else "0" }}</strong>
+            </div>
+
+            <div class="result-row">
+                <span>Total Withdrawals</span>
+                <strong id="swpWithdrawals">{{ result.total_withdrawals if result else "0" }}</strong>
+            </div>
+
+            <div class="result-row">
+                <span>Corpus Growth</span>
+                <strong id="swpGrowth">{{ result.corpus_growth if result else "0" }}</strong>
+            </div>
+        </div>
+    </div>
+
+    <div id="swpResultEmpty" class="result-empty{% if result %} d-none{% endif %}">
+        <h2 class="h5">Your SWP result will appear here</h2>
+        <p class="text-secondary mb-0">Enter the initial corpus, monthly withdrawal, expected return, and duration to estimate outcomes.</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block seo_content %}
+<section class="section-pad bg-soft">
+    <div class="container">
+        <article>
+            <h2 class="h3 fw-bold mb-3">Introduction</h2>
+            <p class="text-secondary">A Systematic Withdrawal Plan (SWP) lets you draw regular income from an investment corpus while the remainder continues to be invested. This calculator simulates monthly portfolio growth at an expected return and monthly withdrawals to show whether a chosen withdrawal amount is sustainable over a specified duration. It is useful for retirees, investors seeking regular cash flow, and planners designing income distribution strategies from a lump-sum portfolio.</p>
+        </article>
+
+        {% include "partials/ad_unit.html" %}
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">What is this calculator?</h2>
+            <p class="text-secondary">This tool models the interaction between portfolio returns and fixed periodic withdrawals. It projects how the corpus evolves month by month: each month the corpus grows by the expected monthly return and then the specified withdrawal is deducted. The calculator reports remaining corpus, cumulative withdrawals, and the aggregate growth across the simulation period.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">How it works</h2>
+            <p class="text-secondary">Input an initial corpus, a monthly withdrawal amount, expected annual return, and duration. The calculator converts the annual return to a monthly rate and applies that growth before deducting the monthly withdrawal. If the portfolio becomes exhausted before the end of the duration, the simulation stops withdrawals and reports the exhaustion month and total withdrawals up to that point.</p>
+            <p class="text-secondary mb-0">This deterministic simulation assumes a constant average return—real markets fluctuate, and early negative returns can dramatically shorten the life of withdrawals (sequence-of-returns risk). Use conservative return assumptions when planning for long horizons.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Formula</h2>
+            <p class="text-secondary mb-0">Each month: New Corpus = (Previous Corpus × (1 + r_month)) − Withdrawal. Repeat for n months and sum withdrawals. Here, <em>r_month</em> = annual_return/12/100, and <em>n</em> = months.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Formula explanation</h2>
+            <p class="text-secondary">The model uses monthly compounding to reflect how investment growth accumulates between withdrawals. Compounding before withdrawal represents a conservative approach because some funds grow before being taken out. The cumulative withdrawal figure shows total cash taken from the portfolio across the simulation horizon.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Worked example</h2>
+            <p class="text-secondary">Example: Initial corpus Rs. 50,00,000, expected annual return 8% (monthly ≈ 0.643%), monthly withdrawal Rs. 40,000, duration 15 years (180 months). The calculator compounds the corpus each month and subtracts the withdrawal. If the balance remains positive through month 180, the result shows remaining corpus and total withdrawals; if it depletes earlier, you’ll see the exhaustion month and the total amount withdrawn until then. This helps evaluate how realistic a withdrawal plan is under a given return assumption.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Benefits</h2>
+            <ul class="text-secondary">
+                <li>Helps test withdrawal levels against expected returns.</li>
+                <li>Provides a straightforward monthly simulation that is easy to interpret.</li>
+                <li>Useful for retirees, endowment-like planning, or phased drawdown strategies.</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Common mistakes</h2>
+            <ul class="text-secondary">
+                <li>Assuming the average return will be delivered evenly—volatility matters.</li>
+                <li>Not accounting for taxes, withdrawal fees, or inflation.</li>
+                <li>Setting withdrawals so high they deplete the corpus quickly in downside scenarios.</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Educational note</h2>
+            <p class="text-secondary">SWP works best when paired with a resilient asset allocation and contingency buffers. Consider laddering liquid assets or keeping a short-term cash buffer to avoid selling long-term investments during market downturns. For long-duration withdrawals, consider blending glide-path approaches that adjust allocation as time passes or as the corpus changes.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Related calculators</h2>
+            <p class="text-secondary">See <a href="/tools/fire">FIRE</a> for corpus targets, <a href="/tools/retirement">Retirement</a> for corpus projections and savings plans, and <a href="/tools/emergency-fund">Emergency Fund</a> for short-term reserves that support withdrawal stability.</p>
+        </article>
+
+        <div class="alert alert-secondary mt-4">Disclaimer: This simulation is educational only and does not account for taxes, transaction costs, or unpredictable market events. Consult a professional before making withdrawal decisions.</div>
+    </div>
+</section>
+{% endblock %}
+
+{% block advanced_content %}
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4">
+            <article class="col-lg-6">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">When to use this calculator?</h2>
+                    <p class="text-secondary">Use it to plan systematic withdrawals from retirement corpus or for regular income needs.</p>
+                </div>
+            </article>
+            <article class="col-lg-6">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">Things to consider</h2>
+                    <p class="text-secondary">This simulation uses constant expected returns and does not account for taxes, inflation, or fund fees.</p>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block explanation %}
+Systematic Withdrawal Plan (SWP) withdrawals are modeled as fixed monthly amounts taken from a growing corpus; this tool simulates monthly growth and end-of-month withdrawals.
+{% endblock %}
+
+{% block formula %}
+<p class="text-secondary mb-0">Each month: corpus grows by the monthly rate, then the withdrawal is deducted. The calculator accumulates withdrawals and reports remaining corpus.</p>
+{% endblock %}
+
+{% block faq %}
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#swpFaq1">What happens if corpus runs out?</button>
+    </h2>
+    <div id="swpFaq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Withdrawals stop once the corpus is exhausted; the calculator simulates this scenario and reports the total withdrawn up to that point.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#swpFaq2">Does this include taxes and fees?</button>
+    </h2>
+    <div id="swpFaq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">No. The calculator provides an educational estimate and does not factor taxes, expense ratios, or inflation.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#swpFaq3">Can I increase withdrawals over time for inflation?</button>
+    </h2>
+    <div id="swpFaq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">This version uses fixed monthly withdrawals. For inflation-adjusted withdrawals, consider inflating the withdrawal amount externally and re-run the simulation for each scenario.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#swpFaq4">What if returns are negative?</button>
+    </h2>
+    <div id="swpFaq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">If expected returns are negative or actual returns fall below withdrawals, the corpus will deplete faster. This calculator will show earlier depletion in those scenarios.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#swpFaq5">Should I rebalance during an SWP?</button>
+    </h2>
+    <div id="swpFaq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Regular rebalancing can help manage risk, but this calculator does not model asset allocation changes. Discuss rebalancing with a planner based on your risk tolerance and goals.</div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/ajax-engine.js"></script>
+<script src="/static/js/swp.js"></script>
+{% endblock %}

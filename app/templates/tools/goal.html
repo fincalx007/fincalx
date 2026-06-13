@@ -1,0 +1,287 @@
+{% extends "tools/tool_base.html" %}
+
+{% block tool_title %}Goal-Based Investment Calculator{% endblock %}
+
+{% block tool_intro %}
+Calculate the monthly investment required to reach a financial goal within a time horizon using an expected return.
+{% endblock %}
+
+{% block tool_form %}
+<form id="goalForm" class="card calculator-card" data-api="/tools/goal-calculator/api" data-result="goal" novalidate>
+    <div class="card-body p-4">
+        <h2 class="h4 fw-bold mb-4">Enter goal details</h2>
+
+        {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% endif %}
+
+        <div class="mb-3">
+            <label class="form-label" for="goal_amount">Goal amount</label>
+            <input class="form-control" id="goal_amount" name="goal_amount" type="number"
+                   min="1" max="1000000000" step="1000" value="{{ form.goal_amount }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="goal_years">Time horizon (years)</label>
+            <input class="form-control" id="goal_years" name="years" type="number"
+                   min="1" max="60" step="1" value="{{ form.years }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="goal_expected_return">Expected annual return (%)</label>
+            <input class="form-control" id="goal_expected_return" name="expected_annual_return" type="number"
+                   min="0" max="40" step="0.1" value="{{ form.expected_annual_return }}" required>
+        </div>
+
+        <button type="button" id="goalBtn" class="btn btn-gradient w-100" data-submit="goal">
+            Calculate Required Monthly Investment
+        </button>
+    </div>
+</form>
+{% endblock %}
+
+{% block tool_result %}
+<div id="result-section">
+    <div id="goalResultBox" class="card result-card {% if not result %}d-none{% endif %}">
+        <div class="card-body p-4">
+            <h2 class="h5 fw-bold mb-3">Goal Estimate</h2>
+
+            <div class="result-highlight">
+                <span>Required Monthly Investment</span>
+                <strong id="goalMonthly" class="fs-4">{{ result.required_monthly_investment if result else "0" }}</strong>
+            </div>
+
+            <div class="result-row">
+                <span>Total Investment</span>
+                <strong id="goalTotal">{{ result.total_invested if result else "0" }}</strong>
+            </div>
+
+            <div class="result-row">
+                <span>Expected Wealth Growth</span>
+                <strong id="goalGrowth">{{ result.expected_growth if result else "0" }}</strong>
+            </div>
+        </div>
+    </div>
+
+    <div id="goalResultEmpty" class="result-empty{% if result %} d-none{% endif %}">
+        <h2 class="h5">Your goal result will appear here</h2>
+        <p class="text-secondary mb-0">Enter the goal amount, time horizon, and expected return to estimate required monthly investment.</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block seo_content %}
+<section class="section-pad bg-soft">
+    <div class="container">
+        <article>
+            <h2 class="h3 fw-bold mb-3">Introduction</h2>
+            <p class="text-secondary">Goal-based investing aligns your savings and investment plan with specific financial objectives—such as buying a house, funding education, or reaching a retirement down payment. This Goal-Based Investment Calculator estimates the monthly contribution required to reach a future amount within a chosen time horizon, assuming a steady expected annual return. It is a practical tool for translating targets into monthly actions.</p>
+        </article>
+
+        {% include "partials/ad_unit.html" %}
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">What is this calculator?</h2>
+            <p class="text-secondary">It computes the fixed monthly payment needed so that the future value of monthly contributions reaches your goal amount at the end of the horizon. The calculator assumes contributions occur at the end of each month and uses monthly compounding derived from the annual expected return.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">How it works</h2>
+            <p class="text-secondary">Provide the target amount (future value), time horizon in years, and expected annual return. The tool converts the annual return to a monthly rate, computes the number of months, and solves the future value of an ordinary annuity for the monthly payment. This yields a clear monthly saving target that, when followed, should reach the goal under the assumptions provided.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Formula</h2>
+            <p class="text-secondary mb-0"><strong>P = FV × r / ((1 + r)^n − 1)</strong> where <em>P</em> is monthly payment, <em>FV</em> is goal amount, <em>r</em> is monthly rate, and <em>n</em> is total months.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Formula explanation</h2>
+            <p class="text-secondary">The formula rearranges the future value of an annuity to solve for the periodic payment required to reach a specified future sum. Converting the annual expected return to a monthly rate ensures compounding is applied correctly on a monthly contribution schedule, which is typical for systematic investing like SIPs.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Worked example</h2>
+            <p class="text-secondary">Suppose your goal is Rs. 10,00,000 in 10 years with an expected annual return of 10%. Convert 10% to a monthly rate (~0.7974%), set n = 120 months, and solve the annuity formula for P. The illustrative monthly payment will be around Rs. 5,850. Sensitivity: lower returns or shorter horizons increase the required monthly payment sharply.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Benefits</h2>
+            <ul class="text-secondary">
+                <li>Turns a future target into an actionable monthly contribution.</li>
+                <li>Helps compare funding methods (monthly SIP vs. lump-sum investment).</li>
+                <li>Encourages disciplined, goal-driven saving aligned with time horizon.</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Common mistakes</h2>
+            <ul class="text-secondary">
+                <li>Not adjusting targets for inflation—nominal goals lose purchasing power over time.</li>
+                <li>Relying on a single optimistic return assumption instead of scenario testing.</li>
+                <li>Failing to reassess goals when life events or income changes occur.</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Educational note</h2>
+            <p class="text-secondary">Use conservative return assumptions and run the calculator under multiple scenarios (low/medium/high returns). When possible, plan with real (inflation-adjusted) targets. Consider tax treatment and fund expense ratios when translating theoretical payments into practical fund choices. Re-run the calculation periodically or after major life changes to ensure your monthly target remains realistic.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Related calculators</h2>
+            <p class="text-secondary">See <a href="/tools/sip">SIP</a> for mutual fund contributions, <a href="/tools/lumpsum">Lumpsum</a> for single investments, and <a href="/tools/step-up-sip">Step-Up SIP</a> when planning increasing contributions over time.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Tax and inflation considerations</h2>
+            <p class="text-secondary">When calculating your monthly target, remember that taxes and fund expense ratios reduce effective returns and inflation erodes purchasing power. Where possible, use tax-advantaged accounts and estimate net returns after fees when running conservative scenarios.</p>
+        </article>
+
+        <div class="alert alert-secondary mt-4">Disclaimer: Educational information only. Adjust for taxes, fees, and inflation before acting. Consult a financial advisor for personalised guidance.</div>
+    </div>
+</section>
+{% endblock %}
+
+{% block explanation %}
+This calculator solves for the monthly payment needed to reach a future goal using the expected annual return and the time horizon. It treats monthly investments as equal payments compounded at the monthly rate derived from the annual return.
+{% endblock %}
+
+{% block formula %}
+<p class="text-secondary mb-0"><strong>Formula (monthly payment for future value):</strong></p>
+<p class="text-secondary"><strong>P = FV × r / ((1 + r)^n - 1)</strong> where <em>r</em> is the monthly rate (annual_rate/12/100), <em>n</em> is months, and <em>FV</em> is the goal amount.</p>
+<p class="text-secondary mb-0">Variables: <em>P</em> = required monthly payment, <em>FV</em> = goal amount, <em>r</em> = monthly interest rate, <em>n</em> = total months.</p>
+{% endblock %}
+
+{% block faq %}
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#goalFaq1">How is the required monthly amount calculated?</button>
+    </h2>
+    <div id="goalFaq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">It solves the future value equation of monthly contributions to find the payment that reaches your target at the end of the horizon under a constant return assumption.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#goalFaq2">Does this include taxes and fees?</button>
+    </h2>
+    <div id="goalFaq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">No, it provides an educational pre-tax estimate. Include expected taxes and fund fees when setting a final savings target.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#goalFaq3">Can I include a lump sum I already have?</button>
+    </h2>
+    <div id="goalFaq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">This calculator assumes monthly investments only. If you have a lump sum, reduce the required monthly amount by the future value of that lump sum or use the Lumpsum calculator separately.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#goalFaq4">What if I miss a month?</button>
+    </h2>
+    <div id="goalFaq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Missing contributions reduces the final value. Recalculate with the missed amount or increase future contributions to compensate.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#goalFaq5">Related calculators?</button>
+    </h2>
+    <div id="goalFaq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Use the Lumpsum, SIP, and Step-Up SIP calculators to compare alternative funding strategies for your goal.</div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block related_calculators %}
+<section class="section-pad bg-soft">
+    <div class="container">
+        <h3 class="h5 fw-bold mb-3">Related calculators</h3>
+        <p class="text-secondary">See also: <a href="/tools/sip">SIP</a>, <a href="/tools/lumpsum">Lumpsum</a>, <a href="/tools/step-up-sip">Step-Up SIP</a> for alternate funding approaches.</p>
+    </div>
+</section>
+
+{% endblock %}
+
+
+{% block advanced_content %}
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4">
+            <article class="col-lg-6">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">When to use this calculator?</h2>
+                    <p class="text-secondary">Use it when you have a clear monetary goal and a target date; compare different return assumptions to see how they impact required savings.</p>
+                </div>
+            </article>
+            <article class="col-lg-6">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">Things to consider</h2>
+                    <p class="text-secondary">Results are estimates; real returns vary and taxes/fees are not included. Adjust assumptions and revisit periodically.</p>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block faq %}
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#goalFaq1">How is the required monthly amount calculated?</button>
+    </h2>
+    <div id="goalFaq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">It uses the future value of monthly contributions with monthly compounding under the expected annual return to solve for the monthly payment that reaches your goal.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#goalFaq2">Does this include taxes and fees?</button>
+    </h2>
+    <div id="goalFaq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">No, it provides an educational estimate only. Consider taxes, fees, and varying returns when planning.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#goalFaq3">Can I account for inflation when setting a goal?</button>
+    </h2>
+    <div id="goalFaq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">This calculator does not adjust the goal amount for inflation automatically. Enter an inflation-adjusted target yourself if you want a real purchasing-power estimate.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#goalFaq4">What if I cannot save the required monthly amount?</button>
+    </h2>
+    <div id="goalFaq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">If the required monthly amount is unaffordable, consider extending the time horizon, lowering the goal, or increasing assumed returns conservatively. Also explore lump-sum contributions to reduce monthly needs.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#goalFaq5">Can a one-time lump sum replace the monthly investment?</button>
+    </h2>
+    <div id="goalFaq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Yes—if you have a lump sum available, use the Lumpsum calculator to estimate whether it can meet your goal under similar return assumptions, or combine both approaches.</div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/ajax-engine.js"></script>
+<script src="/static/js/goal.js"></script>
+{% endblock %}

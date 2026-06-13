@@ -1,0 +1,321 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="section-pad">
+    <div class="container">
+        <div class="section-heading mb-4">
+            <span class="eyebrow">Tools</span>
+            <h2 class="h2 fw-bold mb-2">Calculator Directory</h2>
+            <p class="text-secondary mb-0">A curated directory of financial calculators to help you plan investments, retirement, savings, loans and career decisions. Click any card to open the calculator and view formula, examples and FAQ.</p>
+        </div>
+
+        <!-- Investment Calculators -->
+        <section class="mt-4">
+            <div class="d-flex align-items-start justify-content-between mb-3">
+                <div>
+                    <h3 class="h4 fw-bold mb-1">Investment Calculators</h3>
+                    <p class="text-secondary mb-0">Plan long-term wealth creation using SIP, CAGR, inflation, and goal planning tools.</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 col-12">
+                    <a class="calc-card d-block h-100" href="/tools/sip-calculator">
+                        <div class="card h-100 p-3">
+                            <div class="card-body d-flex flex-column">
+                                <div class="calc-icon mb-3"><i class="bi bi-bar-chart-line-fill"></i></div>
+                                <h5 class="fw-bold">SIP Calculator</h5>
+                                <p class="text-secondary mb-3">Estimate SIP maturity value and wealth creation.</p>
+                                <div class="mt-auto">
+                                    <span class="btn btn-outline-primary btn-open">Open Calculator →</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-12">
+                    <a class="calc-card d-block h-100" href="/tools/cagr-calculator">
+                        <div class="card h-100 p-3">
+                            <div class="card-body d-flex flex-column">
+                                <div class="calc-icon mb-3"><i class="bi bi-percent"></i></div>
+                                <h5 class="fw-bold">CAGR Calculator</h5>
+                                <p class="text-secondary mb-3">Estimate annualized growth rate between two values.</p>
+                                <div class="mt-auto">
+                                    <span class="btn btn-outline-primary btn-open">Open Calculator →</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-12">
+                    <a class="calc-card d-block h-100" href="/tools/step-up-sip-calculator">
+                        <div class="card h-100 p-3">
+                            <div class="card-body d-flex flex-column">
+                                <div class="calc-icon mb-3"><i class="bi bi-arrow-up-right-circle"></i></div>
+                                <h5 class="fw-bold">Step-Up SIP Calculator</h5>
+                                <p class="text-secondary mb-3">Estimate maturity value with planned annual step-ups.</p>
+                                <div class="mt-auto">
+                                    <span class="btn btn-outline-primary btn-open">Open Calculator →</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-12">
+                    <a class="calc-card d-block h-100" href="/tools/goal-calculator">
+                        <div class="card h-100 p-3">
+                            <div class="card-body d-flex flex-column">
+                                <div class="calc-icon mb-3"><i class="bi bi-bullseye"></i></div>
+                                <h5 class="fw-bold">Goal-Based Investment Calculator</h5>
+                                <p class="text-secondary mb-3">Find the monthly investment required to reach a target goal.</p>
+                                <div class="mt-auto">
+                                    <span class="btn btn-outline-primary btn-open">Open Calculator →</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-12">
+                    <a class="calc-card d-block h-100" href="/tools/lumpsum-calculator">
+                        <div class="card h-100 p-3">
+                            <div class="card-body d-flex flex-column">
+                                <div class="calc-icon mb-3"><i class="bi bi-wallet2"></i></div>
+                                <h5 class="fw-bold">Lumpsum Calculator</h5>
+                                <p class="text-secondary mb-3">Estimate maturity value from a one-time investment.</p>
+                                <div class="mt-auto">
+                                    <span class="btn btn-outline-primary btn-open">Open Calculator →</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-12">
+                    <a class="calc-card d-block h-100" href="/tools/compound-interest-calculator">
+                        <div class="card h-100 p-3">
+                            <div class="card-body d-flex flex-column">
+                                <div class="calc-icon mb-3"><i class="bi bi-circle-half"></i></div>
+                                <h5 class="fw-bold">Compound Interest Calculator</h5>
+                                <p class="text-secondary mb-3">Estimate interest earned and the compounded maturity value.</p>
+                                <div class="mt-auto">
+                                    <span class="btn btn-outline-primary btn-open">Open Calculator →</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-12">
+                    <a class="calc-card d-block h-100" href="/tools/inflation-calculator">
+                        <div class="card h-100 p-3">
+                            <div class="card-body d-flex flex-column">
+                                <div class="calc-icon mb-3"><i class="bi bi-arrow-repeat"></i></div>
+                                <h5 class="fw-bold">Inflation Calculator</h5>
+                                <p class="text-secondary mb-3">Estimate purchasing power impact over time due to inflation.</p>
+                                <div class="mt-auto">
+                                    <span class="btn btn-outline-primary btn-open">Open Calculator →</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Retirement Planning -->
+        <section class="mt-5">
+            <div class="d-flex align-items-start justify-content-between mb-3">
+                <div>
+                    <h3 class="h4 fw-bold mb-1">Retirement Planning</h3>
+                    <p class="text-secondary mb-0">Estimate retirement corpus, withdrawal plans, and how much you'll need to sustain income in retirement.</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 col-12">
+                    <a class="calc-card d-block h-100" href="/tools/retirement-calculator">
+                        <div class="card h-100 p-3">
+                            <div class="card-body d-flex flex-column">
+                                <div class="calc-icon mb-3"><i class="bi bi-briefcase-fill"></i></div>
+                                <h5 class="fw-bold">Retirement Calculator</h5>
+                                <p class="text-secondary mb-3">Estimate retirement corpus and potential retirement income.</p>
+                                <div class="mt-auto"><span class="btn btn-outline-primary btn-open">Open Calculator →</span></div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-12">
+                    <a class="calc-card d-block h-100" href="/tools/fire-calculator">
+                        <div class="card h-100 p-3">
+                            <div class="card-body d-flex flex-column">
+                                <div class="calc-icon mb-3"><i class="bi bi-flame-fill"></i></div>
+                                <h5 class="fw-bold">FIRE Calculator</h5>
+                                <p class="text-secondary mb-3">Estimate your FIRE number using safe withdrawal rates.</p>
+                                <div class="mt-auto"><span class="btn btn-outline-primary btn-open">Open Calculator →</span></div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-12">
+                    <a class="calc-card d-block h-100" href="/tools/swp-calculator">
+                        <div class="card h-100 p-3">
+                            <div class="card-body d-flex flex-column">
+                                <div class="calc-icon mb-3"><i class="bi bi-cash-stack"></i></div>
+                                <h5 class="fw-bold">SWP Calculator</h5>
+                                <p class="text-secondary mb-3">Estimate withdrawals and remaining corpus under a systematic withdrawal plan.</p>
+                                <div class="mt-auto"><span class="btn btn-outline-primary btn-open">Open Calculator →</span></div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Savings & Wealth -->
+        <section class="mt-5">
+            <div class="d-flex align-items-start justify-content-between mb-3">
+                <div>
+                    <h3 class="h4 fw-bold mb-1">Savings & Wealth</h3>
+                    <p class="text-secondary mb-0">Tools to manage emergency savings, net worth tracking and simple wealth checks.</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 col-12">
+                    <a class="calc-card d-block h-100" href="/tools/emergency-fund-calculator">
+                        <div class="card h-100 p-3">
+                            <div class="card-body d-flex flex-column">
+                                <div class="calc-icon mb-3"><i class="bi bi-shield-exclamation"></i></div>
+                                <h5 class="fw-bold">Emergency Fund Calculator</h5>
+                                <p class="text-secondary mb-3">Recommend emergency fund based on monthly expenses and coverage months.</p>
+                                <div class="mt-auto"><span class="btn btn-outline-primary btn-open">Open Calculator →</span></div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-12">
+                    <a class="calc-card d-block h-100" href="/tools/net-worth-calculator">
+                        <div class="card h-100 p-3">
+                            <div class="card-body d-flex flex-column">
+                                <div class="calc-icon mb-3"><i class="bi bi-columns-gap"></i></div>
+                                <h5 class="fw-bold">Net Worth Calculator</h5>
+                                <p class="text-secondary mb-3">Estimate net worth from your assets and liabilities.</p>
+                                <div class="mt-auto"><span class="btn btn-outline-primary btn-open">Open Calculator →</span></div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loans -->
+        <section class="mt-5">
+            <div class="d-flex align-items-start justify-content-between mb-3">
+                <div>
+                    <h3 class="h4 fw-bold mb-1">Loans</h3>
+                    <p class="text-secondary mb-0">Understand EMIs, total repayment and interest costs before borrowing.</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 col-12">
+                    <a class="calc-card d-block h-100" href="/tools/emi-calculator">
+                        <div class="card h-100 p-3">
+                            <div class="card-body d-flex flex-column">
+                                <div class="calc-icon mb-3"><i class="bi bi-calculator-fill"></i></div>
+                                <h5 class="fw-bold">EMI Calculator</h5>
+                                <p class="text-secondary mb-3">Calculate monthly EMI, total interest and total repayment.</p>
+                                <div class="mt-auto"><span class="btn btn-outline-primary btn-open">Open Calculator →</span></div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Career -->
+        <section class="mt-5">
+            <div class="d-flex align-items-start justify-content-between mb-3">
+                <div>
+                    <h3 class="h4 fw-bold mb-1">Career</h3>
+                    <p class="text-secondary mb-0">Translate CTC to in-hand salary and explore deductions and take-home pay.</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 col-12">
+                    <a class="calc-card d-block h-100" href="/tools/salary-calculator">
+                        <div class="card h-100 p-3">
+                            <div class="card-body d-flex flex-column">
+                                <div class="calc-icon mb-3"><i class="bi bi-person-badge-fill"></i></div>
+                                <h5 class="fw-bold">Salary Calculator</h5>
+                                <p class="text-secondary mb-3">Calculate monthly and annual in-hand salary from CTC with PF and tax breakdown.</p>
+                                <div class="mt-auto"><span class="btn btn-outline-primary btn-open">Open Calculator →</span></div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio -->
+        <section class="mt-5">
+            <div class="d-flex align-items-start justify-content-between mb-3">
+                <div>
+                    <h3 class="h4 fw-bold mb-1">Portfolio</h3>
+                    <p class="text-secondary mb-0">Simple tools to check portfolio overlap and concentration.</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 col-12">
+                    <a class="calc-card d-block h-100" href="/tools/portfolio-overlap-checker">
+                        <div class="card h-100 p-3">
+                            <div class="card-body d-flex flex-column">
+                                <div class="calc-icon mb-3"><i class="bi bi-pie-chart-fill"></i></div>
+                                <h5 class="fw-bold">Portfolio Overlap Checker</h5>
+                                <p class="text-secondary mb-3">Check common stock names across two simple portfolios.</p>
+                                <div class="mt-auto"><span class="btn btn-outline-primary btn-open">Open Calculator →</span></div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits and Disclaimer -->
+        <section class="mt-5 mb-5">
+            <div class="row g-4">
+                <div class="col-lg-7">
+                    <div class="card p-4">
+                        <h4 class="fw-bold">Why Use Financial Calculators?</h4>
+                        <p class="text-secondary">Financial calculators give you quick, objective estimates so you can plan better and ask the right questions.</p>
+                        <ul class="text-secondary">
+                            <li>Better financial planning</li>
+                            <li>Goal tracking</li>
+                            <li>Retirement planning</li>
+                            <li>Wealth building</li>
+                            <li>Risk awareness</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="card p-4">
+                        <h4 class="fw-bold">Disclaimer</h4>
+                        <p class="text-secondary">FinCalX provides educational estimates only and is not financial advice. Results are approximate and depend on input assumptions. Always consult a qualified professional before making financial decisions.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</section>
+{% endblock %}

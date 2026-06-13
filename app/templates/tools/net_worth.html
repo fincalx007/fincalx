@@ -1,0 +1,225 @@
+{% extends "tools/tool_base.html" %}
+
+{% block tool_title %}Net Worth Calculator India{% endblock %}
+
+{% block tool_intro %}
+Estimate your net worth by subtracting total liabilities from total assets.
+{% endblock %}
+
+{% block tool_form %}
+<form id="netWorthForm" class="card calculator-card" data-api="/tools/net-worth-calculator/api" data-result="net_worth" novalidate>
+    <div class="card-body p-4">
+        <h2 class="h4 fw-bold mb-4">Enter your numbers</h2>
+
+        {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% endif %}
+
+        <div class="mb-3">
+            <label class="form-label" for="total_assets">Total Assets</label>
+            <input class="form-control" id="total_assets" name="total_assets" type="number"
+                   min="0" max="1000000000" step="100" value="{{ form.total_assets }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="total_liabilities">Total Liabilities</label>
+            <input class="form-control" id="total_liabilities" name="total_liabilities" type="number"
+                   min="0" max="1000000000" step="100" value="{{ form.total_liabilities }}" required>
+        </div>
+
+        <button type="button" id="netWorthBtn" class="btn btn-gradient w-100" data-submit="net_worth">
+            Calculate Net Worth
+        </button>
+    </div>
+</form>
+{% endblock %}
+
+{% block tool_result %}
+<div id="result-section">
+    <div id="netWorthResultBox" class="card result-card {% if not result %}d-none{% endif %}">
+        <div class="card-body p-4">
+            <h2 class="h5 fw-bold mb-3">Net Worth</h2>
+
+            <div class="result-highlight">
+                <span>Your Net Worth</span>
+                <strong id="netWorthValue" class="fs-4">{{ result.net_worth if result else "₹0" }}</strong>
+            </div>
+        </div>
+    </div>
+
+    <div id="netWorthResultEmpty" class="result-empty{% if result %} d-none{% endif %}">
+        <h2 class="h5">Your net worth result will appear here</h2>
+        <p class="text-secondary mb-0">Enter total assets and total liabilities to estimate your net worth.</p>
+    </div>
+
+    {# Standard disclaimer removed here; the single Disclaimer is provided by tool_base.html #}
+</div>
+{% endblock %}
+
+{% block seo_content %}
+<section class="section-pad bg-soft">
+    <div class="container">
+        <article>
+            <h2 class="h3 fw-bold mb-3">Introduction</h2>
+            <p class="text-secondary">Net worth is the simplest consolidated measure of personal financial health: total assets minus total liabilities. This Net Worth Calculator helps you compute a clear, numeric snapshot that you can track over time to measure progress toward financial goals such as debt freedom, home equity growth, or retirement readiness.</p>
+        </article>
+
+        {% include "partials/ad_unit.html" %}
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">What is this calculator?</h2>
+            <p class="text-secondary">This tool aggregates values you provide for assets—cash, bank deposits, investments, real estate market value, and other owned items—and subtracts liabilities such as mortgages, personal loans, and outstanding credit card balances to deliver your net worth. It is a planning metric rather than an investment strategy by itself.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">How it works</h2>
+            <p class="text-secondary">Enter realistic valuations for assets and up-to-date figures for liabilities. The calculator performs a straightforward subtraction: Net Worth = Total Assets − Total Liabilities. Use conservative estimates for illiquid assets like property or private business stakes to avoid overestimating your financial position.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Formula</h2>
+            <p class="text-secondary mb-0"><strong>Net Worth = Assets − Liabilities</strong></p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Formula explanation</h2>
+            <p class="text-secondary">Assets include liquid holdings (cash, savings), investments (mutual funds, stocks), retirement accounts, and the current market value of property. Liabilities capture debts and obligations you are obligated to repay. Subtracting liabilities from assets yields a single number that reflects solvency and wealth accumulation over time.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Worked example</h2>
+            <p class="text-secondary">Example: Assets = Rs. 25,00,000 (savings and investments) + Rs. 30,00,000 (home market value) = Rs. 55,00,000. Liabilities = Rs. 10,00,000 (home loan) + Rs. 2,00,000 (personal loan) = Rs. 12,00,000. Net worth = 55,00,000 − 12,00,000 = Rs. 43,00,000. Tracking this number annually shows whether your balance sheet is improving.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Benefits</h2>
+            <ul class="text-secondary">
+                <li>Provides a clear, comparable metric to assess financial progress.</li>
+                <li>Identifies whether focusing on debt repayment or asset growth is more effective for your goals.</li>
+                <li>Helps in retirement planning by aggregating net investable assets.</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Common mistakes</h2>
+            <ul class="text-secondary">
+                <li>Overvaluing illiquid assets or using optimistic sale prices.</li>
+                <li>Forgetting liabilities such as taxes due or contingent liabilities.</li>
+                <li>Failing to update the calculation regularly—quarterly or annual tracking is recommended.</li>
+            </ul>
+        </article>
+        
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Valuation tips</h2>
+            <p class="text-secondary">When estimating asset values, use conservative market references: for property use recent comparable sales, for private business stakes use conservative multiples or professional valuations, and for collectibles or vehicles use realistic resale values. Discount illiquid assets to reflect the time and cost required to convert them into cash. These conservative techniques prevent overstating net worth.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">How to improve your net worth</h2>
+            <p class="text-secondary">Focus on the two levers: increase assets and reduce liabilities. Increase assets by saving regularly, investing in diversified asset classes, and using tax-efficient wrappers. Reduce liabilities by prioritising high-interest debt repayment and refinancing expensive loans where possible. Small, consistent surpluses saved and invested compound over time and materially raise net worth.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">12‑month action plan</h2>
+            <p class="text-secondary">Create a simple 12‑month plan: (1) Build a monthly budget and identify savings opportunities, (2) allocate excess cash to high-impact debt reduction or investments, (3) review insurance coverages to protect assets, and (4) record net worth quarterly to measure progress. Concrete, short-term targets make long-term net worth goals achievable.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Estate and tax considerations</h2>
+            <p class="text-secondary">Remember that certain assets have tax or estate implications that affect their effective value. Factor in capital gains treatment, potential estate duties, and transfer costs when planning—especially for property and business holdings. Consult a tax professional for complex situations.</p>
+        </article>
+    </div>
+</section>
+{% endblock %}
+
+{% block advanced_content %}
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4">
+            <article class="col-lg-6">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">When should you use it?</h2>
+                    <p class="text-secondary">Use it to track financial health and see whether your balance sheet is improving over time.</p>
+                </div>
+            </article>
+            <article class="col-lg-6">
+                <div class="info-card h-100">
+                    <h2 class="h4 fw-bold mb-3">Things to consider</h2>
+                    <p class="text-secondary">This is a snapshot. Asset values and liability balances can change due to market movement and repayments.</p>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block explanation %}
+Net worth equals what you own minus what you owe, helping you understand your financial position.
+{% endblock %}
+
+{% block formula %}
+<p class="text-secondary mb-0"><strong>Net Worth = Assets − Liabilities</strong></p>
+{% endblock %}
+
+{% block faq %}
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#nwFaq1">Should net worth be negative?</button>
+    </h2>
+    <div id="nwFaq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">It can be negative if liabilities exceed assets. This often happens early in life or after large borrowing; focus on reducing high-interest debt and building assets to improve net worth.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#nwFaq2">What assets should I include?</button>
+    </h2>
+    <div id="nwFaq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Include liquid cash, savings, investment accounts, retirement accounts, and market-value estimates for property and business holdings. Exclude sentimental items unless you plan to sell them as part of financial planning.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#nwFaq3">How often should I update net worth?</button>
+    </h2>
+    <div id="nwFaq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Quarterly or annually is sufficient for most people; update more often when you have significant portfolio activity or major life events.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#nwFaq4">Should I include home equity?</button>
+    </h2>
+    <div id="nwFaq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Yes, include the current market value of property minus any mortgage to reflect true net worth. Be conservative with valuation assumptions.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#nwFaq5">How can I improve my net worth?</button>
+    </h2>
+    <div id="nwFaq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Increase savings, reduce high-interest debt, invest for reasonable returns, and periodically review asset allocation. Small, consistent improvements compound into significant net worth growth over time.</div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block related_calculators %}
+<section class="section-pad bg-soft">
+    <div class="container">
+        <h3 class="h5 fw-bold mb-3">Related calculators</h3>
+        <p class="text-secondary">Try: <a href="/tools/emergency-fund">Emergency Fund</a>, <a href="/tools/retirement">Retirement</a>, <a href="/tools/goal">Goal-based investments</a>.</p>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/net_worth.js"></script>
+{% endblock %}
+

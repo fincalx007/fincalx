@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block head_extra %}
-<script type="application/ld+json">
+<script type="application/ld+json" nonce="{{ request.state.csp_nonce }}">
 {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -123,33 +123,71 @@
             </div>
         </div>
         <div id="toolGrid" class="row g-4">
-            {% for tool in tools %}
-            {% if "Tax" not in tool.title %}
-            <article class="col-md-6 col-xl-4 tool-card" data-search="{{ tool.title }} {{ tool.description }} {{ tool.keywords }}">
+            <article class="col-md-6 col-xl-4 tool-card">
                 <div class="card h-100 tool-card-inner">
                     <div class="card-body d-flex flex-column p-4">
-                        <div class="tool-icon" aria-hidden="true">
-                            {% if "SIP" in tool.title %}
-                            <i class="bi bi-bar-chart-line-fill"></i>
-                            {% elif "EMI" in tool.title %}
-                            <i class="bi bi-calculator-fill"></i>
-                            {% elif "Salary" in tool.title %}
-                            <i class="bi bi-cash-stack"></i>
-                            {% else %}
-                            <i class="bi bi-pie-chart-fill"></i>
-                            {% endif %}
-                        </div>
-                        <h3 class="h5 card-title fw-bold">{{ tool.title }}</h3>
-                        <p class="card-text text-secondary">{{ tool.description }}</p>
-                        <a class="btn btn-gradient mt-auto" href="{{ tool.href }}">
-                            Calculate Now
-                            <i class="bi bi-arrow-right-short ms-1" aria-hidden="true"></i>
-                        </a>
+                        <div class="tool-icon" aria-hidden="true"><i class="bi bi-bar-chart-line-fill"></i></div>
+                        <h3 class="h5 card-title fw-bold">SIP Calculator</h3>
+                        <p class="card-text text-secondary">Estimate SIP maturity amount, invested value, and projected returns.</p>
+                        <a class="btn btn-gradient mt-auto" href="/tools/sip-calculator">Calculate Now <i class="bi bi-arrow-right-short ms-1" aria-hidden="true"></i></a>
                     </div>
                 </div>
             </article>
-            {% endif %}
-            {% endfor %}
+
+            <article class="col-md-6 col-xl-4 tool-card">
+                <div class="card h-100 tool-card-inner">
+                    <div class="card-body d-flex flex-column p-4">
+                        <div class="tool-icon" aria-hidden="true"><i class="bi bi-calculator-fill"></i></div>
+                        <h3 class="h5 card-title fw-bold">EMI Calculator</h3>
+                        <p class="card-text text-secondary">Calculate monthly EMI, total interest, and total repayment.</p>
+                        <a class="btn btn-gradient mt-auto" href="/tools/emi-calculator">Calculate Now <i class="bi bi-arrow-right-short ms-1" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="col-md-6 col-xl-4 tool-card">
+                <div class="card h-100 tool-card-inner">
+                    <div class="card-body d-flex flex-column p-4">
+                        <div class="tool-icon" aria-hidden="true"><i class="bi bi-cash-stack"></i></div>
+                        <h3 class="h5 card-title fw-bold">Salary Calculator</h3>
+                        <p class="card-text text-secondary">Calculate monthly and annual in-hand salary from CTC with PF and tax breakdown.</p>
+                        <a class="btn btn-gradient mt-auto" href="/tools/salary-calculator">Calculate Now <i class="bi bi-arrow-right-short ms-1" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="col-md-6 col-xl-4 tool-card">
+                <div class="card h-100 tool-card-inner">
+                    <div class="card-body d-flex flex-column p-4">
+                        <div class="tool-icon" aria-hidden="true"><i class="bi bi-graph-up"></i></div>
+                        <h3 class="h5 card-title fw-bold">Step-Up SIP Calculator</h3>
+                        <p class="card-text text-secondary">Estimate maturity value with increasing annual SIP contributions.</p>
+                        <a class="btn btn-gradient mt-auto" href="/tools/step-up-sip-calculator">Calculate Now <i class="bi bi-arrow-right-short ms-1" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="col-md-6 col-xl-4 tool-card">
+                <div class="card h-100 tool-card-inner">
+                    <div class="card-body d-flex flex-column p-4">
+                        <div class="tool-icon" aria-hidden="true"><i class="bi bi-wallet2"></i></div>
+                        <h3 class="h5 card-title fw-bold">Net Worth Calculator</h3>
+                        <p class="card-text text-secondary">Track assets, liabilities, and overall financial health.</p>
+                        <a class="btn btn-gradient mt-auto" href="/tools/net-worth-calculator">Calculate Now <i class="bi bi-arrow-right-short ms-1" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="col-md-6 col-xl-4 tool-card">
+                <div class="card h-100 tool-card-inner">
+                    <div class="card-body d-flex flex-column p-4">
+                        <div class="tool-icon" aria-hidden="true"><i class="bi bi-grid-fill"></i></div>
+                        <h3 class="h5 card-title fw-bold">Explore All Tools</h3>
+                        <p class="card-text text-secondary">Access all financial calculators including investment, retirement, wealth planning, loan, salary, and portfolio tools.</p>
+                        <a class="btn btn-gradient mt-auto" href="/tools">View All Tools <i class="bi bi-arrow-right-short ms-1" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+            </article>
         </div>
     </div>
 </section>

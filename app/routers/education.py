@@ -10,8 +10,20 @@ CALCULATORS = [
     {"title": "EMI Calculator", "href": "/tools/emi-calculator"},
     {"title": "Salary Calculator", "href": "/tools/salary-calculator"},
     {"title": "Portfolio Overlap Checker", "href": "/tools/portfolio-overlap-checker"},
+<<<<<<< HEAD
 ]
 
+=======
+    {"title": "CAGR Calculator", "href": "/tools/cagr-calculator"},
+    {"title": "Lumpsum Calculator", "href": "/tools/lumpsum-calculator"},
+    {"title": "Compound Interest Calculator", "href": "/tools/compound-interest-calculator"},
+    {"title": "Inflation Calculator", "href": "/tools/inflation-calculator"},
+    {"title": "Emergency Fund Calculator", "href": "/tools/emergency-fund-calculator"},
+    {"title": "Net Worth Calculator", "href": "/tools/net-worth-calculator"},
+]
+
+
+>>>>>>> fd6b176 (13-06-26)
 GUIDES = [
     {
         "slug": "beginners-guide-to-sip-investing",

@@ -1,4 +1,5 @@
 import time
+import secrets
 from collections import defaultdict, deque
 from collections.abc import Callable
 
@@ -10,9 +11,16 @@ from starlette.middleware.base import BaseHTTPMiddleware
 async def add_security_headers(request: Request, call_next: Callable) -> Response:
     """Add security headers to every response.
 
-    Designed for use with @app.middleware("http") decorator.
-    Only modifies response headers — never touches response.body.
+    Generates a per-request CSP nonce and attaches it to the request state so
+    templates can use it for inline scripts. The CSP allows required CDNs and
+    AdSense domains while enforcing nonces for inline scripts and styles.
     """
+
+    # Per-request nonce for allowing inline scripts/styles safely
+    nonce = secrets.token_urlsafe(16)
+    # expose to templates via request.state
+    request.state.csp_nonce = nonce
+
     response: Response = await call_next(request)
 
     response.headers["X-Content-Type-Options"] = "nosniff"
@@ -20,16 +28,20 @@ async def add_security_headers(request: Request, call_next: Callable) -> Respons
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
     response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
-    response.headers["Content-Security-Policy"] = (
+
+    # Allowlist CDNs and AdSense domains; permit inline scripts/styles only via nonce
+    csp = (
         "default-src 'self'; "
-        "script-src 'self' https://cdn.jsdelivr.net; "
-        "style-src 'self' https://cdn.jsdelivr.net; "
+        f"script-src 'self' https://cdn.jsdelivr.net https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com 'nonce-{nonce}'; "
+        f"style-src 'self' https://cdn.jsdelivr.net 'nonce-{nonce}'; "
         "img-src 'self' data:; "
         "font-src 'self' https://cdn.jsdelivr.net; "
         "form-action 'self'; "
         "frame-ancestors 'none'; "
         "base-uri 'self'"
     )
+
+    response.headers["Content-Security-Policy"] = csp
     return response
 
 

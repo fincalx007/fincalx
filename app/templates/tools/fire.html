@@ -1,0 +1,207 @@
+{% extends "tools/tool_base.html" %}
+
+{% block tool_title %}FIRE Calculator{% endblock %}
+
+{% block tool_intro %}
+Calculate your FIRE number (required corpus) using your annual expenses and a chosen safe withdrawal rate.
+{% endblock %}
+
+{% block tool_form %}
+<form id="fireForm" class="card calculator-card" data-api="/tools/fire-calculator/api" data-result="fire" novalidate>
+    <div class="card-body p-4">
+        <h2 class="h4 fw-bold mb-4">Enter FIRE details</h2>
+
+        {% if error %}
+        <div class="alert alert-danger" role="alert">{{ error }}</div>
+        {% endif %}
+
+        <div class="mb-3">
+            <label class="form-label" for="annual_expenses">Annual expenses</label>
+            <input class="form-control" id="annual_expenses" name="annual_expenses" type="number" min="0" max="1000000000" step="1000" value="{{ form.annual_expenses }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" for="safe_withdrawal_rate">Safe withdrawal rate (%)</label>
+            <input class="form-control" id="safe_withdrawal_rate" name="safe_withdrawal_rate" type="number" min="0.1" max="20" step="0.1" value="{{ form.safe_withdrawal_rate }}" required>
+        </div>
+
+        <button type="button" id="fireBtn" class="btn btn-gradient w-100" data-submit="fire">
+            Calculate FIRE Number
+        </button>
+    </div>
+</form>
+{% endblock %}
+
+{% block tool_result %}
+<div id="result-section">
+    <div id="fireResultBox" class="card result-card {% if not result %}d-none{% endif %}">
+        <div class="card-body p-4">
+            <h2 class="h5 fw-bold mb-3">FIRE Estimate</h2>
+
+            <div class="result-highlight">
+                <span>FIRE Number</span>
+                <strong id="fireNumber" class="fs-4">{{ result.fire_number if result else "0" }}</strong>
+            </div>
+
+            <div class="result-row">
+                <span>Required Retirement Corpus</span>
+                <strong id="fireCorpus">{{ result.required_retirement_corpus if result else "0" }}</strong>
+            </div>
+        </div>
+    </div>
+
+    <div id="fireResultEmpty" class="result-empty{% if result %} d-none{% endif %}">
+        <h2 class="h5">Your FIRE result will appear here</h2>
+        <p class="text-secondary mb-0">Enter your annual expenses and safe withdrawal rate to estimate the corpus required for financial independence.</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/ajax-engine.js"></script>
+<script src="/static/js/fire.js"></script>
+{% endblock %}
+
+{% block seo_content %}
+<section class="section-pad bg-soft">
+    <div class="container">
+        <article>
+            <h2 class="h3 fw-bold mb-3">Introduction</h2>
+            <p class="text-secondary">The FIRE Calculator converts your annual living expenses into a target investment corpus that—when withdrawn at a chosen safe withdrawal rate—aims to provide sustainable income without employment. It is a planning tool for people exploring early retirement, partial retirement, or long-term financial independence. Use the number as a directional goal rather than a precise prescription; real-world retirement planning requires tax-aware strategies, inflation adjustments, and contingency buffers.</p>
+        </article>
+
+        {% include "partials/ad_unit.html" %}
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">What is this calculator?</h2>
+            <p class="text-secondary">This calculator estimates the corpus required to fund your annual expenses indefinitely by applying a simple withdrawal-rate method. The withdrawal rate determines how much you take out of your portfolio each year as a percentage of the total corpus. A conservative withdrawal rate reduces the risk of portfolio depletion but increases the target corpus you must accumulate.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">How it works</h2>
+            <p class="text-secondary">Enter your anticipated annual expenses and select a withdrawal rate (for example 3–5%). The calculator divides the annual expense by the withdrawal rate expressed as a decimal. This simple algebraic approach provides a quick estimate of the corpus needed to generate the required yearly income. It assumes a steady withdrawal each year and does not model market volatility, taxation, or changing expense patterns.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Formula</h2>
+            <p class="text-secondary mb-0"><strong>FIRE Corpus = Annual Expenses ÷ Withdrawal Rate</strong></p>
+            <p class="text-secondary mb-0">(Withdrawal Rate is entered as a percentage; convert to decimal for the division.)</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Formula explanation</h2>
+            <p class="text-secondary">The method assumes your portfolio can sustainably support withdrawals equal to the chosen percentage each year. The withdrawal rate should reflect portfolio mix, expected real returns, and how long you need the income to last. Sequence-of-returns risk and inflation are two key factors that make the method an approximation rather than a guarantee.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Worked example</h2>
+            <p class="text-secondary">Example: Annual expenses Rs. 6,00,000, withdrawal rate 4%. Corpus = 6,00,000 ÷ 0.04 = Rs. 1,50,00,000. Under this simplifying assumption, a corpus of Rs. 1.5 crores could generate Rs. 6,00,000 per year at 4% withdrawals. Use multiple scenarios (3%–5%) to understand sensitivity to the withdrawal rate.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Benefits</h2>
+            <ul class="text-secondary">
+                <li>Gives a concrete target for savings and investment planning.</li>
+                <li>Makes trade-offs between withdrawal rates and corpus size explicit.</li>
+                <li>Useful for early-stage retirement conversations and prioritising goals.</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Common mistakes</h2>
+            <ul class="text-secondary">
+                <li>Relying solely on a single withdrawal-rate assumption without stress testing.</li>
+                <li>Failing to adjust for inflation, taxes, or expected large one-time costs.</li>
+                <li>Neglecting to plan for sequence-of-returns risk early in retirement.</li>
+            </ul>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Related calculators</h2>
+            <p class="text-secondary">Complement with the <a href="/tools/retirement">Retirement</a> calculator for savings planning, <a href="/tools/swp">SWP</a> for withdrawal sequencing, and <a href="/tools/emergency-fund">Emergency Fund</a> for short-term liquidity needs.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Educational note</h2>
+            <p class="text-secondary">Think of the FIRE number as a planning horizon marker: it helps you prioritise saving, reduce spending, or adapt portfolio allocation. For robust retirement planning, layer this estimate with tax-smart withdrawal sequencing, insurance planning, and scenario-based simulations such as Monte Carlo analysis performed by advisors or advanced tools.</p>
+        </article>
+
+        <article class="mt-5">
+            <h2 class="h3 fw-bold mb-3">Practical steps to move from target to plan</h2>
+            <p class="text-secondary">Translate the target into monthly savings goals, set up automated investments, choose tax-efficient accounts, and select an asset allocation that balances growth with downside protection. Reassess annually and model downside scenarios to ensure your withdrawal strategy is robust against extended market downturns.</p>
+        </article>
+
+        <div class="alert alert-secondary mt-4">Disclaimer: Educational only. Results are approximations and not financial advice. Consult a qualified financial professional for personalised planning.</div>
+    </div>
+</section>
+{% endblock %}
+
+{% block explanation %}
+The FIRE calculator estimates the retirement corpus needed so you can withdraw a chosen percentage each year to cover annual expenses. It is a simple division-based estimate suitable for planning conversations and scenario testing.
+{% endblock %}
+
+{% block faq %}
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#fireFaq1">What is a safe withdrawal rate?</button>
+    </h2>
+    <div id="fireFaq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Safe withdrawal rates are rules of thumb (like 4%) intended to help reduce the chance of depleting a portfolio too early. They depend on asset allocation, market returns, and retirement length.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#fireFaq2">Does this account for inflation?</button>
+    </h2>
+    <div id="fireFaq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">This simple estimate does not automatically inflate expenses. Enter inflation-adjusted annual expenses to model real purchasing power needs.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#fireFaq6">Does it account for healthcare or unexpected costs?</button>
+    </h2>
+    <div id="fireFaq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">No — include specific buffers for healthcare, long-term care, or other large predictable expenses in your annual expenses input or set aside separate reserves.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#fireFaq7">How frequently should I update assumptions?</button>
+    </h2>
+    <div id="fireFaq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Revisit assumptions annually or when major life events occur. Small changes in expenses or withdrawal rate compound into large differences over long retirements.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#fireFaq3">Can I use different withdrawal rates over time?</button>
+    </h2>
+    <div id="fireFaq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Yes — many retirees use dynamic withdrawal strategies. This calculator provides a fixed-rate estimate; consider SWP or retirement planning tools for more detailed simulations.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#fireFaq4">How should I choose a withdrawal rate?</button>
+    </h2>
+    <div id="fireFaq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Lower withdrawal rates (e.g., 3%) increase the required corpus but reduce the risk of depletion. Choose based on your risk tolerance, expected portfolio returns, and retirement horizon.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#fireFaq5">Related calculators?</button>
+    </h2>
+    <div id="fireFaq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">See the Retirement calculator for income simulations, the SWP calculator for withdrawal plans, and the Goal/Lumpsum calculators for funding strategies.</div>
+    </div>
+</div>
+
+{% endblock %}
