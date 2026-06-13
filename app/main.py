@@ -8,15 +8,13 @@ import logging
 from pathlib import Path
 import sys
 
-<<<<<<< HEAD
 from app.routers import contact, education, emi, home, legal, overlap, salary, sip
-=======
 from app.routers import contact, education, emi, home, legal, overlap, salary, sip, cagr
 from app.routers import lumpsum, compound_interest, inflation, emergency_fund, net_worth, step_up_sip, swp, goal, retirement, fire
 from app.routers import tools_page
 
 
->>>>>>> fd6b176 (13-06-26)
+
 from app.security import RateLimitMiddleware, add_security_headers
 
 
@@ -84,9 +82,9 @@ async def sitemap():
   <url><loc>https://getfincalx.com/tools/emi-calculator</loc></url>
   <url><loc>https://getfincalx.com/tools/salary-calculator</loc></url>
   <url><loc>https://getfincalx.com/tools/portfolio-overlap-checker</loc></url>
-<<<<<<< HEAD
+
   <url><loc>https://getfincalx.com/learning-center</loc></url>
-=======
+
   <url><loc>https://getfincalx.com/tools/cagr-calculator</loc></url>
 
     <url><loc>https://getfincalx.com/tools/step-up-sip-calculator</loc></url>
@@ -103,7 +101,6 @@ async def sitemap():
 
   <url><loc>https://getfincalx.com/learning-center</loc></url>
 
->>>>>>> fd6b176 (13-06-26)
   <url><loc>https://getfincalx.com/finance-glossary</loc></url>
   <url><loc>https://getfincalx.com/comparison-guides</loc></url>
   <url><loc>https://getfincalx.com/financial-planning-resources</loc></url>
