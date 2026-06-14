@@ -1,5 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
+from fastapi import Response
+from fastapi.responses import PlainTextResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, PlainTextResponse, RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
@@ -112,7 +114,7 @@ async def sitemap():
 # ✅ ROBOTS.TXT
 # ============================
 
-@app.get("/robots.txt", include_in_schema=False)
+@app.api_route("/robots.txt", methods=["GET", "HEAD"], include_in_schema=False)
 async def robots():
     return PlainTextResponse(
         content="User-agent: *\nAllow: /\nSitemap: https://getfincalx.com/sitemap.xml"
