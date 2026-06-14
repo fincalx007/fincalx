@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi import Response
+from fastapi.routing import APIRoute
+
 from fastapi.responses import PlainTextResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, PlainTextResponse, RedirectResponse, Response
@@ -204,6 +206,60 @@ app.add_middleware(
     allow_methods=["GET", "POST"],
     allow_headers=["Content-Type"],
 )
+
+
+@app.middleware("http")
+async def head_to_get_middleware(request: Request, call_next):
+    """Fix 405 on HEAD by dispatching HEAD -> GET when only GET is registered.
+
+    Current issue: many pages are declared as @router.get(...). If the route set does not
+    include HEAD, Starlette returns 405.
+
+    This middleware checks if the incoming request path is handled by a GET route but not
+    by a HEAD-capable route, then re-dispatches internally.
+
+    For HEAD semantics, the response body is removed.
+    """
+
+    if request.method != "HEAD":
+        return await call_next(request)
+
+    path = request.url.path
+
+    def method_supported(method: str) -> bool:
+        for route in app.router.routes:
+            if not isinstance(route, APIRoute):
+                continue
+            if route.path != path:
+                continue
+            if method in route.methods:
+                return True
+        return False
+
+    # If there's already a HEAD-capable route, don't touch it.
+    if method_supported("HEAD"):
+        return await call_next(request)
+
+    # If there's no GET route either, leave it to the normal handler (will likely 404/405).
+    if not method_supported("GET"):
+        return await call_next(request)
+
+    # Re-dispatch as GET.
+    scope = request.scope.copy()
+    scope["method"] = "GET"
+    response = await call_next(Request(scope, receive=request.receive))
+
+    # Remove body for HEAD.
+    try:
+        if hasattr(response, "body"):
+            response.body = b""
+    except Exception:
+        pass
+
+    return response
+
+
+
 
 # ============================
 # ✅ STATIC FILES
