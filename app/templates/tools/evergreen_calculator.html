@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block head_extra %}
+<script type="application/ld+json" nonce="{{ request.state.csp_nonce }}">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://getfincalx.com/"},
+    {"@type": "ListItem", "position": 2, "name": "Tools", "item": "https://getfincalx.com/tools"},
+    {"@type": "ListItem", "position": 3, "name": "{{ calculator.title }}", "item": "https://getfincalx.com{{ calculator.path }}"}
+  ]
+}
+</script>
+<script type="application/ld+json" nonce="{{ request.state.csp_nonce }}">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {% for faq in faqs %}
+    {
+      "@type": "Question",
+      "name": {{ faq.question|tojson }},
+      "acceptedAnswer": {"@type": "Answer", "text": {{ faq.answer|tojson }}}
+    }{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<section class="tool-header">
+    <div class="container">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-8">
+                <span class="eyebrow">Evergreen Calculator</span>
+                <h1 class="display-6 fw-bold mt-3 mb-2">{{ calculator.title }}</h1>
+                <p class="lead text-secondary mb-0">{{ calculator.description }}</p>
+                <p class="small text-secondary mt-3 mb-0">Formula-based educational tool. No tax slabs, policy rules, or annual government limits are used.</p>
+            </div>
+            <div class="col-lg-4">
+                <div class="trust-card">
+                    <div><i class="bi bi-check-circle-fill" aria-hidden="true"></i> Stable formula</div>
+                    <div><i class="bi bi-shield-lock-fill" aria-hidden="true"></i> No login required</div>
+                    <div><i class="bi bi-mortarboard-fill" aria-hidden="true"></i> Educational estimate</div>
+                    <div><i class="bi bi-link-45deg" aria-hidden="true"></i> Related tools included</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4 align-items-start">
+            <div class="col-lg-7">
+                <form id="{{ calculator.key }}Form" class="card calculator-card evergreen-calculator-form" method="post" action="{{ calculator.path }}" data-api="{{ calculator.api_path }}" novalidate>
+                    <div class="card-body p-4">
+                        <h2 class="h4 fw-bold mb-4">Enter details</h2>
+
+                        {% if error %}
+                        <div class="alert alert-danger" role="alert">{{ error }}</div>
+                        {% endif %}
+
+                        {% for field in calculator.fields %}
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ field.name }}">{{ field.label }}{% if field.suffix %} ({{ field.suffix }}){% endif %}</label>
+                            <input class="form-control" id="{{ field.name }}" name="{{ field.name }}" type="number"
+                                   min="{{ field.min_value }}" max="{{ field.max_value }}" step="{{ field.step }}"
+                                   value="{{ form[field.name] }}" required>
+                        </div>
+                        {% endfor %}
+
+                        <button type="submit" class="btn btn-gradient w-100">Calculate</button>
+                    </div>
+                </form>
+            </div>
+            <aside class="col-lg-5 tool-result-wrap">
+                <div id="{{ calculator.key }}ResultBox" class="card result-card {% if not result %}d-none{% endif %}">
+                    <div class="card-body p-4">
+                        <h2 class="h5 fw-bold mb-3">Result</h2>
+                        {% for key, label in result_labels.items() %}
+                        <div class="{% if loop.first %}result-highlight{% else %}result-row{% endif %}">
+                            <span>{{ label }}</span>
+                            <strong data-result-key="{{ key }}">{{ result[key] if result else "0" }}</strong>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div id="{{ calculator.key }}ResultEmpty" class="result-empty{% if result %} d-none{% endif %}">
+                    <h2 class="h5">Your estimate will appear here</h2>
+                    <p class="text-secondary mb-0">Enter the inputs and calculate to review the formula-based result.</p>
+                </div>
+                <div class="compliance-notice mt-4" role="note">
+                    <div class="compliance-icon" aria-hidden="true"><i class="bi bi-info-circle-fill"></i></div>
+                    <div>
+                        <h2 class="h5 fw-bold mb-2">Disclaimer</h2>
+                        <p class="text-secondary mb-0">This calculator provides educational estimates only. It is not financial, investment, tax, legal, lending, or professional advice.</p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+{% include "partials/ad_unit.html" %}
+
+<section class="section-pad bg-soft">
+    <div class="container">
+        <div class="article-body">
+            {% for section in sections %}
+            <section class="mb-5">
+                <h2>{{ section.heading }}</h2>
+                <p>{{ section.body }}</p>
+            </section>
+            {% endfor %}
+        </div>
+        <div class="related-tools mt-4">
+            <div>
+                <span class="eyebrow">Related Calculators</span>
+                <h2 class="h4 fw-bold mb-0">Explore connected planning tools</h2>
+            </div>
+            <div class="related-links">
+                {% for item in related_calculators %}
+                <a href="{{ item.href }}">{{ item.title }}</a>
+                {% endfor %}
+                <a href="/learning-center">Learning Center</a>
+                <a href="/finance-glossary">Finance Glossary</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include "partials/ad_unit.html" %}
+
+<section class="section-pad">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <span class="eyebrow">FAQ</span>
+                <h2 class="h3 fw-bold mb-4">Common Questions</h2>
+                <div class="accordion polished-accordion" id="faqAccordion">
+                    {% for faq in faqs %}
+                    <div class="accordion-item">
+                        <h3 class="accordion-header">
+                            <button class="accordion-button{% if not loop.first %} collapsed{% endif %}" type="button" data-bs-toggle="collapse" data-bs-target="#faq{{ loop.index }}">
+                                {{ faq.question }}
+                            </button>
+                        </h3>
+                        <div id="faq{{ loop.index }}" class="accordion-collapse collapse{% if loop.first %} show{% endif %}" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">{{ faq.answer }}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <aside class="col-lg-4">
+                <div class="disclaimer-card">
+                    <i class="bi bi-mortarboard-fill" aria-hidden="true"></i>
+                    <h2 class="h5 fw-bold mt-3">Educational Note</h2>
+                    <p class="text-secondary mb-0">Use this page to understand the math, compare scenarios, and prepare better questions before making real financial decisions.</p>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="/static/js/evergreen_calculators.js" nonce="{{ request.state.csp_nonce }}"></script>
+{% endblock %}

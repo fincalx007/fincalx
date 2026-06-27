@@ -1,21 +1,20 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Response
 from fastapi.exceptions import RequestValidationError
-from fastapi import Response
-from fastapi.routing import APIRoute
 
-from fastapi.responses import PlainTextResponse
+
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, PlainTextResponse, RedirectResponse, Response
+from fastapi.responses import HTMLResponse, PlainTextResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import logging
 from pathlib import Path
 import sys
 
-from app.routers import contact, education, emi, home, legal, overlap, salary, sip
 from app.routers import contact, education, emi, home, legal, overlap, salary, sip, cagr
 from app.routers import lumpsum, compound_interest, inflation, emergency_fund, net_worth, step_up_sip, swp, goal, retirement, fire
+from app.routers import evergreen_calculators
 from app.routers import tools_page
+from app.services.evergreen_calculator_service import EVERGREEN_CALCULATORS
 
 
 
@@ -77,38 +76,45 @@ templates = Jinja2Templates(directory="app/templates")
 # ✅ SITEMAP (FIXED)
 # ============================
 
-@app.get("/sitemap.xml", include_in_schema=False)
+@app.api_route("/sitemap.xml", methods=["GET", "HEAD"], include_in_schema=False)
 async def sitemap():
-    xml_content = """<?xml version="1.0" encoding="UTF-8"?>
+
+    paths = [
+        "/",
+        "/tools",
+        "/tools/sip-calculator",
+        "/tools/emi-calculator",
+        "/tools/salary-calculator",
+        "/tools/portfolio-overlap-checker",
+        "/tools/cagr-calculator",
+        "/tools/step-up-sip-calculator",
+        "/tools/swp-calculator",
+        "/tools/goal-calculator",
+        "/tools/retirement-calculator",
+        "/tools/fire-calculator",
+        "/tools/lumpsum-calculator",
+        "/tools/compound-interest-calculator",
+        "/tools/inflation-calculator",
+        "/tools/emergency-fund-calculator",
+        "/tools/net-worth-calculator",
+        "/learning-center",
+        "/finance-glossary",
+        "/comparison-guides",
+        "/financial-planning-resources",
+        "/planning-tools",
+        "/about",
+        "/contact",
+        "/privacy-policy",
+        "/terms-of-service",
+        "/disclaimer",
+    ]
+    paths.extend(f"/learning-center/{guide['slug']}" for guide in education.GUIDES)
+    paths.extend(f"/comparison-guides/{item[0]}" for item in education.COMPARISONS)
+    paths.extend(calculator.path for calculator in EVERGREEN_CALCULATORS)
+    xml_urls = "\n".join(f"  <url><loc>https://getfincalx.com{path}</loc></url>" for path in dict.fromkeys(paths))
+    xml_content = f"""<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://getfincalx.com/</loc></url>
-  <url><loc>https://getfincalx.com/tools/sip-calculator</loc></url>
-  <url><loc>https://getfincalx.com/tools/emi-calculator</loc></url>
-  <url><loc>https://getfincalx.com/tools/salary-calculator</loc></url>
-  <url><loc>https://getfincalx.com/tools/portfolio-overlap-checker</loc></url>
-
-  <url><loc>https://getfincalx.com/learning-center</loc></url>
-
-  <url><loc>https://getfincalx.com/tools/cagr-calculator</loc></url>
-
-    <url><loc>https://getfincalx.com/tools/step-up-sip-calculator</loc></url>
-    <url><loc>https://getfincalx.com/tools/swp-calculator</loc></url>
-    <url><loc>https://getfincalx.com/tools/goal-calculator</loc></url>
-    <url><loc>https://getfincalx.com/tools/retirement-calculator</loc></url>
-    <url><loc>https://getfincalx.com/tools/fire-calculator</loc></url>
-
-  <url><loc>https://getfincalx.com/tools/lumpsum-calculator</loc></url>
-  <url><loc>https://getfincalx.com/tools/compound-interest-calculator</loc></url>
-  <url><loc>https://getfincalx.com/tools/inflation-calculator</loc></url>
-  <url><loc>https://getfincalx.com/tools/emergency-fund-calculator</loc></url>
-  <url><loc>https://getfincalx.com/tools/net-worth-calculator</loc></url>
-
-  <url><loc>https://getfincalx.com/learning-center</loc></url>
-
-  <url><loc>https://getfincalx.com/finance-glossary</loc></url>
-  <url><loc>https://getfincalx.com/comparison-guides</loc></url>
-  <url><loc>https://getfincalx.com/financial-planning-resources</loc></url>
-  <url><loc>https://getfincalx.com/planning-tools</loc></url>
+{xml_urls}
 </urlset>"""
     return Response(content=xml_content.strip(), media_type="application/xml")
 
@@ -118,6 +124,7 @@ async def sitemap():
 
 @app.api_route("/robots.txt", methods=["GET", "HEAD"], include_in_schema=False)
 async def robots():
+
     return PlainTextResponse(
         content="User-agent: *\nAllow: /\nSitemap: https://getfincalx.com/sitemap.xml"
     )
@@ -208,55 +215,7 @@ app.add_middleware(
 )
 
 
-@app.middleware("http")
-async def head_to_get_middleware(request: Request, call_next):
-    """Fix 405 on HEAD by dispatching HEAD -> GET when only GET is registered.
 
-    Current issue: many pages are declared as @router.get(...). If the route set does not
-    include HEAD, Starlette returns 405.
-
-    This middleware checks if the incoming request path is handled by a GET route but not
-    by a HEAD-capable route, then re-dispatches internally.
-
-    For HEAD semantics, the response body is removed.
-    """
-
-    if request.method != "HEAD":
-        return await call_next(request)
-
-    path = request.url.path
-
-    def method_supported(method: str) -> bool:
-        for route in app.router.routes:
-            if not isinstance(route, APIRoute):
-                continue
-            if route.path != path:
-                continue
-            if method in route.methods:
-                return True
-        return False
-
-    # If there's already a HEAD-capable route, don't touch it.
-    if method_supported("HEAD"):
-        return await call_next(request)
-
-    # If there's no GET route either, leave it to the normal handler (will likely 404/405).
-    if not method_supported("GET"):
-        return await call_next(request)
-
-    # Re-dispatch as GET.
-    scope = request.scope.copy()
-    scope["method"] = "GET"
-    response = await call_next(Request(scope, receive=request.receive))
-
-    # Remove body for HEAD.
-    try:
-        if hasattr(response, "body"):
-            response.body = b""
-    except Exception:
-        pass
-
-    return response
 
 
 
@@ -273,6 +232,7 @@ app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 @app.api_route("/ads.txt", methods=["GET", "HEAD"], include_in_schema=False)
 async def ads_txt():
+
     return PlainTextResponse(
         ADS_TXT_PATH.read_text(encoding="utf-8").rstrip("\r\n"),
         media_type="text/plain",
@@ -297,6 +257,7 @@ app.include_router(swp.router)
 app.include_router(goal.router)
 app.include_router(retirement.router)
 app.include_router(fire.router)
+app.include_router(evergreen_calculators.router)
 
 
 app.include_router(emi.router)

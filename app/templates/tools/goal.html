@@ -130,7 +130,7 @@ Calculate the monthly investment required to reach a financial goal within a tim
 
         <article class="mt-5">
             <h2 class="h3 fw-bold mb-3">Related calculators</h2>
-            <p class="text-secondary">See <a href="/tools/sip">SIP</a> for mutual fund contributions, <a href="/tools/lumpsum">Lumpsum</a> for single investments, and <a href="/tools/step-up-sip">Step-Up SIP</a> when planning increasing contributions over time.</p>
+            <p class="text-secondary">See <a href="/tools/sip-calculator">SIP</a> for mutual fund contributions, <a href="/tools/lumpsum-calculator">Lumpsum</a> for single investments, and <a href="/tools/step-up-sip-calculator">Step-Up SIP</a> when planning increasing contributions over time.</p>
         </article>
 
         <article class="mt-5">
@@ -138,7 +138,6 @@ Calculate the monthly investment required to reach a financial goal within a tim
             <p class="text-secondary">When calculating your monthly target, remember that taxes and fund expense ratios reduce effective returns and inflation erodes purchasing power. Where possible, use tax-advantaged accounts and estimate net returns after fees when running conservative scenarios.</p>
         </article>
 
-        <div class="alert alert-secondary mt-4">Disclaimer: Educational information only. Adjust for taxes, fees, and inflation before acting. Consult a financial advisor for personalised guidance.</div>
     </div>
 </section>
 {% endblock %}
@@ -152,65 +151,6 @@ This calculator solves for the monthly payment needed to reach a future goal usi
 <p class="text-secondary"><strong>P = FV × r / ((1 + r)^n - 1)</strong> where <em>r</em> is the monthly rate (annual_rate/12/100), <em>n</em> is months, and <em>FV</em> is the goal amount.</p>
 <p class="text-secondary mb-0">Variables: <em>P</em> = required monthly payment, <em>FV</em> = goal amount, <em>r</em> = monthly interest rate, <em>n</em> = total months.</p>
 {% endblock %}
-
-{% block faq %}
-<div class="accordion-item">
-    <h2 class="accordion-header">
-        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#goalFaq1">How is the required monthly amount calculated?</button>
-    </h2>
-    <div id="goalFaq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
-        <div class="accordion-body">It solves the future value equation of monthly contributions to find the payment that reaches your target at the end of the horizon under a constant return assumption.</div>
-    </div>
-</div>
-
-<div class="accordion-item">
-    <h2 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#goalFaq2">Does this include taxes and fees?</button>
-    </h2>
-    <div id="goalFaq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-        <div class="accordion-body">No, it provides an educational pre-tax estimate. Include expected taxes and fund fees when setting a final savings target.</div>
-    </div>
-</div>
-
-<div class="accordion-item">
-    <h2 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#goalFaq3">Can I include a lump sum I already have?</button>
-    </h2>
-    <div id="goalFaq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-        <div class="accordion-body">This calculator assumes monthly investments only. If you have a lump sum, reduce the required monthly amount by the future value of that lump sum or use the Lumpsum calculator separately.</div>
-    </div>
-</div>
-
-<div class="accordion-item">
-    <h2 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#goalFaq4">What if I miss a month?</button>
-    </h2>
-    <div id="goalFaq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-        <div class="accordion-body">Missing contributions reduces the final value. Recalculate with the missed amount or increase future contributions to compensate.</div>
-    </div>
-</div>
-
-<div class="accordion-item">
-    <h2 class="accordion-header">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#goalFaq5">Related calculators?</button>
-    </h2>
-    <div id="goalFaq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-        <div class="accordion-body">Use the Lumpsum, SIP, and Step-Up SIP calculators to compare alternative funding strategies for your goal.</div>
-    </div>
-</div>
-
-{% endblock %}
-
-{% block related_calculators %}
-<section class="section-pad bg-soft">
-    <div class="container">
-        <h3 class="h5 fw-bold mb-3">Related calculators</h3>
-        <p class="text-secondary">See also: <a href="/tools/sip">SIP</a>, <a href="/tools/lumpsum">Lumpsum</a>, <a href="/tools/step-up-sip">Step-Up SIP</a> for alternate funding approaches.</p>
-    </div>
-</section>
-
-{% endblock %}
-
 
 {% block advanced_content %}
 <section class="section-pad">
@@ -276,6 +216,51 @@ This calculator solves for the monthly payment needed to reach a future goal usi
     </h2>
     <div id="goalFaq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
         <div class="accordion-body">Yes—if you have a lump sum available, use the Lumpsum calculator to estimate whether it can meet your goal under similar return assumptions, or combine both approaches.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#goalFaq6">What if I miss a monthly investment?</button>
+    </h2>
+    <div id="goalFaq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">A missed contribution lowers the expected final value. Re-run the calculator with a shorter remaining horizon or increase future monthly contributions to close the gap.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#goalFaq7">Should I use the same return assumption for every goal?</button>
+    </h2>
+    <div id="goalFaq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">No. Short-term goals usually need more conservative assumptions than long-term goals because there is less time to recover from volatility.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#goalFaq8">Can I use this calculator for education or home goals?</button>
+    </h2>
+    <div id="goalFaq8" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Yes, if you already have a target amount and time horizon. For goals affected by rising costs, estimate the future cost first and enter that as the goal amount.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#goalFaq9">How often should I review the monthly amount?</button>
+    </h2>
+    <div id="goalFaq9" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Review it at least once a year or whenever income, expenses, market assumptions, or the goal timeline changes materially.</div>
+    </div>
+</div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#goalFaq10">Which related calculators should I use next?</button>
+    </h2>
+    <div id="goalFaq10" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body">Use the SIP calculator for fixed monthly contributions, the Step-Up SIP calculator for rising contributions, and the Lumpsum calculator for one-time investments.</div>
     </div>
 </div>
 

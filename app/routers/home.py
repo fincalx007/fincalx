@@ -6,8 +6,9 @@ router = APIRouter(tags=["pages"])
 templates = Jinja2Templates(directory="app/templates")
 
 
-@router.get("/", response_class=HTMLResponse)
+@router.api_route("/", response_class=HTMLResponse, methods=["GET", "HEAD"])
 async def home(request: Request):
+
     tools = [
         {
             "title": "SIP Calculator",
@@ -128,8 +129,9 @@ async def home(request: Request):
     )
 
 
-@router.get("/about", response_class=HTMLResponse, name="about_page")
+@router.api_route("/about", response_class=HTMLResponse, name="about_page", methods=["GET", "HEAD"])
 async def about(request: Request):
+
     return templates.TemplateResponse(
         "about.html",
         {

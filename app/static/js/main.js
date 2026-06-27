@@ -1,52 +1,9 @@
 /**
  * FinCalX - Frontend Interactions
- * Handles: Theme, Search, Form Validation, Loading States, Scroll, Double-Submit Prevention
+ * Handles: Search, Form Validation, Loading States, Scroll, Double-Submit Prevention
  */
 
-// ============================================
-// THEME MANAGEMENT
-// ============================================
 const searchInput = document.getElementById("toolSearch");
-const themeToggle = document.querySelector("[data-theme-toggle]");
-
-const getSavedTheme = () => {
-    try {
-        return localStorage.getItem("theme");
-    } catch (error) {
-        return null;
-    }
-};
-
-const saveTheme = (theme) => {
-    try {
-        localStorage.setItem("theme", theme);
-    } catch (error) {
-        // Silently fail if localStorage unavailable
-    }
-};
-
-const applyTheme = (theme) => {
-    const isDark = theme === "dark";
-    document.documentElement.dataset.theme = isDark ? "dark" : "light";
-
-    if (themeToggle) {
-        themeToggle.setAttribute("aria-pressed", String(isDark));
-        themeToggle.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to dark mode");
-    }
-};
-
-// Initialize theme on load to prevent flash
-const savedTheme = getSavedTheme();
-const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-applyTheme(savedTheme || (prefersDark ? "dark" : "light"));
-
-if (themeToggle) {
-    themeToggle.addEventListener("click", () => {
-        const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-        saveTheme(nextTheme);
-        applyTheme(nextTheme);
-    });
-}
 
 // ============================================
 // SEARCH FUNCTIONALITY (robust fallback)
@@ -239,19 +196,19 @@ if (searchInput) {
                 // Silently fail if sessionStorage unavailable
             }
 
-            // ===== FIX 5: Scroll handling on result =====
-            // After page loads with result, scroll to result section
-            window.addEventListener("load", () => {
-                if (sessionStorage.getItem("formSubmitted") === "true") {
-                    sessionStorage.removeItem("formSubmitted");
+            // // ===== FIX 5: Scroll handling on result =====
+            // // After page loads with result, scroll to result section
+            // window.addEventListener("load", () => {
+            //     if (sessionStorage.getItem("formSubmitted") === "true") {
+            //         sessionStorage.removeItem("formSubmitted");
                     
-                    // Check if there's a result section to scroll to
-                    const resultSection = document.querySelector("#result-section, .result-card");
-                    if (resultSection) {
-                        setTimeout(() => scrollToResult(resultSection), 100);
-                    }
-                }
-            });
+            //         // Check if there's a result section to scroll to
+            //         const resultSection = document.querySelector("#result-section, .result-card");
+            //         if (resultSection) {
+            //             setTimeout(() => scrollToResult(resultSection), 100);
+            //         }
+            //     }
+            // });
         });
 
         // ===== FIX 6: Handle browser back button =====

@@ -25,8 +25,14 @@ PAGE_DESC = "Free inflation calculator India: estimate future value and purchasi
 TEMPLATE = "tools/inflation.html"
 
 
-@router.get("/inflation-calculator", response_class=HTMLResponse, name="inflation_page")
+@router.api_route(
+    "/inflation-calculator",
+    response_class=HTMLResponse,
+    name="inflation_page",
+    methods=["GET", "HEAD"],
+)
 async def inflation_page(request: Request):
+
     return templates.TemplateResponse(TEMPLATE, _context(request))
 
 

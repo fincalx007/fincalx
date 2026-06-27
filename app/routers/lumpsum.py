@@ -25,8 +25,14 @@ PAGE_DESC = "Free lumpsum calculator India: estimate maturity value and estimate
 TEMPLATE = "tools/lumpsum.html"
 
 
-@router.get("/lumpsum-calculator", response_class=HTMLResponse, name="lumpsum_page")
+@router.api_route(
+    "/lumpsum-calculator",
+    response_class=HTMLResponse,
+    name="lumpsum_page",
+    methods=["GET", "HEAD"],
+)
 async def lumpsum_page(request: Request):
+
     return templates.TemplateResponse(TEMPLATE, _context(request))
 
 

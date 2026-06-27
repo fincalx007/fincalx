@@ -26,8 +26,14 @@ PAGE_DESC = "Free compound interest calculator India: estimate interest earned a
 TEMPLATE = "tools/compound_interest.html"
 
 
-@router.get("/compound-interest-calculator", response_class=HTMLResponse, name="compound_interest_page")
+@router.api_route(
+    "/compound-interest-calculator",
+    response_class=HTMLResponse,
+    name="compound_interest_page",
+    methods=["GET", "HEAD"],
+)
 async def compound_interest_page(request: Request):
+
     return templates.TemplateResponse(TEMPLATE, _context(request))
 
 

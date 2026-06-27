@@ -24,8 +24,14 @@ PAGE_DESC = "Free emergency fund calculator India: estimate recommended emergenc
 TEMPLATE = "tools/emergency_fund.html"
 
 
-@router.get("/emergency-fund-calculator", response_class=HTMLResponse, name="emergency_fund_page")
+@router.api_route(
+    "/emergency-fund-calculator",
+    response_class=HTMLResponse,
+    name="emergency_fund_page",
+    methods=["GET", "HEAD"],
+)
 async def emergency_fund_page(request: Request):
+
     return templates.TemplateResponse(TEMPLATE, _context(request))
 
 

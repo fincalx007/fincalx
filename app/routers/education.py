@@ -341,13 +341,15 @@ def _guide_by_slug(slug: str):
     return next((guide for guide in GUIDES if guide["slug"] == slug), None)
 
 
-@router.get("/learning-center", response_class=HTMLResponse)
+@router.api_route("/learning-center", response_class=HTMLResponse, methods=["GET", "HEAD"])
 async def learning_center(request: Request):
+
     return templates.TemplateResponse("education/learning_center.html", {"request": request, "title": "Finance Learning Center | FinCalX", "description": "Original personal finance guides for SIP investing, EMI planning, budgeting, tax basics, salary structure, retirement, and wealth building.", "guides": GUIDES, "calculators": CALCULATORS})
 
 
-@router.get("/learning-center/{slug}", response_class=HTMLResponse)
+@router.api_route("/learning-center/{slug}", response_class=HTMLResponse, methods=["GET", "HEAD"])
 async def guide_detail(request: Request, slug: str):
+
     guide = _guide_by_slug(slug)
     if guide is None:
         raise HTTPException(status_code=404)
@@ -355,8 +357,9 @@ async def guide_detail(request: Request, slug: str):
     return templates.TemplateResponse("education/guide.html", {"request": request, "title": f"{guide['title']} | FinCalX Guide", "description": guide["summary"], "guide": guide, "related_guides": related_guides, "calculators": CALCULATORS})
 
 
-@router.get("/finance-glossary", response_class=HTMLResponse)
+@router.api_route("/finance-glossary", response_class=HTMLResponse, methods=["GET", "HEAD"])
 async def finance_glossary(request: Request):
+
     terms = []
     for i, term in enumerate(GLOSSARY_TERMS):
         item = _term_copy(term)
@@ -366,24 +369,28 @@ async def finance_glossary(request: Request):
     return templates.TemplateResponse("education/glossary.html", {"request": request, "title": "Financial Glossary | 95+ Personal Finance Terms | FinCalX", "description": "A plain-English finance glossary with definitions, examples, related calculators, and related learning guides.", "terms": terms})
 
 
-@router.get("/comparison-guides", response_class=HTMLResponse)
+@router.api_route("/comparison-guides", response_class=HTMLResponse, methods=["GET", "HEAD"])
 async def comparison_guides(request: Request):
+
     return templates.TemplateResponse("education/comparisons.html", {"request": request, "title": "Finance Comparison Guides | FinCalX", "description": "Compare SIP vs lumpsum, PPF vs SIP, FD vs mutual funds, equity vs debt funds, EMI vs renting, ELSS vs PPF, and NPS vs PPF.", "comparisons": COMPARISONS})
 
 
-@router.get("/comparison-guides/{slug}", response_class=HTMLResponse)
+@router.api_route("/comparison-guides/{slug}", response_class=HTMLResponse, methods=["GET", "HEAD"])
 async def comparison_detail(request: Request, slug: str):
+
     comparison = next((item for item in COMPARISONS if item[0] == slug), None)
     if comparison is None:
         raise HTTPException(status_code=404)
     return templates.TemplateResponse("education/comparison_detail.html", {"request": request, "title": f"{comparison[1]} | FinCalX Comparison Guide", "description": comparison[2], "comparison": comparison, "calculators": CALCULATORS})
 
 
-@router.get("/financial-planning-resources", response_class=HTMLResponse)
+@router.api_route("/financial-planning-resources", response_class=HTMLResponse, methods=["GET", "HEAD"])
 async def planning_resources(request: Request):
+
     return templates.TemplateResponse("education/planning.html", {"request": request, "title": "Financial Planning Resources & Checklists | FinCalX", "description": "Printable-friendly personal finance checklists for retirement, investing, budgeting, home buying, salary planning, emergency funds, and goals.", "checklists": CHECKLISTS, "calculators": CALCULATORS})
 
 
-@router.get("/planning-tools", response_class=HTMLResponse)
+@router.api_route("/planning-tools", response_class=HTMLResponse, methods=["GET", "HEAD"])
 async def planning_tools(request: Request):
+
     return templates.TemplateResponse("education/value_tools.html", {"request": request, "title": "Personal Finance Planning Tools | FinCalX", "description": "Lightweight personal finance planners, scorecards, learning paths, savings challenges, and wealth-building roadmaps.", "tools": VALUE_TOOLS, "checklists": CHECKLISTS, "guides": GUIDES, "calculators": CALCULATORS})

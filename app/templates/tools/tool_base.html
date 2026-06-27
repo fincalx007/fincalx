@@ -85,6 +85,54 @@
                 <h2 class="h3 fw-bold mb-4">Common Questions</h2>
                 <div class="accordion polished-accordion" id="faqAccordion">
                     {% block faq %}{% endblock %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sharedFaq1">Are calculator results guaranteed?</button>
+                        </h2>
+                        <div id="sharedFaq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">No. Results are estimates based on your inputs and assumptions. Real outcomes can change because markets, taxes, inflation, fees, product terms, income, and behavior may differ.</div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sharedFaq2">Should I use gross or net numbers?</button>
+                        </h2>
+                        <div id="sharedFaq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">Use the number that matches the calculator field. For planning decisions, net cash-flow numbers are usually more useful than headline amounts.</div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sharedFaq3">How often should I revisit the estimate?</button>
+                        </h2>
+                        <div id="sharedFaq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">Review the estimate when rates, income, expenses, goals, time horizon, loan balance, portfolio value, tax assumptions, or inflation assumptions change materially.</div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sharedFaq4">Does this replace professional advice?</button>
+                        </h2>
+                        <div id="sharedFaq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">No. Use FinCalX calculators for education and scenario testing only. Consult qualified professionals before making financial, investment, tax, legal, or lending decisions.</div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sharedFaq5">Why should I test multiple scenarios?</button>
+                        </h2>
+                        <div id="sharedFaq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">Scenario testing shows how sensitive the result is to your assumptions. A conservative, moderate, and optimistic case can reveal risk more clearly than one estimate.</div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sharedFaq6">Where should I go next?</button>
+                        </h2>
+                        <div id="sharedFaq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                            <div class="accordion-body">Use related calculators, the Learning Center, comparison guides, and glossary pages to understand the assumptions behind the result before acting.</div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <aside class="col-lg-4">
@@ -111,6 +159,9 @@
                 <a href="/tools/salary-calculator">Salary Calculator India</a>
                 <a href="/tools/portfolio-overlap-checker">Portfolio Overlap Checker</a>
                 <a href="/tools/cagr-calculator">CAGR Calculator</a>
+                <a href="/learning-center">Learning Center</a>
+                <a href="/finance-glossary">Finance Glossary</a>
+                <a href="/comparison-guides">Comparison Guides</a>
             </div>
 
         </div>
@@ -119,6 +170,32 @@
 {% endblock %}
 
 {% block head_extra %}
-{% block faq_schema %}{% endblock %}
+<script type="application/ld+json" nonce="{{ request.state.csp_nonce }}">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://getfincalx.com/"},
+    {"@type": "ListItem", "position": 2, "name": "Tools", "item": "https://getfincalx.com/tools"},
+    {"@type": "ListItem", "position": 3, "name": "{{ self.tool_title()|striptags }}", "item": "{{ request.url }}"}
+  ]
+}
+</script>
+{% block faq_schema %}
+<script type="application/ld+json" nonce="{{ request.state.csp_nonce }}">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question", "name": "Are calculator results guaranteed?", "acceptedAnswer": {"@type": "Answer", "text": "No. Results are estimates based on your inputs and assumptions. Real outcomes can change because markets, taxes, inflation, fees, product terms, income, and behavior may differ."}},
+    {"@type": "Question", "name": "Should I use gross or net numbers?", "acceptedAnswer": {"@type": "Answer", "text": "Use the number that matches the calculator field. For planning decisions, net cash-flow numbers are usually more useful than headline amounts."}},
+    {"@type": "Question", "name": "How often should I revisit the estimate?", "acceptedAnswer": {"@type": "Answer", "text": "Review the estimate when rates, income, expenses, goals, time horizon, loan balance, portfolio value, tax assumptions, or inflation assumptions change materially."}},
+    {"@type": "Question", "name": "Does this replace professional advice?", "acceptedAnswer": {"@type": "Answer", "text": "No. Use FinCalX calculators for education and scenario testing only. Consult qualified professionals before making financial, investment, tax, legal, or lending decisions."}},
+    {"@type": "Question", "name": "Why should I test multiple scenarios?", "acceptedAnswer": {"@type": "Answer", "text": "Scenario testing shows how sensitive the result is to your assumptions. A conservative, moderate, and optimistic case can reveal risk more clearly than one estimate."}},
+    {"@type": "Question", "name": "Where should I go next?", "acceptedAnswer": {"@type": "Answer", "text": "Use related calculators, the Learning Center, comparison guides, and glossary pages to understand the assumptions behind the result before acting."}}
+  ]
+}
+</script>
+{% endblock %}
 {% endblock %}
 {% block scripts %}{% endblock %}

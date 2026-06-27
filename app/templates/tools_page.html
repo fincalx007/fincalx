@@ -290,6 +290,35 @@
             </div>
         </section>
 
+        <!-- Evergreen Calculators -->
+        <section class="mt-5">
+            <div class="d-flex align-items-start justify-content-between mb-3">
+                <div>
+                    <h3 class="h4 fw-bold mb-1">Evergreen Financial Calculators</h3>
+                    <p class="text-secondary mb-0">Stable formula-based tools for interest, loans, savings, debt, inflation, portfolio math, and long-term planning.</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                {% for item in evergreen_calculators %}
+                <div class="col-lg-4 col-md-6 col-12">
+                    <a class="calc-card d-block h-100" href="{{ item.href }}">
+                        <div class="card h-100 p-3">
+                            <div class="card-body d-flex flex-column">
+                                <div class="calc-icon mb-3"><i class="bi bi-calculator"></i></div>
+                                <h5 class="fw-bold">{{ item.title }}</h5>
+                                <p class="text-secondary mb-3">{{ item.description }}</p>
+                                <div class="mt-auto">
+                                    <span class="btn btn-outline-primary btn-open">Open Calculator</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
         <!-- Benefits and Disclaimer -->
         <section class="mt-5 mb-5">
             <div class="row g-4">

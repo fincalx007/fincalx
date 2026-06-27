@@ -24,8 +24,14 @@ PAGE_DESC = "Free net worth calculator India: estimate net worth by subtracting 
 TEMPLATE = "tools/net_worth.html"
 
 
-@router.get("/net-worth-calculator", response_class=HTMLResponse, name="net_worth_page")
+@router.api_route(
+    "/net-worth-calculator",
+    response_class=HTMLResponse,
+    name="net_worth_page",
+    methods=["GET", "HEAD"],
+)
 async def net_worth_page(request: Request):
+
     return templates.TemplateResponse(TEMPLATE, _context(request))
 
 

@@ -6,8 +6,9 @@ router = APIRouter(tags=["pages"])
 templates = Jinja2Templates(directory="app/templates")
 
 
-@router.get("/contact", response_class=HTMLResponse, name="contact_page")
+@router.api_route("/contact", response_class=HTMLResponse, name="contact_page", methods=["GET", "HEAD"])
 async def contact_page(request: Request):
+
     return templates.TemplateResponse(
         "contact.html",
         {
